@@ -16,5 +16,7 @@ public class User {
     private String secondLastName;
     private String email;
     private LocalDateTime dateBirth;
+    private String password;
+
 
 }

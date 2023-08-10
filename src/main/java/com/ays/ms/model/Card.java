@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import java.time.LocalDateTime;
 
 @Entity
-public class Client extends User {
+public class Card {
     private String cardUser;
     private int cardNumber;
     private LocalDateTime expirationDate;

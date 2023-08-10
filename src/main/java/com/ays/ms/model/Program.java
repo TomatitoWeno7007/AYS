@@ -12,4 +12,5 @@ public class Program {
     private int rating;
     private String img;
     private String url; //URL de la serie/peli en mega
+
 }

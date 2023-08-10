@@ -1,7 +1,6 @@
 package com.ays.ms.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
@@ -18,5 +17,6 @@ public class User {
     private LocalDateTime dateBirth;
     private String password;
 
+    private Card card;
 
 }

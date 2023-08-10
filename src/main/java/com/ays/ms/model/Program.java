@@ -1,25 +1,19 @@
 package com.ays.ms.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 
-@Entity
-@Table(name = "program")
 @Data
+@MappedSuperclass
 public class Program {
 
-    @Id
-    private long id;
-
-    private String name;
-    private String genre;
-    private int views;
-    private String duration;
-    private String description;
-    private int rating;
-    private String img;
-    private String url; //URL de la serie/peli en mega
+    protected String name;
+    protected String genre;
+    protected int views;
+    protected String duration;
+    protected String description;
+    protected int rating;
+    protected String img;
+    protected String url; //URL de la serie/peli en mega
 
 }

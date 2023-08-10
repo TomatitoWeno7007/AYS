@@ -15,7 +15,6 @@ public class Catalog {
 
     @Id
     private long id;
-
     @OneToMany
     private List<Serie> watchSeries;
     @OneToMany

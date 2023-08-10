@@ -1,11 +1,13 @@
 package com.ays.ms.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "user")
+@Data
 public class User {
 
     @Id
@@ -16,7 +18,9 @@ public class User {
     private String email;
     private LocalDateTime dateBirth;
     private String password;
-
+    @OneToOne
     private Card card;
+    @OneToOne
+    private Catalog catalog;
 
 }

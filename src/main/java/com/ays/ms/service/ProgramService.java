@@ -12,5 +12,5 @@ public class ProgramService {
     @Autowired
     private ProgramRepository programRepository;
 
-    public List<Program> getPrograms() { programRepository.getPrograms(); }
+    public List<Program> getPrograms() { return programRepository.getPrograms(); }
 }

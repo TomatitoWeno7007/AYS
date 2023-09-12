@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head></head>
+    <body>
+        <div class="modal" tabindex="-1" th:fragment="modal-register" id="modalRegister">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="#" th:action="@{/user}" th:object="${UserRegister}" method="post">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="email" class="col-form-label">Email</label>
+                                    <input type="text" th:field="*{email}" class="form-control" id="email" placeholder="Email">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="password" class="col-form-label">Name</label>
+                                    <input type="text" th:field="*{password}" class="form-control" id="password" placeholder="password">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="repeatPassword" class="col-form-label">Name</label>
+                                    <input type="text" th:field="*{repeatPassword}" class="form-control" id="repeatPassword" placeholder="repeatPassword">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mt-5">
+                                    <input type="submit" class="btn btn-primary" value="Add User">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

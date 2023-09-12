@@ -17,6 +17,8 @@ public class UserRepository {
         return userSpringDataRepository.findAll();
     }
 
-
+    public void save(User user) {
+        this.userSpringDataRepository.save(user);
+    }
 
 }

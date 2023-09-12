@@ -18,38 +18,42 @@
  * **********
  */
 header a, header nav .nav-link {
-            color:  white;
-            transition: all 0.5s;
+    color:  white;
+    transition: all 0.5s;
+}
+
+    header a:hover, header nav .nav-link:hover {
+        color: rgb(48, 241, 255);
+    }
+
+    header nav:first-child {
+        border-bottom: 1px solid white;
+    }
+
+    header nav div a div {
+        padding: 50px 65px;
+        position: relative;
+    }
+
+        #imgLogo {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-size: contain;
+            background-repeat: no-repeat;
+            transition: all 0.5s ease;
         }
 
-            header a:hover, header nav .nav-link:hover {
-                color: rgb(48, 241, 255);
-            }
+        #imgLogo {
+            background-image: url("../img/Posible\ Logo\ en\ blanco.png");
+        }
 
-            header nav div a div {
-                padding: 50px 65px;
-                position: relative;
-            }
-
-                #imgLogo {
-                    display: block;
-                    width: 100%;
-                    height: 100%;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    transition: all 0.5s ease;
-                }
-
-                #imgLogo {
-                    background-image: url("../img/Posible\ Logo\ en\ blanco.png");
-                }
-
-                header nav div a:hover #imgLogo {
-                    background-image: url("../img/Logo\ en\ azul.png");
-                }
+        header nav div a:hover #imgLogo {
+            background-image: url("../img/Logo\ en\ azul.png");
+        }
 
 /*
  * **********
@@ -95,6 +99,7 @@ footer {
     --bs-btn-hover-color: rgb(48, 241, 255);
     --bs-btn-hover-bg: none;
     --bs-btn-hover-border-color: rgb(48, 241, 255);
+    --bs-btn-active-color: rgb(48, 241, 255);
     transition: all 0.5s;
     /* Me falta el click */
 }

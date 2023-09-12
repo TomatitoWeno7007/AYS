@@ -1,4 +1,5 @@
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,37 +16,9 @@
         <link rel="stylesheet" href="css/general.css">
     </head>
     <body>
-        <header class="m-auto">
-            <nav class="navbar d-flex flex-row justify-content-between px-2 bg-dark">
-                <div class="d-flex flex-row align-items-center">
-                    <a class="d-flex flex-column flex-md-row text-decoration-none" href="indexold.html">
-                        <div>
-                            <span id="imgLogo"></span>
-                        </div>
-                        <span class="d-sm-inline align-self-sm-end m-auto ms-1">Todo lo que puedas ver y más</span>
-                    </a>
-                </div>
-
-                <ul class="list-inline d-flex flex-row justify-content-center align-self-start align-self-sm-center mt-4 mt-sm-0">
-                    <li class="list-inline-item nav-item me-4">
-                        <button type="button" class="btn btn-primary-ays">Iniciar Sesión</button>
-                    </li>
-                    <li class="list-inline-item nav-item me-4">
-                        <button type="button" class="btn btn-primary-ays">Registrarse</button>
-                    </li>
-                </ul>
-            </nav>
-
-            <nav class="navbar mb-3 px-2 bg-dark">
-                <ul class="navbar-nav flex-row w-25 justify-content-between justify-content-sm-around">
-                    <li class="nav-item ms-0">
-                        <a class="nav-link" href="">Series</a>
-                    </li>
-                    <li class="nav-item ms-2">
-                        <a class="nav-link" href="">Películas</a>
-                    </li>
-                </ul>
-            </nav>
+        <header class="m-auto" th:replace=" ${true} ?
+            ~{headers.html :: header-not-loggin} :
+            ~{headers.html :: header-loggin} ">
         </header>
 
         <div class="container-fluid col-10">

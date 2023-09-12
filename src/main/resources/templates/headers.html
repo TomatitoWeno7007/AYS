@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+
+    </head>
+    <body>
+
+        <!-- HEADER PARA CUANDO NO ESTA LOGUEADO -->
+        <header class="m-auto" th:fragment="header-not-loggin">
+            <nav class="navbar d-flex flex-row justify-content-between px-2 bg-dark">
+                <div class="d-flex flex-row align-items-center">
+                    <a class="d-flex flex-column flex-md-row text-decoration-none" href="indexold.html">
+                        <div>
+                            <span id="imgLogo"></span>
+                        </div>
+                        <span class="d-sm-inline align-self-sm-end m-auto ms-1">Todo lo que puedas ver y más</span>
+                    </a>
+                </div>
+
+                <ul class="list-inline d-flex flex-row justify-content-center align-self-start align-self-sm-center mt-4 mt-sm-0">
+                    <li class="list-inline-item nav-item me-4">
+                        <button type="button" class="btn btn-primary-ays"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalLogin">Iniciar Sesión</button>
+                    </li>
+                    <li class="list-inline-item nav-item me-4">
+                        <button type="button" class="btn btn-primary-ays"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalRegister">Registrarse</button>
+                    </li>
+                </ul>
+            </nav>
+
+            <nav class="navbar mb-3 px-2 bg-dark">
+                <ul class="navbar-nav flex-row w-25 justify-content-between justify-content-sm-around">
+                    <li class="nav-item ms-0">
+                        <a class="nav-link" href="">Series</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <a class="nav-link" href="">Películas</a>
+                    </li>
+                </ul>
+            </nav>
+            <div th:insert="user/login.html :: modal-login"></div>
+            <div th:insert="user/register.html :: modal-register"></div>
+        </header>
+
+        <!-- HEADER PARA CUANDO ESTA LOGUEADO -->
+        <header class="m-auto" th:fragment="header-loggin">
+            <nav class="navbar d-flex flex-row justify-content-between px-2 bg-dark">
+                <div class="d-flex flex-row align-items-center">
+                    <a class="d-flex flex-column flex-md-row text-decoration-none" href="indexold.html">
+                        <div>
+                            <span id="imgLogo"></span>
+                        </div>
+                        <span class="d-sm-inline align-self-sm-end m-auto ms-1">Todo lo que puedas ver y más</span>
+                    </a>
+                </div>
+
+                <ul class="list-inline d-flex flex-row justify-content-center align-self-start align-self-sm-center mt-4 mt-sm-0">
+                    <li class="list-inline-item nav-item me-4">
+                        <button type="button" class="btn btn-primary-ays">asdfasdf</button>
+                    </li>
+                    <li class="list-inline-item nav-item me-4">
+                        <button type="button" class="btn btn-primary-ays">rtyertyer</button>
+                    </li>
+                </ul>
+            </nav>
+
+            <nav class="navbar mb-3 px-2 bg-dark">
+                <ul class="navbar-nav flex-row w-25 justify-content-between justify-content-sm-around">
+                    <li class="nav-item ms-0">
+                        <a class="nav-link" href="">Series</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <a class="nav-link" href="">Películas</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+    </body>
+</html>

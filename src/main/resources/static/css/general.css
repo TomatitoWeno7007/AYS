@@ -1,0 +1,100 @@
+/*
+ * ***********
+ * VARIABLES *
+ * ***********
+ */
+
+:root {
+    --main-primary-color: black;
+    --main-secondary-color: white;
+    --main-third-color: rgb(48, 241, 255);
+    --main-fourth-color: --bs-dark-rgb;
+    --main-fifth-color: rgb(14, 75, 80);
+}
+
+/*
+ * **********
+ * HEADER ***
+ * **********
+ */
+header a, header nav .nav-link {
+            color:  white;
+            transition: all 0.5s;
+        }
+
+            header a:hover, header nav .nav-link:hover {
+                color: rgb(48, 241, 255);
+            }
+
+            header nav div a div {
+                padding: 50px 65px;
+                position: relative;
+            }
+
+                #imgLogo {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    transition: all 0.5s ease;
+                }
+
+                #imgLogo {
+                    background-image: url("../img/Posible\ Logo\ en\ blanco.png");
+                }
+
+                header nav div a:hover #imgLogo {
+                    background-image: url("../img/Logo\ en\ azul.png");
+                }
+
+/*
+ * **********
+ * BODY *****
+ * **********
+ */
+
+body {
+    background-color: black;
+}
+
+/*
+ * **********
+ * FOOTER ***
+ * **********
+ */
+
+footer {
+    background-color: rgb(14, 75, 80);
+    padding-top: 1%;
+}
+
+.enlacesFooter {
+    color: white;
+    transition: all 0.5s;
+}
+
+    .enlacesFooter:hover {
+        color: rgb(48, 241, 255);
+        text-decoration: underline;
+    }
+
+
+/*
+ * **********
+ * BOTONES **
+ * **********
+ */
+
+.btn-primary-ays {
+    --bs-btn-color: white;
+    --bs-btn-border-color: white;
+    --bs-btn-hover-color: rgb(48, 241, 255);
+    --bs-btn-hover-bg: none;
+    --bs-btn-hover-border-color: rgb(48, 241, 255);
+    transition: all 0.5s;
+    /* Me falta el click */
+}

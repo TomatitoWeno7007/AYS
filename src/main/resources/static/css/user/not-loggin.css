@@ -1,0 +1,119 @@
+.cajaCartelera {
+            position: relative;
+        }
+
+            .cartelera {
+                background: linear-gradient(0deg, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%);
+                color: white;
+                position: absolute;
+                top: 52%;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                text-align: center;
+            }
+
+            .cartelera h2 {
+                margin-top: 6%;
+            }
+
+            .enlacesAzules {
+                color: rgb(48, 241, 255);
+                transition: all 0.5s;
+            }
+
+                .enlacesAzules:hover {
+                    color: white;
+                }
+
+        .cajaCuentaCompartida {
+            margin-bottom: 15%;
+        }
+
+        .contenedorCirculos {
+            color: white;
+            padding: 1% 0%;
+            /* border-radius: 50%;
+            border: 10px blue;
+            border-style: dotted; */
+        }
+
+            .cajaCirculos {
+                text-align: center;
+                margin-bottom: 60px;
+                padding: 2%;
+            }
+
+            .cajaCirculos i {
+                font-size: 7vw;
+            }
+
+                .bordeIcono {
+                    border: solid;
+                    border-color: rgb(48, 241, 255);
+                    width: 12vw;
+                    padding: 5px 10px;
+                    margin: auto;
+                    margin-bottom: 12px;
+                    /* width: 40px;
+                    padding: 5px 10px;
+                    margin: auto;
+                    margin-bottom: 12px; */
+                }
+
+                .bordeIcono i {
+                    color: rgb(48, 241, 255);
+                }
+
+            .cajaPC {
+                display: none;
+            }
+
+@media only screen and (min-width: 768px) {
+    .cartelera {
+        background: linear-gradient(260deg, rgba(0,0,0,1) 36%, rgba(0,0,0,0) 100%);
+        top: 0%;
+        text-align: end;
+        font-size: 14px;
+    }
+
+        .cartelera h2 {
+            font-size: 25px;
+            margin-top: 29%;
+        }
+
+
+    .cajaCirculos i {
+        font-size: 4vw;
+    }
+
+    .bordeIcono {
+        width: 8vw;
+    }
+
+    .cajaPC {
+        display: block;
+        opacity: 0.5;
+        cursor: default;
+    }
+
+        .cajaPC figure {
+            width: 35%;
+            /* opacity: 0.5; */
+        }
+
+}
+
+@media only screen and (min-width: 1200px) {
+    .cajaPC figure {
+        width: 20%;
+    }
+
+}
+
+@media only screen and (min-width: 1400px) {
+    .cartelera {
+        background: linear-gradient(260deg, rgba(0,0,0,1) 21%, rgba(0,0,0,0) 100%);
+    }
+
+}

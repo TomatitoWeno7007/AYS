@@ -1,3 +1,7 @@
+.mensajeError {
+    color: rgb(48, 241, 255);
+}
+
 .cajaCartelera {
             position: relative;
         }

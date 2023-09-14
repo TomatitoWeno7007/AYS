@@ -2,6 +2,7 @@ package com.ays.ms.service;
 
 import com.ays.ms.controller.dto.request.UserLoginRequest;
 import com.ays.ms.controller.dto.request.UserRegisterRequest;
+import com.ays.ms.model.Catalog;
 import com.ays.ms.model.User;
 import com.ays.ms.respository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -43,6 +44,13 @@ public class UserService {
         }
 
         return isLogged;
+    }
+
+    public Catalog getUserCatalog() {
+        long userId = this.authenticationService.getIdLoginUser();
+        User user = this.userRepository.getById(userId);
+
+        return user.getCatalog();
     }
 
 }

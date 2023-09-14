@@ -1,5 +1,6 @@
 package com.ays.ms.respository;
 
+import com.ays.ms.exceptions.ResourceNotFoundException;
 import com.ays.ms.model.User;
 import com.ays.ms.respository.springdata.UserSpringDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,16 @@ public class UserRepository {
     public User getByEmailAndPassword(String email, String password) {
         Optional<User> optionalUser = this.userSpringDataRepository.findByEmailAndPassword(email, password);
         return optionalUser.orElse(null);
+    }
+
+    public User getById(long id) {
+        Optional<User> optionalUser = this.userSpringDataRepository.findById(id);
+
+        if(optionalUser.isEmpty()) {
+            throw new ResourceNotFoundException("El usuario no existe.");
+        }
+
+        return optionalUser.get();
     }
 
 }

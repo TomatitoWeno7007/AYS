@@ -36,4 +36,8 @@ public class AuthenticationService {
         return isLogged != null ? isLogged : Boolean.FALSE;
     }
 
+    public long getIdLoginUser() {
+        return (long) this.getSession().getAttribute(USER_ID);
+    }
+
 }

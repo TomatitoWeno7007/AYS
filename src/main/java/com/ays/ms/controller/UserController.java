@@ -57,6 +57,8 @@ public class UserController {
             return "user/not-loggin";
         }
 
+        model.addAttribute("userCatalog", this.userService.getUserCatalog());
+
         return "user/principal-content";
     }
 

@@ -3,11 +3,12 @@ package com.ays.ms.controller;
 import com.ays.ms.model.Serie;
 import com.ays.ms.service.SerieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("serie")
 public class SerieController {
 

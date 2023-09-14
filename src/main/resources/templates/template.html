@@ -16,12 +16,12 @@
         <!-- JQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
-        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="/css/general.css">
     </head>
     <body>
-        <header class="m-auto" th:replace=" ${true} ?
-            ~{headers.html :: header-not-loggin} :
-            ~{headers.html :: header-loggin} ">
+        <header class="m-auto" th:replace=" ${#ctx.session.is_logged} ?
+            ~{headers.html :: header-loggin} :
+            ~{headers.html :: header-not-loggin} ">
         </header>
 
         <div class="container-fluid col-10">

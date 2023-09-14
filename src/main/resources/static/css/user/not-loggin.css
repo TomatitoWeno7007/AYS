@@ -1,5 +1,6 @@
 .mensajeError {
-    color: rgb(48, 241, 255);
+    /* color: rgb(48, 241, 255); */
+    color: var(--main-third-color);
 }
 
 .cajaCartelera {

@@ -1,6 +1,6 @@
-package com.ays.ms.annotations.validators;
+package com.ays.ms.configuration.annotations.validators;
 
-import com.ays.ms.annotations.PasswordMatch;
+import com.ays.ms.configuration.annotations.PasswordMatch;
 import com.ays.ms.controller.dto.request.UserRegisterRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

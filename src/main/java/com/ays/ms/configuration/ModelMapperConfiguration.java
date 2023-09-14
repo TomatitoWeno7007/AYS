@@ -1,4 +1,4 @@
-package com.ays.ms;
+package com.ays.ms.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

@@ -2,22 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head></head>
     <body>
-        <div class="modal fade" tabindex="-1" th:fragment="modal-login" id="modalLogin">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Modal body text goes here.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
+        <div th:fragment="modal-login">
+            <div class="modal fade" tabindex="-1" id="modalLogin">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <form action="#" th:action="@{/user/login}" th:object="${userLogin}" method="post"
+                          class="modal-content bg-dark text-white">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Inicio Sesión</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <label for="emailLogin" class="col-form-label">Correo electrónic</label>
+                            <input type="text" th:field="*{email}" class="form-control" id="emailLogin" placeholder="Correo electrónico">
+                            <span class="mensajeError" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+
+                            <label for="passwordLogin" class="col-form-label">Password</label>
+                            <input type="text" th:field="*{password}" class="form-control" id="passwordLogin" placeholder="Password">
+                            <span class="mensajeError" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+
+                            <p th:each="err : ${#fields.errors('global')}" th:text="${err}" class="error" />
+
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary-ays" value="Iniciar sesión">
+                        </div>
+                    </form>
                 </div>
             </div>
+            <script th:inline="javascript" th:if="${#fields.hasErrors('userLogin.*')}">
+                $( document ).ready(function() {
+                    $("#modalLogin").modal("show");
+                });
+            </script>
         </div>
     </body>
 </html>

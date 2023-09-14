@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserRepository {
@@ -19,6 +20,11 @@ public class UserRepository {
 
     public void save(User user) {
         this.userSpringDataRepository.save(user);
+    }
+
+    public User getByEmailAndPassword(String email, String password) {
+        Optional<User> optionalUser = this.userSpringDataRepository.findByEmailAndPassword(email, password);
+        return optionalUser.orElse(null);
     }
 
 }

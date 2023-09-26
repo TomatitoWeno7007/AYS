@@ -15,4 +15,11 @@ public class FilmService {
 
     public List<Film> getFilms() { return filmRepository.getFilms(); }
 
+    public Film getFilm(Long id) {
+        return filmRepository.getFilm(id);
+    }
+
+    public Long getNumberFilms () {
+        return this.filmRepository.getNumberFilms();
+    }
 }

@@ -24,6 +24,11 @@ public class UserController {
         return "Devuelvo el usuario con id " + id;
     }
 
+    @GetMapping("/v/principal/content")
+    public String getPrincipalContentView() {
+        return "user/principal-content";
+    }
+
     @PostMapping
     public String register(@ModelAttribute("userRegister") @Valid UserRegisterRequest userRegister,
             BindingResult result, Model model) {
@@ -35,7 +40,9 @@ public class UserController {
         }
 
         userService.save(userRegister);
-        return "user/principal-content";
+
+
+        return "redirect:/user/v/principal/content";
     }
 
     @PostMapping("/login")
@@ -57,9 +64,9 @@ public class UserController {
             return "user/not-loggin";
         }
 
-        model.addAttribute("userCatalog", this.userService.getUserCatalog());
+        //model.addAttribute("userCatalog", this.userService.getUserCatalog());
 
-        return "user/principal-content";
+        return "redirect:/user/v/principal/content";
     }
 
 }

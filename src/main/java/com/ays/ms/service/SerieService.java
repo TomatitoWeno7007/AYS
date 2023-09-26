@@ -15,4 +15,12 @@ public class SerieService {
 
     public List<Serie> getSeries() { return serieRepository.getSeries(); }
 
+    public Serie getSerie(Long id) {
+        return this.serieRepository.getSerie(id);
+    }
+
+    public Long getNumberSeries () {
+        return this.serieRepository.getNumberSeries();
+    }
+
 }

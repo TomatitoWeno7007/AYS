@@ -6,10 +6,10 @@
     <body>
 
         <!-- HEADER PARA CUANDO NO ESTA LOGUEADO -->
-        <header class="m-auto" th:fragment="header-not-loggin">
+        <header class="sticky-top m-auto" th:fragment="header-not-loggin">
             <nav class="navbar d-flex flex-row justify-content-between px-2 bg-dark">
                 <div class="d-flex flex-row align-items-center">
-                    <a class="d-flex flex-column flex-md-row text-decoration-none" href="indexold.html">
+                    <a class="d-flex flex-column flex-md-row text-decoration-none" href="index.html">
                         <div>
                             <span id="imgLogo"></span>
                         </div>
@@ -36,10 +36,10 @@
         </header>
 
         <!-- HEADER PARA CUANDO ESTA LOGUEADO -->
-        <header class="m-auto" th:fragment="header-loggin">
+        <header class="sticky-top m-auto" th:fragment="header-loggin">
             <nav class="navbar d-flex flex-row justify-content-between px-2 bg-dark">
                 <div class="d-flex flex-row align-items-center">
-                    <a class="d-flex flex-column flex-md-row text-decoration-none" href="indexold.html">
+                    <a class="d-flex flex-column flex-md-row text-decoration-none" href="index.html">
                         <div>
                             <span id="imgLogo"></span>
                         </div>
@@ -48,11 +48,12 @@
                 </div>
 
                 <ul class="list-inline d-flex flex-row justify-content-center align-self-start align-self-sm-center mt-4 mt-sm-0">
+                    <!--<li class="list-inline-item nav-item me-4">
+                        <span th:text="${session.USER_EMAIL}" ></span>
+
+                    </li>-->
                     <li class="list-inline-item nav-item me-4">
-                        <button type="button" class="btn btn-primary-ays">asdfasdf</button>
-                    </li>
-                    <li class="list-inline-item nav-item me-4">
-                        <button type="button" class="btn btn-primary-ays">rtyertyer</button>
+                        <button type="button" class="btn btn-primary-ays">Cerrar Sesion</button>
                     </li>
                 </ul>
             </nav>

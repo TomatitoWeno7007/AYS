@@ -4,7 +4,19 @@
     <head></head>
     <body>
         <main layout:fragment="main-content">
-            Este es el contenido propio del usuario
+            <h2>Recomendaciones</h2>
+            <!--<div th:each="programs : ${user.catalog}">
+                <p th:text="${programs}" />
+            </div>-->
+
+            <div th:each="series : ${user.catalog.recommendedSeries}">
+                <p th:text="${series}" />
+            </div>
+
+            <div th:each="films : ${user.catalog.recommendedFilms}">
+                <p th:text="${films}" />
+            </div>
+
         </main>
     </body>
 </html>

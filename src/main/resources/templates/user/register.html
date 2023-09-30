@@ -7,36 +7,36 @@
         <div th:fragment="modal-register">
             <div class="modal fade" tabindex="-1" id="modalRegister">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <form action="#" th:action="@{/user}" th:object="${userRegister}" method="post"
-                          class="modal-content bg-dark text-white">
+                    <div class="modal-content bg-dark text-white">
                         <div class="modal-header">
                             <h5 class="modal-title">Registro</h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label for="emailRegister" class="col-form-label">Email</label>
-                                    <input type="text" th:field="*{email}" class="form-control" id="emailRegister" placeholder="Email">
-                                    <span class="mensajeError" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="passwordRegister" class="col-form-label">Password</label>
-                                    <input type="text" th:field="*{password}" class="form-control" id="passwordRegister" placeholder="password">
-                                    <span class="mensajeError" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="repeatPasswordRegister" class="col-form-label">Repeat Password</label>
-                                    <input type="text" th:field="*{repeatPassword}" class="form-control" id="repeatPasswordRegister" placeholder="repeatPassword">
-                                    <span class="mensajeError" th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{repeatPassword}"></span>
-                                </div>
+                                <form action="#" th:action="@{/user}" th:object="${userRegister}" method="post"
+                                      class="modal-content bg-dark text-white">
+                                    <div class="form-group">
+                                        <label for="emailRegister" class="col-form-label">Email</label>
+                                        <input type="text" th:field="*{email}" class="form-control" id="emailRegister" placeholder="Email">
+                                        <span class="mensajeError" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="passwordRegister" class="col-form-label">Password</label>
+                                        <input type="text" th:field="*{password}" class="form-control" id="passwordRegister" placeholder="password">
+                                        <span class="mensajeError" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="repeatPasswordRegister" class="col-form-label">Repeat Password</label>
+                                        <input type="text" th:field="*{repeatPassword}" class="form-control" id="repeatPasswordRegister" placeholder="repeatPassword">
+                                        <span class="mensajeError" th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{repeatPassword}"></span>
+                                    </div>
+
+                                    <input type="submit" class="btn btn-primary-ays mt-3" value="Añadir Usuario">
+                                </form>
                             </div>
                         </div>
-                        <div class="modal-footer justify-content-between">
-                            <input type="submit" class="btn btn-primary-ays" value="Añadir Usuario">
-                            <button type="button" class="btn btn-primary-ays" data-bs-dismiss="modal">Cancelar</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
             <script th:inline="javascript" th:if="${#fields.hasErrors('userRegister.*')}">

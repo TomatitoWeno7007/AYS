@@ -6,13 +6,15 @@ import lombok.Data;
 import java.util.List;
 
 @Entity
-@Table(name = "serie")
+@Table(name = "season")
 @Data
-public class Serie extends Program {
+public class Season {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private long number;
     @OneToMany
-    private List<Season> seasons;
+    private List<Chapter> chapters;
+
 }

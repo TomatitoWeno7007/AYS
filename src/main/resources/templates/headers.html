@@ -48,10 +48,9 @@
                 </div>
 
                 <ul class="list-inline d-flex flex-row justify-content-center align-self-start align-self-sm-center mt-4 mt-sm-0">
-                    <!--<li class="list-inline-item nav-item me-4">
-                        <span th:text="${session.USER_EMAIL}" ></span>
-
-                    </li>-->
+                    <li class="list-inline-item nav-item me-4">
+                        <span th:text="${#ctx.session.email}" ></span>
+                    </li>
                     <li class="list-inline-item nav-item me-4">
                         <button type="button" class="btn btn-primary-ays">Cerrar Sesion</button>
                     </li>

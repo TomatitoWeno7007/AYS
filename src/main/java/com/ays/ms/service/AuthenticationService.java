@@ -13,6 +13,7 @@ public class AuthenticationService {
     private final String IS_LOGGED = "is_logged";
     private final String USER_EMAIL = "email";
     private final String USER_ID = "user_id";
+    private final String IS_ADMIN = "is_admin";
 
     public void login(User user) {
         HttpSession session = this.getSession();
@@ -20,6 +21,7 @@ public class AuthenticationService {
         session.setAttribute(IS_LOGGED, Boolean.TRUE);
         session.setAttribute(USER_EMAIL, user.getEmail());
         session.setAttribute(USER_ID, user.getId());
+        session.setAttribute(IS_ADMIN, user.isAdmin());
     }
 
     public String getEmailLoginUser() {
@@ -34,6 +36,11 @@ public class AuthenticationService {
     public Boolean isLogged() {
         Boolean isLogged = (Boolean) this.getSession().getAttribute(IS_LOGGED);
         return isLogged != null ? isLogged : Boolean.FALSE;
+    }
+
+    public Boolean isAdmin() {
+        Boolean isAdmin = (Boolean) this.getSession().getAttribute(IS_ADMIN);
+        return isAdmin != null ? isAdmin : Boolean.FALSE;
     }
 
     public long getIdLoginUser() {

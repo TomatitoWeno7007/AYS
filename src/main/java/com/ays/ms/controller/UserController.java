@@ -2,6 +2,11 @@ package com.ays.ms.controller;
 
 import com.ays.ms.controller.dto.request.UserLoginRequest;
 import com.ays.ms.controller.dto.request.UserRegisterRequest;
+import com.ays.ms.exceptions.AuthenticationAYSException;
+import com.ays.ms.model.Film;
+import com.ays.ms.model.Serie;
+import com.ays.ms.model.User;
+import com.ays.ms.service.AuthenticationService;
 import com.ays.ms.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +16,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("user")
 public class UserController {
@@ -19,13 +26,23 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthenticationService authenticationService;
+
     @GetMapping("/{id}")
     public String getUser(@PathVariable("id") long id) {
         return "Devuelvo el usuario con id " + id;
     }
 
     @GetMapping("/v/principal/content")
-    public String getPrincipalContentView() {
+    public String getPrincipalContentView(Model model) {
+
+        List<Serie> recommendedSerie = userService.getRecommendedUserSeries();
+        List<Film> recommendedFilm = userService.getRecommendedUserFilms();
+
+        model.addAttribute("recommendedSeries", recommendedSerie);
+        model.addAttribute("recommendedFilms", recommendedFilm);
+
         return "user/principal-content";
     }
 
@@ -40,7 +57,6 @@ public class UserController {
         }
 
         userService.save(userRegister);
-
 
         return "redirect:/user/v/principal/content";
     }
@@ -64,9 +80,15 @@ public class UserController {
             return "user/not-loggin";
         }
 
+        if (authenticationService.isAdmin()) {
+            return "redirect:/admin/v/serie";
+        }
+
         //model.addAttribute("userCatalog", this.userService.getUserCatalog());
 
         return "redirect:/user/v/principal/content";
     }
+
+
 
 }

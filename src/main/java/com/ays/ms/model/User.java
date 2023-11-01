@@ -21,6 +21,8 @@ public class User {
     private String email;
     private LocalDateTime dateBirth;
     private String password;
+    private String img;
+    private boolean admin;
 
     @OneToOne
     private Card card;

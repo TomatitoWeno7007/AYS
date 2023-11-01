@@ -1,21 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{template}">
+      layout:decorate="~{template}" xmlns:th="http://www.thymeleaf.org">
     <head></head>
     <body>
         <main layout:fragment="main-content">
             <h2>Recomendaciones</h2>
-            <!--<div th:each="programs : ${user.catalog}">
-                <p th:text="${programs}" />
-            </div>-->
-
-            <!--<div th:each="series : ${user.catalog.recommendedSeries}">
-                <p th:text="${series}" />
+            <div th:each="series : ${recommendedSeries}">
+                <p th:text="${series.name}" />
             </div>
 
-            <div th:each="films : ${user.catalog.recommendedFilms}">
-                <p th:text="${films}" />
-            </div>-->
+            <div th:each="films : ${recommendedFilms}">
+                <p th:text="${films.name}" />
+            </div>
 
         </main>
     </body>

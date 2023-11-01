@@ -2,6 +2,7 @@ package com.ays.ms.service;
 
 import com.ays.ms.controller.dto.request.UserLoginRequest;
 import com.ays.ms.controller.dto.request.UserRegisterRequest;
+import com.ays.ms.exceptions.AuthenticationAYSException;
 import com.ays.ms.model.Film;
 import com.ays.ms.model.Serie;
 import com.ays.ms.model.User;
@@ -34,12 +35,18 @@ public class UserService {
         return userRepository.getUsers();
     }
 
+    public User getUser(long id) {
+        return this.userRepository.getById(id);
+    }
+
     public void save(UserRegisterRequest userRegisterRequest) {
         User user = modelMapper.map(userRegisterRequest, User.class);
+        user.setAdmin(Boolean.FALSE);
 
         user.setRecommendedSeries(this.getRecommendedSeriesDefault());
         user.setRecommendedFilms(this.getRecommendedFilmsDefault());
-        this.userRepository.save(user);
+        userRepository.save(user);
+        authenticationService.login(user);
     }
 
     public Boolean login(UserLoginRequest userLoginRequest) {
@@ -48,7 +55,6 @@ public class UserService {
 
         Boolean isLogged = (user != null);
 
-
         if(isLogged) {
             authenticationService.login(user);
         }
@@ -56,7 +62,29 @@ public class UserService {
         return isLogged;
     }
 
-    public List<Serie> getRecommendedSeriesDefault() {
+    public List<Serie> getRecommendedUserSeries() {
+        long userId = authenticationService.getIdLoginUser();
+
+        if (userId == 0) {
+            throw new AuthenticationAYSException("Usuario no logueado");
+        }
+
+        User user = this.getUser(userId);
+        return user.getRecommendedSeries();
+    }
+
+    public List<Film> getRecommendedUserFilms() {
+        long userId = authenticationService.getIdLoginUser();
+
+        if (userId == 0) {
+            throw new AuthenticationAYSException("Usuario no logueado");
+        }
+
+        User user = this.getUser(userId);
+        return user.getRecommendedFilms();
+    }
+
+    private List<Serie> getRecommendedSeriesDefault() {
 
         List<Serie> recommendedSeries = new ArrayList<>();
 
@@ -85,7 +113,7 @@ public class UserService {
         return recommendedSeries;
     }
 
-    public List<Film> getRecommendedFilmsDefault() {
+    private List<Film> getRecommendedFilmsDefault() {
         List<Film> recommendedFilms = new ArrayList<>();
 
         Long numberFilms = this.filmService.getNumberFilms();

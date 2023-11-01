@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}">
+
+    <head>
+        <link rel="stylesheet" href="/css/admin/administration-content.css">
+    </head>
+    <body>
+        <main class="m-auto" layout:fragment="main-content">
+
+            <div class="text-light border-bottom d-flex mb-3 p-2">
+                <div class="col-6">
+                    <h4 class="text-light mt-1">Películas en la plataforma</h4>
+                </div>
+                <div class="col-6 text-end">
+                    <a class="btn btn-primary" href="">Agregar película</a>
+                </div>
+            </div>
+
+
+            <div class="table-responsive">
+                <table class="table table-hover tableProgram">
+                    <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Género</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Imagen</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Lo que el viento se llevó</td>
+                        <td>La obra narra la historia de un Ninja huérfano adolescente llamado Naruto Uzumaki, cuyos padres murieron en el ataque del Zorro Demonio de Nueve Colas (Kyubi), y quien aspira a convertirse en Hokage (líder de su aldea) con el propósito de ser reconocido como alguien importante dentro de la aldea y entre sus compañeros.</td>
+                        <td>Drama</td>
+                        <td>Serie</td>
+                        <td>http://127.0.0.1:5500/admin.html</td>
+                        <td>
+                            <button class="btn btn-light border-dark" data-bs-toggle="modal" data-bs-target="#modalEditFilm">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-light border-dark" data-bs-toggle="modal" data-bs-target="#modalDeleteProgram">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </body>
+</html>

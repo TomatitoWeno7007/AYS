@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="modal-change-card">
+    <div class="modal fade" tabindex="-1" id="modalChangeCard" data-bs-backdrop="static" data-bs-keyboard="false"  aria-labelledby="Editar tarjeta de crédito" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content bg-dark text-white text-start">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Tarjeta</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="m-3">
+                        <form class="text-white" action="">
+                            <div class="mb-3 row align-items-center">
+                                <label for="inputNumCard" class="col-sm-2 col-form-label">Número de la tarjeta</label>
+                                <div class="col-sm-10">
+                                    <input type="text" th:value="${userInfo.card.cardNumber}" class="form-control" id="inputNumCard">
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row align-items-center">
+                                <label for="inputCvv" class="col-sm-2 col-form-label">CVV</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text" id="inputCvv">
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row align-items-center">
+                                <label for="inputExpirationDate" class="col-sm-2 col-form-label">Fecha Caducidad</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="date" id="inputExpirationDate">
+                                </div>
+                            </div>
+
+                            <div class="offset-md-8 offset-xl-9">
+                                <input class="btn btn-primary col-12" type="submit" value="Guardar Cambios">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

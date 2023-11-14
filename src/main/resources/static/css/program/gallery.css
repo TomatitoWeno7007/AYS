@@ -1,0 +1,205 @@
+/******************************/
+            /* Contenido Nuevo */
+            /******************************/
+
+            .containerProgram {
+                margin: 20px 0px;
+            }
+
+                .boxProgram {
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    flex-wrap: nowrap;
+                }
+
+                    .cardProgram {
+                        margin: 10px;
+                        padding: 0px;
+                        width: 35%;
+                    }
+
+                        .imgProgram {
+                            position: relative;
+                        }
+
+                        .linkProgram {
+                            position: relative;
+                        }
+
+                            .linkProgram:hover img {
+                                /* Esto es para la series que sigue viendo el usuario, se añade un texto que ponga por ejemplo
+                                el cap por donde va, la temporada, etc. */
+                                transform: scale(105%);
+                                filter: brightness(40%);
+                            }
+
+                            .linkProgram:hover .textProgramHover {
+                                opacity: 1;
+                            }
+
+                            .textProgramHover {
+                                position: absolute;
+                                /* font-size: 3vw; */
+                                top: 3vw;
+                                color: white;
+                                padding: 10px;
+                                transition: opacity 0.3s ease-in-out;
+                                opacity: 0; /* Inicialmente, el texto estará oculto */
+                            }
+
+                                .textProgramHover h3 {
+                                    font-size: 23px;
+                                    display: -webkit-box;
+                                    -webkit-line-clamp: 5;
+                                    -webkit-box-orient: vertical;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis; /* Puntos suspensivos al final */
+                                }
+
+                                .textProgramHover p {
+                                    opacity: 0;
+                                }
+
+                            .linkProgram:hover .img-text {
+                                opacity: 1; /* Mostrar el texto al hacer hover */
+                            }
+
+
+                                .imgProgram img {
+                                    width: 100%;
+                                    height: 200px;
+                                    border-radius: 10px;
+                                    transition: all 0.5s;
+                                }
+
+
+                        .titleProgram {
+                            display: -webkit-box;
+                            -webkit-line-clamp: 2; /* Máximo de 2 líneas */
+                            -webkit-box-orient: vertical;
+                            overflow: hidden;
+                            text-overflow: ellipsis; /* Puntos suspensivos al final */
+                            margin: 0px;
+                        }
+
+        /*------------------------------*/
+        @media only screen and (min-width: 576px) {
+            .linkProgram:hover .textProgramHover p {
+                opacity: 1;
+            }
+
+            .textProgramHover h3 {
+                -webkit-line-clamp: 2;
+            }
+
+            .textProgramHover p {
+                display: -webkit-box;
+                -webkit-line-clamp: 4;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis; /* Puntos suspensivos al final */
+            }
+
+            .cardProgram {
+                width: 28%;
+            }
+
+            .imgProgram img {
+                height: 35vw;
+            }
+        }
+
+        /*------------------------------*/
+        @media only screen and (min-width: 768px) {
+            .cartelera {
+                background: linear-gradient(260deg, rgba(0,0,0,1) 36%, rgba(0,0,0,0) 100%);
+                top: 0%;
+                text-align: end;
+                font-size: 14px;
+            }
+
+                .cartelera h2 {
+                    font-size: 25px;
+                    margin-top: 29%;
+                }
+
+
+            .cajaCirculos i {
+                font-size: 4vw;
+            }
+
+            .bordeIcono {
+                width: 8vw;
+            }
+
+            .cajaPC {
+                display: block;
+                opacity: 0.5;
+                cursor: default;
+            }
+
+                .cajaPC figure {
+                    width: 35%;
+                    /* opacity: 0.5; */
+                }
+
+
+            /* NEW */
+            .textProgramHover h3 {
+                -webkit-line-clamp: 3;
+            }
+
+            .textProgramHover p {
+                -webkit-line-clamp: 5;
+            }
+        }
+
+        /*------------------------------*/
+        @media only screen and (min-width: 1200px) {
+            .cajaPC figure {
+                width: 20%;
+            }
+
+            /* NEW */
+            .cardProgram {
+                width: 18vw;
+            }
+
+            .imgProgram img {
+                height: 25vw;
+            }
+
+            .textProgramHover p {
+                -webkit-line-clamp: 6;
+            }
+
+            /* .imgProgram img {
+                width: 350px;
+                height: 500px;
+            }
+
+            .cardProgram {
+                margin: 10px;
+                width: 27%;
+            } */
+
+        }
+
+        /*------------------------------*/
+        @media only screen and (min-width: 1400px) {
+            .cartelera {
+                background: linear-gradient(260deg, rgba(0,0,0,1) 21%, rgba(0,0,0,0) 100%);
+            }
+
+
+            /* NEW */
+            .cardProgram {
+                width: 25%;
+            }
+
+
+            .textProgramHover h3 {
+                -webkit-line-clamp: 4;
+            }
+
+        }

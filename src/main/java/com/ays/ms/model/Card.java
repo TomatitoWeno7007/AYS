@@ -1,8 +1,6 @@
 package com.ays.ms.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -13,10 +11,12 @@ import java.time.LocalDateTime;
 public class Card {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
     private String cardUser;
-    private int cardNumber;
-    private LocalDateTime expirationDate;
+    private String cardNumber;
+    private String expirationDate;
     private String cvv;
 
 

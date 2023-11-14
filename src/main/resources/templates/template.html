@@ -19,9 +19,15 @@
         <link rel="stylesheet" href="/css/general.css">
     </head>
     <body>
+        <!-- COMPRUEBA SI NO SE LOGEA, PARA VER SI ES ADMIN O NO-->
         <header class="m-auto" th:replace=" ${#ctx.session.is_logged} ?
             ~{headers.html :: header-loggin} :
-            ~{headers.html :: header-not-loggin} ">
+            ~{headers.html :: header-not-loggin}">
+<!--            <header class="m-auto" th:replace=" !${#ctx.session.is_logged} ?-->
+<!--            ~{headers.html :: header-not-loggin} :-->
+<!--            ${#ctx.session.is_admin} ?-->
+<!--                ~{headers.html :: header-admin} :-->
+<!--                ~{headers.html :: header-loggin}">-->
         </header>
 
         <div class="container-fluid col-10">

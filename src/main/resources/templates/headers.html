@@ -6,23 +6,25 @@
     <body>
 
         <!-- HEADER PARA CUANDO NO ESTA LOGUEADO -->
-        <header class="sticky-top m-auto" th:fragment="header-not-loggin">
-            <nav class="navbar px-2 bg-dark">
-                <a class="d-flex flex-column flex-md-row text-decoration-none" href="index.html">
-                    <div>
-                        <span id="imgLogo"></span>
-                    </div>
-                    <span class="d-inline align-self-end m-auto ms-1">Todo lo que puedas ver y más</span>
-                </a>
+        <header class="sticky-top m-auto mb-2" th:fragment="header-not-loggin">
+            <nav class="navbar bg-dark flex-column flex-md-row px-2 border-bottom border-light">
+                <div class="mb-4 mb-md-0">
+                    <a class="d-flex flex-column flex-md-row logoHeader text-decoration-none" href="index.html">
+                        <div class="cajaImagen m-auto m-md-1 me-md-0" aria-label="Logo">
+                            <span class="imgLogo"></span>
+                            <span class="imgLogoHover" aria-hidden="true"></span>
+                        </div>
+                        <span class="m-auto ms-md-1">Todo lo que puedas ver y más</span>
+                    </a>
+                </div>
 
-
-                <ul class="list-inline align-self-start align-self-sm-center mt-4 mt-sm-0">
+                <ul class="list-inline">
                     <li class="list-inline-item nav-item me-4">
                         <button type="button" class="btn btn-primary-ays"
                                 data-bs-toggle="modal"
                                 data-bs-target="#modalLogin">Iniciar Sesión</button>
                     </li>
-                    <li class="list-inline-item nav-item me-4">
+                    <li class="list-inline-item nav-item me-md-4">
                         <button type="button" class="btn btn-primary-ays"
                                 data-bs-toggle="modal"
                                 data-bs-target="#modalRegister">Registrarse</button>
@@ -35,29 +37,82 @@
         </header>
 
         <!-- HEADER PARA CUANDO ESTA LOGUEADO -->
-        <header class="sticky-top m-auto" th:fragment="header-loggin">
-            <nav class="navbar px-2 bg-dark">
-                <a class="d-flex flex-column flex-md-row text-decoration-none" href="index.html">
-                    <div>
-                        <span id="imgLogo"></span>
-                    </div>
-                    <span class="d-inline align-self-end m-auto ms-1">Todo lo que puedas ver y más</span>
-                </a>
+        <header class="sticky-top m-auto mb-2" th:fragment="header-loggin">
+            <nav class="navbar bg-dark flex-row px-2">
+                <div class="m-1">
+                    <a class="d-flex flex-column flex-sm-row logoHeader text-decoration-none"
+                       href="/v/principal/content">
+                        <div class="cajaImagen m-auto m-md-1 me-md-0" aria-label="Logo">
+                            <span class="imgLogo"></span>
+                            <span class="imgLogoHover" aria-hidden="true"></span>
+                        </div>
+                        <span class="m-auto ms-sm-1">Todo lo que puedas ver y más</span>
+                    </a>
+                </div>
 
-
-                <ul class="list-inline align-self-start align-self-sm-center mt-4 mt-sm-0">
-                    <li class="list-inline-item nav-item me-4">
-                        <span th:text="${#ctx.session.email}" ></span>
-                    </li>
-                    <li class="list-inline-item nav-item me-4">
-                        <button type="button" class="btn btn-primary-ays">Cerrar Sesion</button>
+                <ul class="list-inline ">
+                    <li class="list-inline-item nav-item me-4 pe-4 me-md-5 pe-md-5">
+                        <div class="dropdown text-center">
+                            <button class="btn btnLogin dropdown-toggle p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <figure class="figure m-0">
+                                    <img class="figure-img rounded-circle m-0 p-1" src="https://images.unsplash.com/photo-1452570053594-1b985d6ea890?auto=format&fit=crop&q=80&w=1374&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+                                </figure>
+                            </button>
+                            <ul class="dropdown-menu dropdownLogin">
+                                <li><a class="dropdown-item" href="/user/v/configuration">Ajustes</a></li>
+                                <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
             </nav>
 
-            <nav class="navbar mb-3 px-2 bg-dark">
-                <ul class="navbar-nav flex-row w-25 justify-content-between justify-content-sm-around">
-                    <li class="nav-item ms-0">
+            <nav class="navbar px-2 bg-dark border-bottom border-light">
+                <ul class="navbar-nav flex-row">
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="">Series</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <a class="nav-link" href="">Películas</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- HEADER PARA EL ADMINISTRADOR -->
+        <header class="sticky-top m-auto mb-2 headerAdmin" th:fragment="header-admin">
+            <nav class="navbar flex-row px-2">
+                <div class="m-1">
+                    <a class="d-flex flex-column flex-sm-row logoHeader text-decoration-none"
+                       href="/v/principal/content">
+                        <div class="cajaImagen m-auto m-md-1 me-md-0" aria-label="Logo">
+                            <span class="imgLogo"></span>
+                            <span class="imgLogoHover" aria-hidden="true"></span>
+                        </div>
+                        <span class="m-auto ms-sm-1">Todo lo que puedas ver y más</span>
+                    </a>
+                </div>
+
+                <ul class="list-inline">
+                    <li class="list-inline-item nav-item me-4 pe-4 me-md-5 pe-md-5">
+                        <div class="dropdown text-center">
+                            <button class="btn btnLogin dropdown-toggle p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <figure class="figure m-0">
+                                    <img class="figure-img rounded-circle m-0 p-1" src="https://images.unsplash.com/photo-1452570053594-1b985d6ea890?auto=format&fit=crop&q=80&w=1374&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+                                </figure>
+                            </button>
+                            <ul class="dropdown-menu dropdownLogin">
+                                <li><a class="dropdown-item" href="/user/v/configuration">Ajustes</a></li>
+                                <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+
+            <nav class="navbar px-2 border-bottom border-light">
+                <ul class="navbar-nav flex-row">
+                    <li class="nav-item mx-2">
                         <a class="nav-link" href="">Series</a>
                     </li>
                     <li class="nav-item ms-2">

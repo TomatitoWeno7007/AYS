@@ -1,5 +1,6 @@
 package com.ays.ms.respository;
 
+import com.ays.ms.controller.dto.request.UserConfigurationRequest;
 import com.ays.ms.exceptions.ResourceNotFoundException;
 import com.ays.ms.model.User;
 import com.ays.ms.respository.springdata.UserSpringDataRepository;
@@ -21,6 +22,13 @@ public class UserRepository {
 
     public void save(User user) {
         this.userSpringDataRepository.save(user);
+    }
+
+    public User replace(User user) {
+        Optional<User> optionalUser = this.userSpringDataRepository.findById(user.getId());
+        return optionalUser.orElse(null);
+//        userConfigurationRequest.setDateBirth(userConfigurationRequest.getDateBirth());
+//        userConfigurationRequest.setName("CAMBIO");
     }
 
     public User getByEmailAndPassword(String email, String password) {

@@ -15,10 +15,10 @@ import java.util.Arrays;
 import java.util.List;
 import com.ays.ms.configuration.ListURI;
 
-//@Component
-//@Order(1)
-public class SecurityFilter { //implements Filter {
-/*
+@Component
+@Order(1)
+public class SecurityFilter implements Filter {
+
     @Autowired
     private AuthenticationService authenticationService;
 
@@ -86,6 +86,5 @@ public class SecurityFilter { //implements Filter {
         return isWhiteList;
     }
 
- */
 
 }

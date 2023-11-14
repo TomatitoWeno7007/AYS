@@ -1,5 +1,6 @@
 package com.ays.ms.controller;
 
+import com.ays.ms.controller.dto.request.UserConfigurationRequest;
 import com.ays.ms.controller.dto.request.UserLoginRequest;
 import com.ays.ms.controller.dto.request.UserRegisterRequest;
 import com.ays.ms.exceptions.AuthenticationAYSException;
@@ -16,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -29,11 +31,6 @@ public class UserController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @GetMapping("/{id}")
-    public String getUser(@PathVariable("id") long id) {
-        return "Devuelvo el usuario con id " + id;
-    }
-
     @GetMapping("/v/principal/content")
     public String getPrincipalContentView(Model model) {
 
@@ -44,6 +41,13 @@ public class UserController {
         model.addAttribute("recommendedFilms", recommendedFilm);
 
         return "user/principal-content";
+    }
+
+    @GetMapping("/v/configuration")
+    public String getConfigurationView(Model model) {
+        model.addAttribute("userInfo", userService.getUser(authenticationService.getIdLoginUser()));
+        model.addAttribute("userConfiguration", new UserConfigurationRequest());
+        return "user/configuration";
     }
 
     @PostMapping
@@ -89,6 +93,18 @@ public class UserController {
         return "redirect:/user/v/principal/content";
     }
 
+    @PostMapping("/configuration")
+    public String saveConfiguration(@ModelAttribute("userConfiguration") @Valid UserConfigurationRequest userConfigurationRequest,
+                           BindingResult result, Model model) {
 
+        userService.configuration(userConfigurationRequest);
+
+        return "redirect:/user/v/configuration";
+    }
+
+    @PostMapping("/configuration/card")
+    public String saveConfigurationCard() {
+        return "redirect:/user/v/configuration";
+    }
 
 }

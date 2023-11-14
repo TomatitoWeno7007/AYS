@@ -10,5 +10,4 @@ import java.util.Optional;
 public interface UserSpringDataRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmailAndPassword(String email, String password);
-
 }

@@ -1,16 +1,56 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{template}" xmlns:th="http://www.thymeleaf.org">
-    <head></head>
+    <head>
+        <link rel="stylesheet" href="/css/program/gallery.css">
+    </head>
     <body>
         <main layout:fragment="main-content">
-            <h2>Recomendaciones</h2>
-            <div th:each="series : ${recommendedSeries}">
-                <p th:text="${series.name}" />
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb mt-2">
+                    <li class="breadcrumb-item active text-white" aria-current="page">Inicio</li>
+                </ol>
+            </nav>
+
+            <h2 class="text-white">Recomendaciones</h2>
+
+            <div class="containerProgram m-3">
+                <h2 class="text-white border-bottom">Películas</h2>
+                <div class="boxProgram pt-2 row row-cols-1 d-flex">
+                    <!--<p th:text="${serie.name}" />-->
+                    <div th:each="film : ${recommendedFilms}" class="cardProgram text-white " >
+                        <a class="linkProgram" href="#">
+                            <figure class="imgProgram figure m-0 w-100">
+                                <img class="figure-img img-fluid" th:src="@{${film.img}}" alt="">
+                                <div class="textProgramHover">
+                                    <h3 th:text="${film.name}"></h3>
+                                    <p th:text="${film.description}"></p>
+                                </div>
+                            </figure>
+                        </a>
+                        <h3 class="titleProgram text-center" th:text="${film.name}"></h3>
+                    </div>
+                </div>
             </div>
 
-            <div th:each="films : ${recommendedFilms}">
-                <p th:text="${films.name}" />
+
+            <div class="containerProgram m-3">
+                <h2 class="text-white border-bottom">Series</h2>
+                <div class="boxProgram pt-2 row row-cols-1 d-flex">
+                    <!--<p th:text="${serie.name}" />-->
+                    <div th:each="serie : ${recommendedSeries}" class="cardProgram text-white ">
+                        <a class="linkProgram" href="#">
+                            <figure class="imgProgram figure m-0 w-100">
+                                <img class="figure-img img-fluid" th:src="@{${serie.img}}" alt="">
+                                <div class="textProgramHover">
+                                    <h3 th:text="${serie.name}"></h3>
+                                    <p th:text="${serie.description}"></p>
+                                </div>
+                            </figure>
+                        </a>
+                        <h3 class="titleProgram text-center" th:text="${serie.name}"></h3>
+                    </div>
+                </div>
             </div>
 
         </main>

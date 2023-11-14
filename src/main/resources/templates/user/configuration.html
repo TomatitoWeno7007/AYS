@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+    <main layout:fragment="main-content">
+        <div class="m-3">
+            <form class="text-white" action="#" th:action="@{/user/configuration}" th:object="${userConfiguration}"
+                  method="post">
+                <h3 class="border-bottom">Detalles de la cuenta</h3>
+                <div class="mb-3 row">
+                    <label for="staticEmail" class="col-2 col-form-label">Correo</label>
+                    <div class="col-5">
+                        <input type="text" readonly class="form-control-plaintext text-white" id="staticEmail"
+                               th:value="${userInfo.email}">
+                    </div>
+                    <div class="mt-1 col-5 text-end">
+                        <a href="#" class="link-primary text-decoration-none">Cambiar contraseña</a>
+                    </div>
+                </div>
+
+                <div class="mb-3 row align-items-center">
+                    <label for="inputBirthDate" class="col-sm-2 col-form-label">Fecha Nacimiento</label>
+                    <div class="col-sm-10">
+                        <input th:field="*{dateBirth}" th:value="${userInfo.dateBirth}" type="date" class="form-control" id="inputBirthDate">
+                    </div>
+                </div>
+                <div class="my-5 text-end">
+                    <input class="col-12 col-md-5 col-xl-3 btn btn-primary" type="submit" value="Guardar Cambios">
+                </div>
+            </form>
+            <form class="text-white">
+                <h3 class="border-bottom">Tarjeta de crédito</h3>
+                <div class="mb-3 row align-items-center">
+                    <label for="inputNumCard" class="col-sm-2 col-form-label">Número de la tarjeta</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly th:value="${userInfo.card.cardNumber}"
+                               class="form-control-plaintext text-white" id="inputNumCard">
+                    </div>
+                </div>
+
+                <div class="my-5 text-end">
+                    <button type="button" class="col-12 col-md-5 col-xl-3 btn btn-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalChangeCard">Cambiar Tarjeta</button>
+<!--                    <input class="col-12 col-md-5 col-xl-3 btn btn-primary" type="button" value="Cambiar tarjeta">-->
+
+                    <div th:insert="user/change-card.html :: modal-change-card"></div>
+                </div>
+
+                <h5 class="border-bottom"></h5>
+                <div class="mt-3 text-end">
+                    <a href="#" class="link-primary text-decoration-none">Eliminar cuenta de usuario</a>
+                </div>
+
+            </form>
+        </div>
+    </main>
+</body>
+</html>

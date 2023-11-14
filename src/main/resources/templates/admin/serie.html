@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{template}">
+      layout:decorate="~{admin/template-admin}"
+      xmlns:th="http://www.thymeleaf.org">
 
     <head>
         <link rel="stylesheet" href="/css/admin/administration-content.css">
@@ -13,8 +14,11 @@
                     <h4 class="text-light mt-1">Series en la plataforma</h4>
                 </div>
                 <div class="col-6 text-end">
-                    <a class="btn btn-primary" href="">Agregar serie</a>
+                    <a class="btn btn-primary" href="#"
+                       data-bs-toggle="modal"
+                       data-bs-target="#modalAddSerie">Agregar serie</a>
                 </div>
+                <div th:insert="admin/add-serie.html :: modal-add-serie"></div>
             </div>
 
 

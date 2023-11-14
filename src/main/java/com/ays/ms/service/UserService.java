@@ -1,5 +1,6 @@
 package com.ays.ms.service;
 
+import com.ays.ms.controller.dto.request.UserConfigurationRequest;
 import com.ays.ms.controller.dto.request.UserLoginRequest;
 import com.ays.ms.controller.dto.request.UserRegisterRequest;
 import com.ays.ms.exceptions.AuthenticationAYSException;
@@ -7,12 +8,12 @@ import com.ays.ms.model.Film;
 import com.ays.ms.model.Serie;
 import com.ays.ms.model.User;
 import com.ays.ms.respository.UserRepository;
-import com.ays.ms.respository.springdata.FilmSpringDataRepository;
 import com.ays.ms.service.utils.MathUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class UserService {
     @Autowired
     private FilmService filmService;
     @Autowired
-    private FilmSpringDataRepository filmSpringDataRepository;
+    private CardService cardService;
 
     public List<User> getUsers() {
         return userRepository.getUsers();
@@ -45,8 +46,18 @@ public class UserService {
 
         user.setRecommendedSeries(this.getRecommendedSeriesDefault());
         user.setRecommendedFilms(this.getRecommendedFilmsDefault());
+        user.setCard(cardService.createCard());
         userRepository.save(user);
         authenticationService.login(user);
+    }
+
+    public void configuration(UserConfigurationRequest userConfigurationRequest) {
+        User user = modelMapper.map(userConfigurationRequest, User.class);
+        LocalDateTime changeDate = modelMapper.map(userConfigurationRequest.getDateBirth(), LocalDateTime.class);
+        user.setDateBirth(changeDate);
+        user.setName("CAMBIO");
+
+        userRepository.save(user);
     }
 
     public Boolean login(UserLoginRequest userLoginRequest) {

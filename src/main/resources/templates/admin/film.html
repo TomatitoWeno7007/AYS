@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{template}">
+      layout:decorate="~{admin/template-admin}"
+        xmlns:th="http://www.thymeleaf.org">
 
     <head>
         <link rel="stylesheet" href="/css/admin/administration-content.css">
@@ -13,8 +14,12 @@
                     <h4 class="text-light mt-1">Películas en la plataforma</h4>
                 </div>
                 <div class="col-6 text-end">
-                    <a class="btn btn-primary" href="">Agregar película</a>
+                    <a class="btn btn-primary" href="#"
+                       data-bs-toggle="modal"
+                       data-bs-target="#modalAddFilm">Agregar película</a>
                 </div>
+
+                <div th:insert="admin/add-film.html :: modal-add-film"></div>
             </div>
 
 

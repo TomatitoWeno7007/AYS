@@ -21,13 +21,12 @@ import java.util.List;
 public class AdministratorController {
 
     @GetMapping("/v/film")
-    public String getFilm(@ModelAttribute("userLogin") UserLoginRequest userLogin,
-                          @ModelAttribute("userRegister") UserRegisterRequest userRegister) {
+    public String getFilm(Model model) {
         return "admin/film";
     }
 
     @GetMapping("/v/serie")
-    public String getSerie() {
+    public String getSerie(Model model) {
         return "admin/serie";
     }
 

@@ -1,6 +1,6 @@
 package com.ays.ms.model;
 
-import jakarta.persistence.MappedSuperclass;
+import javax.persistence.*;
 import lombok.Data;
 
 @Data

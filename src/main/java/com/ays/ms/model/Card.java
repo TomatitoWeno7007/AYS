@@ -1,9 +1,8 @@
 package com.ays.ms.model;
 
-import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "card")

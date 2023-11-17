@@ -1,11 +1,11 @@
 package com.ays.ms.service;
 
-import com.ays.ms.exceptions.AuthenticationAYSException;
 import com.ays.ms.model.User;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpSession;
 
 @Service
 public class AuthenticationService {
@@ -33,6 +33,10 @@ public class AuthenticationService {
         return attr.getRequest().getSession(true);
     }
 
+    private void destroySession() {
+        this.getSession().invalidate();
+    }
+
     public Boolean isLogged() {
         Boolean isLogged = (Boolean) this.getSession().getAttribute(IS_LOGGED);
         return isLogged != null ? isLogged : Boolean.FALSE;
@@ -45,6 +49,10 @@ public class AuthenticationService {
 
     public long getIdLoginUser() {
         return (long) this.getSession().getAttribute(USER_ID);
+    }
+
+    public void logout() {
+        this.destroySession();
     }
 
 }

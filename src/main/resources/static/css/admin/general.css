@@ -136,6 +136,10 @@ header a, header nav .nav-link {
                 }
             }
 
+.headerAdmin {
+    background-color: var(--main-fifth-color);
+}
+
 /*
  * **********
  * BODY *****

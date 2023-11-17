@@ -3,13 +3,10 @@ package com.ays.ms.controller;
 import com.ays.ms.controller.dto.request.UserConfigurationRequest;
 import com.ays.ms.controller.dto.request.UserLoginRequest;
 import com.ays.ms.controller.dto.request.UserRegisterRequest;
-import com.ays.ms.exceptions.AuthenticationAYSException;
 import com.ays.ms.model.Film;
 import com.ays.ms.model.Serie;
-import com.ays.ms.model.User;
 import com.ays.ms.service.AuthenticationService;
 import com.ays.ms.service.UserService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -88,8 +85,6 @@ public class UserController {
             return "redirect:/admin/v/serie";
         }
 
-        //model.addAttribute("userCatalog", this.userService.getUserCatalog());
-
         return "redirect:/user/v/principal/content";
     }
 
@@ -105,6 +100,12 @@ public class UserController {
     @PostMapping("/configuration/card")
     public String saveConfigurationCard() {
         return "redirect:/user/v/configuration";
+    }
+
+    @PostMapping("/logout")
+    public String logout() {
+        authenticationService.logout();
+        return "redirect:/";
     }
 
 }

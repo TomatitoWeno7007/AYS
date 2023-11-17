@@ -3,6 +3,7 @@ package com.ays.ms.model;
 import javax.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class User {
     private String lastName;
     private String secondLastName;
     private String email;
-    private LocalDateTime dateBirth;
+    private LocalDate dateBirth;
     private String password;
     private String img;
     private boolean admin;

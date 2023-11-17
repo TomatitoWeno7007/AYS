@@ -13,7 +13,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,11 +54,15 @@ public class UserService {
     }
 
     public void configuration(UserConfigurationRequest userConfigurationRequest) {
-        User user = modelMapper.map(userConfigurationRequest, User.class);
-        LocalDateTime changeDate = modelMapper.map(userConfigurationRequest.getDateBirth(), LocalDateTime.class);
-        user.setDateBirth(changeDate);
-        user.setName("CAMBIO");
+        User user = this.getUser(this.authenticationService.getIdLoginUser());
 
+        DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate ld = LocalDate.parse(userConfigurationRequest.getDateBirth(), DATEFORMATTER);
+        LocalDateTime ldt = LocalDateTime.of(ld, LocalDateTime.now().toLocalTime());
+        user.setDateBirth(ld);
+        user.setName(userConfigurationRequest.getName());
+        user.setLastName(userConfigurationRequest.getLastName());
+        user.setSecondLastName(userConfigurationRequest.getSecondLastName());
         userRepository.save(user);
     }
 

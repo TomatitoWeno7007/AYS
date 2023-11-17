@@ -23,7 +23,7 @@
                 <div class="mb-3 row align-items-center">
                     <label for="inputBirthDate" class="col-sm-2 col-form-label">Fecha Nacimiento</label>
                     <div class="col-sm-10">
-                        <input th:field="*{dateBirth}" th:value="${userInfo.dateBirth}" type="date" class="form-control" id="inputBirthDate">
+                        <input th:field="*{dateBirth}" th:value="${#temporals.format(userInfo.dateBirth, 'dd-MM-yyyy')}" type="date" class="form-control" id="inputBirthDate">
                     </div>
                 </div>
                 <div class="my-5 text-end">

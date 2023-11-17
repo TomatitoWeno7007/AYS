@@ -102,7 +102,7 @@ public class UserController {
         return "redirect:/user/v/configuration";
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public String logout() {
         authenticationService.logout();
         return "redirect:/";

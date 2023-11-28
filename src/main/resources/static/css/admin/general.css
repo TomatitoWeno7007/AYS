@@ -17,6 +17,11 @@
  * HEADER ***
  * **********
  */
+
+.headerAdmin {
+    background-color: var(--main-fifth-color);
+}
+
 header a, header nav .nav-link {
     color:  white;
     transition: all 0.5s;
@@ -30,10 +35,6 @@ header a, header nav .nav-link {
             width: 130px;
         }
 
-    header nav:first-child {
-        border-bottom: 1px solid white;
-    }
-
     /*header nav div a div {
         padding: 50px 65px;
         position: relative;
@@ -43,7 +44,7 @@ header a, header nav .nav-link {
     .cajaImagen {
         /* width: 150px;
         height: 106px; */
-        padding: 50px 65px;
+        padding: 46px 65px;
         position: relative;
     }
 
@@ -61,12 +62,12 @@ header a, header nav .nav-link {
         }
 
         .imgLogo {
-            background-image: url("../img/Posible\ Logo\ en\ blanco.png");
+            background-image: url("/img/Logo.png");
         }
 
         .imgLogoHover {
             opacity: 0;
-            background-image: url("../img/Logo\ en\ azul.png");
+            background-image: url("/img/LogoHover.png");
         }
 
         .logoHeader:hover .imgLogoHover {
@@ -135,10 +136,6 @@ header a, header nav .nav-link {
                     opacity: 1;
                 }
             }
-
-.headerAdmin {
-    background-color: var(--main-fifth-color);
-}
 
 /*
  * **********

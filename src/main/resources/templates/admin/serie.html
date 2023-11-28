@@ -5,6 +5,10 @@
 
     <head>
         <link rel="stylesheet" href="/css/admin/administration-content.css">
+
+        <!-- Script Tabla -->
+        <script src="/script/fancyTable.js"></script>
+
     </head>
     <body>
         <main class="m-auto" layout:fragment="main-content">
@@ -14,13 +18,12 @@
                     <h4 class="text-light mt-1">Series en la plataforma</h4>
                 </div>
                 <div class="col-6 text-end">
-                    <a class="btn btn-primary" href="#"
+                    <button class="btn btn-primary" href="#"
                        data-bs-toggle="modal"
-                       data-bs-target="#modalAddSerie">Agregar serie</a>
+                       data-bs-target="#modalAddSerie">Agregar serie</button>
                 </div>
                 <div th:insert="admin/add-serie.html :: modal-add-serie"></div>
             </div>
-
 
             <div class="table-responsive">
                 <table class="table table-hover tableProgram">
@@ -30,23 +33,73 @@
                         <th scope="col">Descripción</th>
                         <th scope="col">Género</th>
                         <th scope="col">Imagen</th>
+                        <th scope="col">Num Episodios</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>Lo que el viento se llevó - La serie</td>
-                        <td>La obra narra la historia de un Ninja huérfano adolescente llamado Naruto Uzumaki, cuyos padres murieron en el ataque del Zorro Demonio de Nueve Colas (Kyubi), y quien aspira a convertirse en Hokage (líder de su aldea) con el propósito de ser reconocido como alguien importante dentro de la aldea y entre sus compañeros.</td>
-                        <td>Drama</td>
-                        <td>http://127.0.0.1:5500/admin.html</td>
-                        <td>
-                            <button class="btn btn-light border-dark" data-bs-toggle="modal" data-bs-target="#modalDeleteProgram">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
+                        <tr th:each="serie : ${listSeries}">
+                            <td>
+                                <a class="link-dark" th:text="${serie.name}" th:href="@{/serie/v/season/{id}(id=${serie.id})}"></a>
+                            </td>
+                            <td th:text="${serie.description}"></td>
+                            <td>
+                                <span th:each="genre, actualGenre : ${serie.genres}">
+                                    <span th:text="${genre.name}"></span>
+                                    <span th:if="${!actualGenre.last}">, </span> <!-- Agregar coma si no es el último género -->
+                                </span>
+                            </td>
+                            <td th:text="${serie.img}"></td>
+                            <td></td>
+                            <td>
+                                <button class="btn btn-light border-dark" data-bs-toggle="modal"
+                                        th:attr="data-bs-target='#modalEditSerie'+${serie.id}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <div th:insert="admin/edit-serie.html :: modal-edit-serie"></div>
+                            </td>
+                            <td>
+                                <button class="btn btn-light border-dark" data-bs-toggle="modal"
+                                        th:attr="data-bs-target='#modalDeleteSerie'+${serie.id}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                                <div th:insert="admin/delete-serie.html :: modal-delete-serie"></div>
+                                <script type="text/javascript">
+                                    if ($("#editImg" +[(${serie.id})]).length > 0) {
+                                        $("#divChooseImg" + [(${serie.id})]).hide();
+                                        $("#editImg" +[(${serie.id})]).on("click", function() {
+                                            $("#divChooseImg" +[(${serie.id})]).show();
+                                            $("#editImg" +[(${serie.id})]).hide();
+                                        });
+                                        $("#btnCancelImg" +[(${serie.id})]).on("click", function() {
+                                            $("#divChooseImg" +[(${serie.id})] + " input").val("");
+                                            $("#divChooseImg" +[(${serie.id})]).hide();
+                                            $("#editImg" +[(${serie.id})]).show();
+                                        });
+                                    }
+
+                                </script>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
+
             </div>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $(".tableProgram").fancyTable({
+                        sortColumn:0, // column number for initial sorting
+                        sortOrder: 'descending',
+                        sortable: true,
+                        pagination: true, // default: false
+                        paginationClass:"btn btn-light",
+                        perPage: 5,
+                        searchable: true,
+                        globalSearch: true, // Busqueda todas las colum
+                        inputPlaceholder:"Buscar...",
+                        matchCase:false // Distingir mayus
+                    });
+                });
+            </script>
         </main>
     </body>
 </html>

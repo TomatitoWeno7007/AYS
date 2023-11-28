@@ -13,18 +13,30 @@
 
                 <div class="modal-body">
                     <div class="m-3">
-                        <form class="text-white" action="">
+                        <form class="text-white" th:action="@{/film/add-film}" th:object="${newFilm}"
+                        action="#" method="post" enctype="multipart/form-data">
                             <div class="mb-3 row mb-md-4">
                                 <label for="inputName" class="col-2 col-form-label">Nombre</label>
                                 <div class="col-10">
-                                    <input type="text" class="form-control" id="inputName">
+                                    <input th:field="*{name}" type="text" class="form-control" id="inputName">
+                                    <p class="mensajeError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
                                 </div>
                             </div>
 
                             <div class="mb-3 row mb-4">
-                                <label for="inputImg" class="col-2 col-form-label">Carátula</label>
+                                <label for="inputImg" class="col-2 col-form-label">Imagen</label>
                                 <div class="col-10">
-                                    <input class="form-control" type="file" id="inputImg">
+                                    <input th:field="*{img}" class="form-control" type="file" id="inputImg">
+                                </div>
+                                <p class="mensajeError" th:if="${#fields.hasErrors('img')}" th:errors="*{img}"></p>
+                            </div>
+
+
+                            <div class="mb-3 row mb-4">
+                                <label for="textAreaDescription" class="col-2 form-label">Descripción</label>
+                                <div class="ms-1 ms-sm-0 col-9 col-sm-10">
+                                    <textarea th:field="*{description}"  class="form-control" id="textAreaDescription" rows="3"></textarea>
+                                    <p class="mensajeError" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
                                 </div>
                             </div>
 
@@ -32,59 +44,22 @@
                                 <legend class="col-form-label col-2 pt-0">Géneros</legend>
                                 <div class="col-9 ms-3">
                                     <div class="row row-cols-2 row-cols-md-3 gy-2 gy-md-3">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="checkTerror">
-                                            <label class="form-check-label" for="checkTerror">
-                                                Terror
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="checkAccion">
-                                            <label class="form-check-label" for="checkAccion">
-                                                Acción
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="checkAdventure">
-                                            <label class="form-check-label" for="checkAdventure">
-                                                Aventura
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="checkComedic">
-                                            <label class="form-check-label" for="checkComedic">
-                                                Comedia
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="checkDrama">
-                                            <label class="form-check-label" for="checkDrama">
-                                                Drama
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="checkRomance">
-                                            <label class="form-check-label" for="checkRomance">
-                                                Romance
-                                            </label>
+                                        <div class="form-check" th:each="genre : ${listGenres}">
+                                            <input class="form-check-input" type="checkbox" th:id="${'check' + genre.name}" th:value="${genre.name}" th:field="*{genres}"/>
+                                            <label class="form-check-label" th:for="${'check' + genre.name}" th:text="${genre.name}"></label>
                                         </div>
                                     </div>
                                 </div>
+                                <p class="mensajeError" th:if="${#fields.hasErrors('genres')}" th:errors="*{genres}"></p>
                             </div>
+
 
                             <div class="mb-3 row mb-4">
-                                <label for="textAreaDescription" class="col-2 form-label">Descripción</label>
-                                <div class="ms-1 ms-sm-0 col-9 col-sm-10">
-                                    <textarea class="form-control" id="textAreaDescription" rows="3"></textarea>
-                                </div>
-                            </div>
-
-                            <!-- Si es serie, este input se bloquea -->
-                            <div class="mb-3 row mb-4 align-items-center">
                                 <label for="inputVideo" class="col-2 col-form-label">Video</label>
                                 <div class="col-10">
-                                    <input class="form-control bg-secondary" type="file" id="inputVideo" disabled="true">
+                                    <input th:field="*{url}" class="form-control" type="file" id="inputVideo">
                                 </div>
+                                <p class="mensajeError" th:if="${#fields.hasErrors('url')}" th:errors="*{url}"></p>
                             </div>
 
                             <div class="offset-md-8 offset-xl-9">

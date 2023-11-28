@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/template-admin}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="stylesheet" href="/css/admin/administration-content.css">
+
+    <!-- Script Tabla -->
+    <script src="/script/fancyTable.js"></script>
+
+</head>
+<body>
+<main class="m-auto" layout:fragment="main-content">
+
+    <div class="text-light border-bottom d-flex mb-3 p-2">
+        <div class="col-6">
+            <h4 class="text-light mt-1" th:text="${serie}"></h4>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-primary" href="#"
+               data-bs-toggle="modal"
+               data-bs-target="#modalAddSeason">Agregar Temporada</a>
+        </div>
+        <div th:insert="admin/add-season.html :: modal-add-season"></div>
+    </div>
+
+    <form>
+        <select name="selectSeason" class="form-select" aria-label="Seleccionar temporada">
+            <option selected>-- Seleccionar Temporada --</option>
+            <option th:each="season : ${listSeason}"
+                    th:value="${season.number}"
+                    th:text="'Temporada '+ ${season.number}">
+            </option>
+        </select>
+    </form>
+    <div class="table-responsive">
+        <table class="table table-hover tableProgram">
+            <thead>
+            <tr>
+                <th scope="col">Episodio</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Imagen</th>
+                <th scope="col">Video</th>
+            </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".tableProgram").fancyTable({
+                sortColumn:0, // column number for initial sorting
+                sortOrder: 'descending',
+                sortable: true,
+                pagination: true, // default: false
+                paginationClass:"btn btn-light",
+                perPage: 5,
+                searchable: true,
+                globalSearch: true, // Busqueda todas las colum
+                inputPlaceholder:"Buscar...",
+                matchCase:false // Distingir mayus
+            });
+        });
+    </script>
+</main>
+</body>
+</html>

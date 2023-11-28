@@ -2,6 +2,19 @@
             /******************************/
             /* Contenido Nuevo */
             /******************************/
+            /* Para que el footer se quede debajo */
+            body{
+                min-height: 100vh;
+                margin: 0;
+                display: grid;
+                /* La segunda columna del body (main) se expande para llenar el espacio */
+                grid-template-rows: auto 1fr auto;
+            }
+
+            header{
+                width: 100%;
+            }
+
             .tableProgram td {
                 max-width: 100px;
                 overflow: hidden;
@@ -16,7 +29,9 @@
 
         /*------------------------------*/
         @media only screen and (min-width: 768px) {
-
+            .selectSeason {
+                width: 29vw;
+            }
         }
 
         /*------------------------------*/

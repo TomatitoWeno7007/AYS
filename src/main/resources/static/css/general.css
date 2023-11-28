@@ -57,12 +57,12 @@ header a, header nav .nav-link {
         }
 
         .imgLogo {
-            background-image: url("../img/Posible\ Logo\ en\ blanco.png");
+            background-image: url("/img/Logo.png");
         }
 
         .imgLogoHover {
             opacity: 0;
-            background-image: url("../img/Logo\ en\ azul.png");
+            background-image: url("/img/LogoHover.png");
         }
 
         .logoHeader:hover .imgLogoHover {

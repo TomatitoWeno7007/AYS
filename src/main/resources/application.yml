@@ -9,3 +9,12 @@ spring:
     hibernate:
       ddl-auto: update
       dialect: org.hibernate.dialect.MySQL8Dialect
+#    defer-datasource-initialization: true
+#  sql:
+#    init:
+#      mode: always
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 200MB

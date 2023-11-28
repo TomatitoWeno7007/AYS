@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+    <div th:fragment="modal-delete-serie">
+        <div class="modal fade" th:attr="id='modalDeleteSerie'+${serie.id}"  tabindex="-1" id="modalDeleteSerie" data-bs-backdrop="static" data-bs-keyboard="false"  aria-labelledby="Borrar Serie" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Borrar Serie</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form action="#" th:action="@{/serie/delete}" th:method="POST"
+                              class="bg-dark text-white">
+
+                            <p>¿Estas seguro de eliminar la serie "<span th:text="${serie.name}"></span>" ?</p>
+                            <input type="hidden" th:value="${serie.id}" name="id"/>
+<!--                            <a href="newRecordForm.html" class="btn btn-primary" th:attr="href='/record/'+${record.id}+'/deleteRecord'">Yes</a>-->
+                            <input type="submit" class="btn btn-primary mt-3" value="Confirmar">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

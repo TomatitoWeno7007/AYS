@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{admin/template-admin}"
-        xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org">
 
     <head>
         <link rel="stylesheet" href="/css/admin/administration-content.css">
+
+        <!-- Script Tabla -->
+        <script src="/script/fancyTable.js"></script>
+
     </head>
     <body>
         <main class="m-auto" layout:fragment="main-content">
@@ -14,9 +18,9 @@
                     <h4 class="text-light mt-1">Películas en la plataforma</h4>
                 </div>
                 <div class="col-6 text-end">
-                    <a class="btn btn-primary" href="#"
+                    <button class="btn btn-primary" href="#"
                        data-bs-toggle="modal"
-                       data-bs-target="#modalAddFilm">Agregar película</a>
+                       data-bs-target="#modalAddFilm">Agregar película</button>
                 </div>
 
                 <div th:insert="admin/add-film.html :: modal-add-film"></div>
@@ -30,31 +34,85 @@
                         <th scope="col">Nombre</th>
                         <th scope="col">Descripción</th>
                         <th scope="col">Género</th>
-                        <th scope="col">Tipo</th>
                         <th scope="col">Imagen</th>
+                        <th scope="col">Video</th>
+                        <th scope="col">Duración</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>Lo que el viento se llevó</td>
-                        <td>La obra narra la historia de un Ninja huérfano adolescente llamado Naruto Uzumaki, cuyos padres murieron en el ataque del Zorro Demonio de Nueve Colas (Kyubi), y quien aspira a convertirse en Hokage (líder de su aldea) con el propósito de ser reconocido como alguien importante dentro de la aldea y entre sus compañeros.</td>
-                        <td>Drama</td>
-                        <td>Serie</td>
-                        <td>http://127.0.0.1:5500/admin.html</td>
-                        <td>
-                            <button class="btn btn-light border-dark" data-bs-toggle="modal" data-bs-target="#modalEditFilm">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                        </td>
-                        <td>
-                            <button class="btn btn-light border-dark" data-bs-toggle="modal" data-bs-target="#modalDeleteProgram">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
+                        <tr th:each="film : ${listFilms}">
+                            <td th:text="${film.name}"></td>
+                            <td th:text="${film.description}"></td>
+                            <td>
+                                <span th:each="genre, actualGenre : ${film.genres}">
+                                    <span th:text="${genre.name}"></span>
+                                    <span th:if="${!actualGenre.last}">, </span> <!-- Agregar coma si no es el último género -->
+                                </span>
+                            </td>
+                            <td th:text="${film.img}"></td>
+                            <td th:text="${film.url}"></td>
+                            <td th:text="${film.duration}"></td>
+                            <td>
+                                <button class="btn btn-light border-dark" data-bs-toggle="modal"
+                                        th:attr="data-bs-target='#modalEditFilm'+${film.id}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <div th:insert="admin/edit-film.html :: modal-edit-film"></div>
+                            </td>
+                            <td>
+                                <button class="btn btn-light border-dark" data-bs-toggle="modal"
+                                        th:attr="data-bs-target='#modalDeleteFilm'+${film.id}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                                <div th:insert="admin/delete-film.html :: modal-delete-film"></div>
+                                <script type="text/javascript">
+                                    if ($("#editImg" +[(${film.id})]).length > 0) {
+                                        $("#divChooseImg" + [(${film.id})]).hide();
+                                        $("#editImg" +[(${film.id})]).on("click", function() {
+                                            $("#divChooseImg" +[(${film.id})]).show();
+                                            $("#editImg" +[(${film.id})]).hide();
+                                        });
+                                        $("#btnCancelImg" +[(${film.id})]).on("click", function() {
+                                            $("#divChooseImg" +[(${film.id})] + " input").val("");
+                                            $("#divChooseImg" +[(${film.id})]).hide();
+                                            $("#editImg" +[(${film.id})]).show();
+                                        });
+                                    }
+
+                                    if ($("#editVideo" +[(${film.id})]).length > 0) {
+                                        $("#divChooseVideo" + [(${film.id})]).hide();
+                                        $("#editVideo" +[(${film.id})]).on("click", function() {
+                                            $("#divChooseVideo" +[(${film.id})]).show();
+                                            $("#editVideo" +[(${film.id})]).hide();
+                                        });
+                                        $("#btnCancelVideo" +[(${film.id})]).on("click", function() {
+                                            $("#divChooseVideo" +[(${film.id})] + " input").val("");
+                                            $("#divChooseVideo" +[(${film.id})]).hide();
+                                            $("#editVideo" +[(${film.id})]).show();
+                                        });
+                                    }
+                                </script>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $(".tableProgram").fancyTable({
+                        sortColumn:0, // column number for initial sorting
+                        sortOrder: 'descending',
+                        sortable: true,
+                        pagination: true, // default: false
+                        paginationClass:"btn btn-light",
+                        perPage: 5,
+                        searchable: true,
+                        globalSearch: true, // Busqueda todas las colum
+                        inputPlaceholder:"Buscar...",
+                        matchCase:false // Distingir mayus
+                    });
+                });
+            </script>
         </main>
     </body>
 </html>

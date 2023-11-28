@@ -17,11 +17,19 @@ public class FilmRepository {
     public List<Film> getFilms() { return filmSpringDataRepository.findAll(); }
 
     public Film getFilm(Long id) {
-        Optional<Film> optionalFilm = filmSpringDataRepository.findById(id);
+        Optional<Film> optionalFilm = this.filmSpringDataRepository.findById(id);
         return optionalFilm.orElse(null);
     }
 
     public Long getNumberFilms() {
         return filmSpringDataRepository.count();
+    }
+
+    public void deleteFilm(Long id) {
+        filmSpringDataRepository.deleteById(id);
+    }
+
+    public void addFilm(Film film) {
+        filmSpringDataRepository.save(film);
     }
 }

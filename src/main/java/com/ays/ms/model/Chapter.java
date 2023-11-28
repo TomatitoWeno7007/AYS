@@ -14,6 +14,7 @@ public class Chapter {
     @Column(name = "id")
     private long id;
     private String name;
+    protected String duration;
     private String synopsis;
     private long number;
     private String url;

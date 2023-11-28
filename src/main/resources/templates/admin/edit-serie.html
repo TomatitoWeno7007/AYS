@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+    <div th:fragment="modal-edit-serie">
+        <div class="modal fade" tabindex="-1"
+             th:attr="id='modalEditSerie'+${serie.id}" data-bs-backdrop="static" data-bs-keyboard="false"  aria-labelledby="Editar Serie" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar serie</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="m-3">
+                            <form class="text-white"  action="#" th:action="@{/serie/edit-serie}" th:object="${serie.editSerie}"
+                                    method="post" enctype="multipart/form-data">
+                                <div class="mb-3 row mb-md-4">
+                                    <label th:for="${'inputName' + serie.id}" class="col-2 col-form-label">Nombre</label>
+                                    <div class="col-10">
+                                        <input type="text" th:name="name" th:value="${serie.name}" class="form-control" th:id="${'inputName' + serie.id}">
+                                        <input type="hidden" th:name="id" th:value="${serie.id}">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 row mb-4">
+                                    <label th:for="${'textAreaSinopsis' + serie.id}" class="col-2 form-label">Descripción</label>
+                                    <div class="ms-1 ms-sm-0 col-9 col-sm-10">
+                                        <textarea class="form-control" th:name="description" th:text="${serie.description}" th:id="${'textAreaSinopsis' + serie.id}" rows="3"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <legend class="col-form-label col-2 pt-0">Géneros</legend>
+                                    <div class="col-9 ms-3">
+                                        <div class="row row-cols-2 row-cols-md-3 gy-2 gy-md-3">
+                                            <div class="form-check" th:each="genre, currentGenre : ${listGenres}">
+
+                                                <input class="form-check-input" type="checkbox"
+                                                       th:id="${'check' + genre.name + serie.id}"
+                                                       th:checked="${serie.genres.contains(genre)}"
+                                                       th:value="${genre.name}"
+                                                        name="genres"/>
+
+                                                <label class="form-check-label" th:for="${'check' + genre.name + serie.id}" th:text="${genre.name}"></label>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 row mb-4 align-items-center">
+                                    <label th:for="inputImg+${serie.id}" class="col-2 col-form-label">Imagen</label>
+                                    <div class="col-10">
+
+                                        <a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover"
+                                                   th:if="${serie.img != ''}"
+                                                   th:id="editImg+${serie.id}" href="#"
+                                                   th:text="${serie.img}"></a>
+
+                                        <div th:id="divChooseImg+${serie.id}" >
+                                            <input class="form-control" type="file" th:name="img">
+                                            <button class="btn btn-light mt-2"
+                                                    th:if="${serie.img != ''}"
+                                                    th:id="btnCancelImg+${serie.id}" type="button">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="offset-md-8 offset-xl-9">
+                                    <input class="btn btn-primary col-12" type="submit" value="Guardar Programa">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

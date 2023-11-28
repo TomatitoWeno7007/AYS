@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+    <div th:fragment="modal-delete-film">
+        <div class="modal fade" th:attr="id='modalDeleteFilm'+${film.id}"  tabindex="-1" id="modalDeleteFilm" data-bs-backdrop="static" data-bs-keyboard="false"  aria-labelledby="Borrar Película" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Borrar Película</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form action="#" th:action="@{/film/delete}" th:method="POST"
+                              class="bg-dark text-white">
+
+                            <p>¿Estas seguro de eliminar la película "<span th:text="${film.name}"></span>" ?</p>
+                            <input type="hidden" th:value="${film.id}" name="id"/>
+
+                            <input type="submit" class="btn btn-primary mt-3" value="Confirmar">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

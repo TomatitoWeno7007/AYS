@@ -25,4 +25,12 @@ public class SerieRepository {
         return this.serieSpringDataRepository.count();
     }
 
+    public void deleteSerie(Long id) {
+        serieSpringDataRepository.deleteById(id);
+    }
+
+    public void addSerie(Serie serie) {
+        serieSpringDataRepository.save(serie);
+    }
+
 }

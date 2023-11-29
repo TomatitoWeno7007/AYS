@@ -16,6 +16,9 @@ public class FilmRequest {
     @NotEmpty
     private String name;
 
+
+    private String duration;
+
     @NotEmpty
     private String description;
 

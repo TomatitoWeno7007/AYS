@@ -42,9 +42,8 @@ public class AdministratorController {
 
     @GetMapping("/v/film")
     public String getFilm(Model model) {
-        model.addAttribute("listFilms", filmService.getFilms());
+        model.addAttribute("listFilms", filmService.getFilmFromView());
         model.addAttribute("newFilm", new FilmRequest());
-        model.addAttribute("editSerie", new FilmRequest());
         model.addAttribute("listGenres", genreService.getGenres());
         return "admin/film";
     }

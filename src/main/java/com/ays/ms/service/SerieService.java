@@ -94,9 +94,13 @@ public class SerieService {
             throw new ResourceNotFoundException("No existe la serie a editar");
         }
 
+
+        if (! serieRequest.getImg().isEmpty()) {
+            serie.setImg(String.valueOf(serieRequest.getImg()));
+        }
+
         serie.setDescription(serieRequest.getDescription());
         serie.setName(serieRequest.getName());
-        serie.setImg(String.valueOf(serieRequest.getImg()));
 
         List<Genres> genres = genreService.getGenresByName(serieRequest.getGenres());
         serie.setGenres(genres);

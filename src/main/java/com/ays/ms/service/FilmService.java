@@ -53,9 +53,15 @@ public class FilmService {
             throw new ResourceNotFoundException("No existe la película a editar");
         }
 
+
+        if (! filmRequest.getImg().isEmpty()) {
+            film.setImg(String.valueOf(filmRequest.getImg()));
+        }
+        if (! filmRequest.getUrl().isEmpty()) {
+            film.setUrl(String.valueOf(filmRequest.getUrl()));
+        }
         film.setDescription(filmRequest.getDescription());
         film.setName(filmRequest.getName());
-        film.setImg(String.valueOf(filmRequest.getImg()));
 
         List<Genres> genres = genreService.getGenresByName(filmRequest.getGenres());
         film.setGenres(genres);

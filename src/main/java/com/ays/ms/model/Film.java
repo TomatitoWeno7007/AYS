@@ -15,7 +15,7 @@ public class Film extends Program {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String url;
-    protected String duration;
+    private String duration;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "film_genre",

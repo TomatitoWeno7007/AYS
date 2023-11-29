@@ -4,6 +4,7 @@ import com.ays.ms.controller.dto.request.SerieRequest;
 import com.ays.ms.model.Season;
 import com.ays.ms.model.Serie;
 import com.ays.ms.service.GenreService;
+import com.ays.ms.service.SeasonService;
 import com.ays.ms.service.SerieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -81,10 +82,9 @@ public class SerieController {
 
     @PostMapping("/v/season/{number}")
     public String getSeasonPrint(@PathVariable("number") long number, Model model) {
-//        Season season = seasonService.get
-//        model.addAttribute("serie", serie.getName());
-//        model.addAttribute("listSeason", serie.getSeasons());
-//        return "admin/season";
+        Season season = seasonService.getSeason(number);
+        model.addAttribute("seasonSelected", season);
+        return "admin/season";
     }
 
 

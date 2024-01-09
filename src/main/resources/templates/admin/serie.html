@@ -4,14 +4,19 @@
       xmlns:th="http://www.thymeleaf.org">
 
     <head>
+        <title>AYS - Admin - Series</title>
         <link rel="stylesheet" href="/css/admin/administration-content.css">
 
         <!-- Script Tabla -->
         <script src="/script/fancyTable.js"></script>
-
     </head>
     <body>
         <main class="m-auto" layout:fragment="main-content">
+            <nav style="&#45;&#45;bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="text-white">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active text-light" aria-current="page">Series</li>
+                </ol>
+            </nav>
 
             <div class="text-light border-bottom d-flex mb-3 p-2">
                 <div class="col-6">
@@ -20,13 +25,15 @@
                 <div class="col-6 text-end">
                     <button class="btn btn-primary" href="#"
                        data-bs-toggle="modal"
-                       data-bs-target="#modalAddSerie">Agregar serie</button>
+                       data-bs-target="#modalAddSerie"
+                       aria-label="Agregar Serie">Agregar serie</button>
                 </div>
                 <div th:insert="admin/add-serie.html :: modal-add-serie"></div>
             </div>
 
             <div class="table-responsive">
                 <table class="table table-hover tableProgram">
+                    <caption class="position-absolute">Listado de series</caption>
                     <thead>
                     <tr>
                         <th scope="col">Nombre</th>
@@ -39,7 +46,21 @@
                     <tbody>
                         <tr th:each="serie : ${listSeries}">
                             <td>
-                                <a class="link-dark" th:text="${serie.name}" th:href="@{/serie/v/season/{id}(id=${serie.id})}"></a>
+                                <a class="link-dark"
+                                   data-bs-toggle="tooltip" data-bs-html="true"
+                                   th:title="'Temporadas: ' + ${serie.seasons[serie.seasons.size() - 1].number}"
+                                   th:if="${not #lists.isEmpty(serie.seasons)}"
+                                   th:text="${serie.name}"
+                                   th:href="@{/serie/{id}/seasons (id=${serie.id})}"></a>
+                                <span class="soundOnly" th:text="'Temporadas: ' + ${serie.seasons[serie.seasons.size() - 1].number}"
+                                                        th:if="${not #lists.isEmpty(serie.seasons)}"></span>
+                                <a class="link-dark"
+                                   data-bs-toggle="tooltip" data-bs-html="true"
+                                   th:if="${#lists.isEmpty(serie.seasons)}"
+                                   th:text="${serie.name}"
+                                   data-bs-title="Temporadas: 0"
+                                   th:href="@{/serie/{id}/seasons (id=${serie.id})}"></a>
+                                <span class="soundOnly" th:if="${#lists.isEmpty(serie.seasons)}">Temporadas: 0</span>
                             </td>
                             <td th:text="${serie.description}"></td>
                             <td>
@@ -52,19 +73,21 @@
                             <td></td>
                             <td>
                                 <button class="btn btn-light border-dark" data-bs-toggle="modal"
-                                        th:attr="data-bs-target='#modalEditSerie'+${serie.id}">
+                                        th:attr="data-bs-target='#modalEditSerie'+${serie.id},
+                                                aria-label='Editar Serie: ' + ${serie.name}">
                                     <i class="bi bi-pencil"></i>
                                 </button>
                                 <div th:insert="admin/edit-serie.html :: modal-edit-serie"></div>
                             </td>
                             <td>
                                 <button class="btn btn-light border-dark" data-bs-toggle="modal"
-                                        th:attr="data-bs-target='#modalDeleteSerie'+${serie.id}">
+                                        th:attr="data-bs-target='#modalDeleteSerie'+${serie.id},
+                                                aria-label='Eliminar serie: ' + ${serie.name}">
                                     <i class="bi bi-trash"></i>
                                 </button>
                                 <div th:insert="admin/delete-serie.html :: modal-delete-serie"></div>
                                 <script type="text/javascript">
-                                    if ($("#editImg" +[(${serie.id})]).length > 0) {
+                                    if ($("#editImg" +[(${serie.id})]).text().length > 0) {
                                         $("#divChooseImg" + [(${serie.id})]).hide();
                                         $("#editImg" +[(${serie.id})]).on("click", function() {
                                             $("#divChooseImg" +[(${serie.id})]).show();
@@ -77,6 +100,11 @@
                                         });
                                     }
 
+                                    $("#editImg" + [(${serie.id})]).click(function () {
+                                        var input = $("#divChooseImg" +[(${serie.id})] + " input");
+                                        $(input).focus();
+                                    });
+
                                 </script>
                             </td>
                         </tr>
@@ -85,10 +113,14 @@
 
             </div>
             <script type="text/javascript">
+                <!-- Habilitar el tooltip (lo de las temporadas)-->
+                const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+                const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
                 $(document).ready(function() {
                     $(".tableProgram").fancyTable({
                         sortColumn:0, // column number for initial sorting
-                        sortOrder: 'descending',
+                        sortOrder: 'ascending',
                         sortable: true,
                         pagination: true, // default: false
                         paginationClass:"btn btn-light",

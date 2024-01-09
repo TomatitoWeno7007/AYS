@@ -8,7 +8,7 @@
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                 <div class="modal-content bg-dark text-white">
                     <div class="modal-header">
-                        <h5 class="modal-title">Editar serie</h5>
+                        <h5 class="modal-title">Editar Serie</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
@@ -36,16 +36,14 @@
                                     <div class="col-9 ms-3">
                                         <div class="row row-cols-2 row-cols-md-3 gy-2 gy-md-3">
                                             <div class="form-check" th:each="genre, currentGenre : ${listGenres}">
-
                                                 <input class="form-check-input" type="checkbox"
                                                        th:id="${'check' + genre.name + serie.id}"
                                                        th:checked="${serie.genres.contains(genre)}"
+                                                       th:attr="aria-checked=${serie.genres.contains(genre) ? 'true' : 'false'}"
                                                        th:value="${genre.name}"
                                                         name="genres"/>
 
                                                 <label class="form-check-label" th:for="${'check' + genre.name + serie.id}" th:text="${genre.name}"></label>
-
-
                                             </div>
                                         </div>
                                     </div>
@@ -54,17 +52,18 @@
                                 <div class="mb-3 row mb-4 align-items-center">
                                     <label th:for="inputImg+${serie.id}" class="col-2 col-form-label">Imagen</label>
                                     <div class="col-10">
-
                                         <a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover"
                                                    th:if="${serie.img != ''}"
                                                    th:id="editImg+${serie.id}" href="#"
-                                                   th:text="${serie.img}"></a>
+                                                   th:text="${serie.img}"
+                                                   th:attr="aria-label='Introducir imagen para la serie: ' + ${serie.name} + ', dirección de enlace: ' + ${serie.img}"></a>
 
                                         <div th:id="divChooseImg+${serie.id}" >
                                             <input class="form-control" type="file" th:name="img">
                                             <button class="btn btn-light mt-2"
-                                                    th:if="${serie.img != ''}"
-                                                    th:id="btnCancelImg+${serie.id}" type="button">Cancelar</button>
+                                                    th:if="${serie.img != '' && serie.img != null}"
+                                                    th:id="btnCancelImg+${serie.id}"
+                                                    aria-label="Cancelar archivo de imagen" type="button">Cancelar</button>
                                         </div>
                                     </div>
                                 </div>

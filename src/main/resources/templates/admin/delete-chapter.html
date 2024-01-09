@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+    <div th:fragment="modal-delete-chapter">
+        <div class="modal fade" th:attr="id='modalDeleteChapter'+${chapter.id}"  tabindex="-1" id="modalDeleteChapter" data-bs-backdrop="static" data-bs-keyboard="false"  aria-labelledby="Borrar Capítulo" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Borrar Capítulo</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form action="#" th:action="@{/serie/{id}/season/{idSeason}/delete (id=${serie.id}, idSeason=${seasonChoose})}"
+                              th:method="POST"
+                              class="bg-dark text-white">
+
+                            <p>¿Estas seguro de eliminar el capítulo <span th:text="${chapter.number}"></span></p>
+                            <p>'<span th:text="${chapter.name}"></span>' de la serie '<span th:text="${serie.name}"></span>'?</p>
+                            <input type="hidden" th:value="${chapter.id}" name="idChapter"/>
+
+                            <input type="submit" class="btn btn-primary mt-3" value="Confirmar">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

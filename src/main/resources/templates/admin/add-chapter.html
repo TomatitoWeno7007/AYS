@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="modal-add-chapter">
+    <div class="modal fade" tabindex="-1" id="modalAddChapter" data-bs-backdrop="static" data-bs-keyboard="false"  aria-labelledby="Añadir Capítulo" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title">Añadir Capítulo</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="m-3">
+                        <form class="text-white" th:action="@{/serie/{id}/season/{idSeason}/add-chapter (id=${serie.id}, idSeason=${seasonChoose})}" th:object="${newChapter}"
+                        action="#" method="post" enctype="multipart/form-data">
+                            <div class="mb-3 row mb-md-4">
+                                <label for="staticNumEpisode" class="col-2 col-form-label">Num.Episodio</label>
+                                <div class="col-10">
+                                    <input th:name="number" th:id="number" type="text" readonly class="form-control-plaintext text-white" id="staticNumEpisode"
+                                           th:value="${lastChapter}">
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row mb-md-4">
+                                <label for="inputName" class="col-2 col-form-label">Nombre</label>
+                                <div class="col-10">
+                                    <input th:field="*{name}" type="text" class="form-control" id="inputName">
+                                    <p class="mensajeError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row mb-4">
+                                <label for="textAreaSynopsis" class="col-2 form-label">Descripción</label>
+                                <div class="ms-1 ms-sm-0 col-9 col-sm-10">
+                                    <textarea th:field="*{synopsis}"  class="form-control" id="textAreaSynopsis" rows="3"></textarea>
+                                    <p class="mensajeError" th:if="${#fields.hasErrors('synopsis')}" th:errors="*{synopsis}"></p>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row mb-4">
+                                <label for="inputImg" class="col-2 col-form-label">Imagen</label>
+                                <div class="col-10">
+                                    <input th:field="*{img}" class="form-control" type="file" id="inputImg">
+                                </div>
+                                <p class="mensajeError" th:if="${#fields.hasErrors('img')}" th:errors="*{img}"></p>
+                            </div>
+
+                            <div class="mb-3 row mb-4">
+                                <label for="inputVideo" class="col-2 col-form-label">Video</label>
+                                <div class="col-10">
+                                    <input th:field="*{url}" class="form-control" type="file" id="inputVideo">
+                                </div>
+                                <p class="mensajeError" th:if="${#fields.hasErrors('url')}" th:errors="*{url}"></p>
+                            </div>
+
+                            <div class="offset-md-8 offset-xl-9">
+                                <input class="btn btn-primary col-12" type="submit" value="Guardar Programa">
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

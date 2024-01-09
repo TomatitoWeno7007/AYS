@@ -1,5 +1,6 @@
 package com.ays.ms.respository;
 
+import com.ays.ms.model.Season;
 import com.ays.ms.model.Serie;
 import com.ays.ms.respository.springdata.SerieSpringDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,9 @@ public class SerieRepository {
         serieSpringDataRepository.deleteById(id);
     }
 
-    public void addSerie(Serie serie) {
-        serieSpringDataRepository.save(serie);
+    public Serie addSerie(Serie serie) {
+        return serieSpringDataRepository.save(serie);
     }
+
 
 }

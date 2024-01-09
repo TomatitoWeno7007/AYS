@@ -3,72 +3,159 @@
       layout:decorate="~{admin/template-admin}"
       xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <link rel="stylesheet" href="/css/admin/administration-content.css">
+    <head>
+        <title th:text="'AYS - Admin - ' + ${serie.name} + ' - Temporadas'"></title>
+        <link rel="stylesheet" href="/css/admin/administration-content.css">
 
-    <!-- Script Tabla -->
-    <script src="/script/fancyTable.js"></script>
+        <!-- Script Tabla -->
+        <script src="/script/fancyTable.js"></script>
+    </head>
+    <body>
+        <main class="m-auto" layout:fragment="main-content">
+            <nav style="&#45;&#45;bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="text-white">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a class="linkBreadcrumb link-underline-opacity-0 link-underline-opacity-100-hover" href="/admin/v/serie">Series</a>
+                    </li>
+                    <li class="breadcrumb-item active text-light" aria-current="page">Temporadas</li>
+                </ol>
+            </nav>
 
-</head>
-<body>
-<main class="m-auto" layout:fragment="main-content">
+            <div class="text-light border-bottom d-flex mb-3 p-2">
+                <div class="col-6">
+                    <h4 class="text-light mt-1" th:text="${serie.name}"></h4>
+                </div>
+                <div class="col-6 text-end">
+                    <button class="btn btn-danger" href="#"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalDeleteSeason"
+                            id="btnDeleteSeason"
+                            th:if="${listChapters}">Eliminar Temporada</button>
+                    <button class="btn btn-primary" href="#"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalAddSeason">Agregar Temporada</button>
+                </div>
+                <div th:insert="admin/add-season.html :: modal-add-season"></div>
+                <div th:insert="admin/delete-season.html :: modal-delete-season"></div>
+            </div>
 
-    <div class="text-light border-bottom d-flex mb-3 p-2">
-        <div class="col-6">
-            <h4 class="text-light mt-1" th:text="${serie}"></h4>
-        </div>
-        <div class="col-6 text-end">
-            <a class="btn btn-primary" href="#"
-               data-bs-toggle="modal"
-               data-bs-target="#modalAddSeason">Agregar Temporada</a>
-        </div>
-        <div th:insert="admin/add-season.html :: modal-add-season"></div>
-    </div>
+            <div class="mb-3 d-flex">
+                <select id="selectSeason" name="selectSeason" class="form-select me-3" aria-label="Seleccionar temporada">
+                    <option th:value="@{/serie/{id}/season/-1/chapters (id=${serie.id})}"
+                            selected>-- Seleccionar Temporada --</option>
+                    <option th:each="season : ${listSeason}"
+                            th:value="@{/serie/{id}/season/{idSeason}/chapters (id=${serie.id}, idSeason=${season.id})}"
+                            th:text="'Temporada '+ ${season.number}"
+                            th:selected="${season.number == seasonSelected}">
+                    </option>
+                </select>
 
-    <form class="d-flex mb-2" action="#" th:action="@{/serie/{number}}" th:object="${season}" method="post">
-        <select name="selectSeason" class="form-select" aria-label="Seleccionar temporada">
-            <option selected>-- Seleccionar Temporada --</option>
-            <option th:each="season : ${listSeason}"
-                    th:value="${season.number}"
-                    th:text="'Temporada '+ ${season.number}">
-            </option>
-        </select>
-        <input class="btn btn-primary mx-3" type="submit" value="Seleccionar Temporada">
-    </form>
-    <span th:text="${seasonSelected}"></span>
-    <div class="table-responsive">
-        <table class="table table-hover tableProgram">
-            <thead>
-            <tr>
-                <th scope="col">Episodio</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Imagen</th>
-                <th scope="col">Video</th>
-            </tr>
-            </thead>
-            <tbody>
-                
-            </tbody>
-        </table>
+                    <button type="submit" class="btn btn-primary col-3" href="#"
+                            th:disabled="${listChapters == null}"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalAddChapter">Añadir episodio</button>
+                    <div th:insert="admin/add-chapter.html :: modal-add-chapter"></div>
 
-    </div>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $(".tableProgram").fancyTable({
-                sortColumn:0, // column number for initial sorting
-                sortOrder: 'descending',
-                sortable: true,
-                pagination: true, // default: false
-                paginationClass:"btn btn-light",
-                perPage: 5,
-                searchable: true,
-                globalSearch: true, // Busqueda todas las colum
-                inputPlaceholder:"Buscar...",
-                matchCase:false // Distingir mayus
-            });
-        });
-    </script>
-</main>
-</body>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover tableProgram" th:if="${not #lists.isEmpty(listChapters)}">
+                    <caption class="position-absolute">Listado de temporadas</caption>
+                    <thead>
+                    <tr>
+                        <th scope="col">Episodio</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Video</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="chapter : ${listChapters}">
+                            <td th:text="${chapter.number}"></td>
+                            <td th:text="${chapter.name}"></td>
+                            <td th:text="${chapter.synopsis}"></td>
+                            <td th:text="${chapter.img}"></td>
+                            <td th:text="${chapter.url}"></td>
+                            <td>
+                                <button class="btn btn-light border-dark" data-bs-toggle="modal"
+                                        th:attr="data-bs-target='#modalEditChapter'+${chapter.id},
+                                                aria-label='Editar capítulo: ' + ${chapter.name}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <div th:insert="admin/edit-chapter.html :: modal-edit-chapter"></div>
+                            </td>
+                            <td>
+                                <button class="btn btn-light border-dark" data-bs-toggle="modal"
+                                        th:attr="data-bs-target='#modalDeleteChapter'+${chapter.id},
+                                                aria-label='Eliminar capítulo: ' + ${chapter.name}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                                <div th:insert="admin/delete-chapter.html :: modal-delete-chapter"></div>
+                                <script type="text/javascript">
+                                    if ($("#editImg" +[(${chapter.id})]).text().length > 0) {
+                                        $("#divChooseImg" + [(${chapter.id})]).hide();
+                                        $("#editImg" +[(${chapter.id})]).on("click", function() {
+                                            $("#divChooseImg" +[(${chapter.id})]).show();
+                                            $("#editImg" +[(${chapter.id})]).hide();
+                                        });
+                                        $("#btnCancelImg" +[(${chapter.id})]).on("click", function() {
+                                            $("#divChooseImg" +[(${chapter.id})] + " input").val("");
+                                            $("#divChooseImg" +[(${chapter.id})]).hide();
+                                            $("#editImg" +[(${chapter.id})]).show();
+                                        });
+                                    }
+
+                                    if ($("#editVideo" +[(${chapter.id})]).text().length > 0) {
+                                        $("#divChooseVideo" + [(${chapter.id})]).hide();
+                                        $("#editVideo" +[(${chapter.id})]).on("click", function() {
+                                            $("#divChooseVideo" +[(${chapter.id})]).show();
+                                            $("#editVideo" +[(${chapter.id})]).hide();
+                                        });
+                                        $("#btnCancelVideo" +[(${chapter.id})]).on("click", function() {
+                                            $("#divChooseVideo" +[(${chapter.id})] + " input").val("");
+                                            $("#divChooseVideo" +[(${chapter.id})]).hide();
+                                            $("#editVideo" +[(${chapter.id})]).show();
+                                        });
+                                    }
+
+                                    $("#editImg" + [(${chapter.id})]).click(function () {
+                                        var input = $("#divChooseImg" +[(${chapter.id})] + " input");
+                                        $(input).focus();
+                                    });
+
+                                    $("#editVideo" + [(${chapter.id})]).click(function () {
+                                        var input = $("#divChooseVideo" +[(${chapter.id})] + " input");
+                                        $(input).focus();
+                                    });
+                                </script>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $("#selectSeason").change(function() {
+                        location.href = $("#selectSeason").val();
+                    })
+
+
+                    $(".tableProgram").fancyTable({
+                        sortColumn:0, // column number for initial sorting
+                        sortOrder: 'ascending',
+                        sortable: true,
+                        pagination: true, // default: false
+                        paginationClass:"btn btn-light",
+                        perPage: 5,
+                        searchable: true,
+                        globalSearch: true, // Busqueda todas las colum
+                        inputPlaceholder:"Buscar...",
+                        matchCase:false // Distingir mayus
+                    });
+                });
+            </script>
+        </main>
+    </body>
 </html>

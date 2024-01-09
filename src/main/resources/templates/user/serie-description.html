@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link rel="stylesheet" href="/css/program/description.css">
+        <title th:text="'AYS - ' + ${serie.name}"></title>
+    </head>
+    <body>
+        <main layout:fragment="main-content">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="text-white">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a class="linkBreadcrumb" href="/user/v/principal/content" aria-label="Inicio" title="Inicio">Inicio</a>
+                    </li>
+                    <li th:text="${serie.name}" class="breadcrumb-item active text-light" aria-current="page"></li>
+                </ol>
+            </nav>
+
+            <div class="descriptionBox text-white d-flex m-auto">
+                <figure class="imgDescription figure m-0">
+                    <img class="figure-img img-fluid" th:src="@{${serie.img}}" alt="">
+                </figure>
+                <div class="descriptionInfo">
+                    <h3 class="border-bottom" th:text="${serie.name}"></h3>
+                    <div class="textDescription">
+                        <p th:text="${serie.description}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="logoPrint text-center">
+                <figure class="figure">
+                    <img class="figure-img img-fluid" src="/img/LogoNegro.png" alt="">
+                </figure>
+            </div>
+
+            <div id="serieContainer">
+                <div class="serieBox">
+                    <div class="seasonBox my-3">
+                        <ul class="nav nav-underline row row-cols-1 d-flex">
+                            <li th:each="season : ${serie.seasons}" class="nav-item">
+                                <a class="nav-link link-light" href="#"
+                                   th:classappend="${seasonChoose.number} == ${season.number} ? active"
+                                   th:text="'Temporada '+ ${season.number}"
+                                   th:attr="data-season-number=${season.number}"></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="episodeBox">
+                        <div class="episodeContainer row row-cols-1 d-flex">
+                            <div th:each="chapter : ${listChapters}" class="cardEpisode">
+                                <a class="linkEpisode keepWatchingProgram text-decoration-none" href="">
+                                    <div class="boxImgEpisode position-relative">
+                                        <figure class="imgEpisode figure m-0 w-100">
+                                            <img class="figure-img w-100" th:src="@{${chapter.img}}" alt="">
+                                        </figure>
+                                        <!-- Controlar con javascript/jquery -->
+                                        <div class="progress progressEpisode position-absolute" role="progressbar"
+                                             aria-label="Tiempo Visto" aria-valuenow="10" aria-valuemin="0"
+                                             aria-valuemax="100">
+                                            <div class="progress-bar bg-info" style="width: 10%">1:36</div>
+                                            <div class="progressLimit" th:text="${chapter.duration}"></div>
+                                        </div>
+                                    </div>
+                                    <div class="textLinkEpisode">
+                                        <h3 th:text="${'T' + seasonChoose.number + ':E' + chapter.number + ' - ' + chapter.name}"></h3>
+                                        <p th:text="${chapter.synopsis}"></p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <script th:inline="javascript">
+                $(document).ready(function () {
+                    $("#serieContainer").on("click", ".nav-link", function (e) {
+                        e.preventDefault();
+                        var seasonNumber = $(this).data("season-number");
+                        loadEpisodes(seasonNumber);
+                    });
+                });
+
+                function loadEpisodes(seasonNumber) {
+                    var idSerie = [(${serie.id})];
+                    $.ajax({
+                        type: "GET",
+                        url: "/user/v/serie/" + idSerie + "/description/" + seasonNumber,
+                        success: function (data) {
+                            $("#serieContainer").html(data);
+                        },
+                        error: function (error) {
+                            console.log("Error al cargar episodios: " + error);
+                        }
+                    });
+                }
+
+
+            </script>
+        </main>
+    </body>
+</html>

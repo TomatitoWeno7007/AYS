@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+    <div th:fragment="modal-delete-season">
+        <div class="modal fade" th:attr="id='modalDeleteSeason'"  tabindex="-1" id="modalDeleteSeason" data-bs-backdrop="static" data-bs-keyboard="false"  aria-labelledby="Borrar Temporada" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Borrar Temporada</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form action="#" th:action="@{/serie/season/delete}" th:method="POST"
+                              class="bg-dark text-white">
+
+                            <p>¿Estas seguro de eliminar la temporada <span th:text="${seasonSelected}"></span>?</p>
+                            <p class="text-danger"><i>*Se eliminarán todos sus capítulos*</i></p>
+                            <input type="hidden" th:value="${seasonSelected}" name="number"/>
+                            <input type="hidden" th:value="${serie.id}" name="idSerie"/>
+                            <input type="submit" class="btn btn-primary mt-3" value="Confirmar">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,12 +1,14 @@
 package com.ays.ms.controller;
 
+import com.ays.ms.controller.dto.request.FilmRequest;
 import com.ays.ms.controller.dto.request.UserConfigurationRequest;
 import com.ays.ms.controller.dto.request.UserLoginRequest;
 import com.ays.ms.controller.dto.request.UserRegisterRequest;
 import com.ays.ms.model.Film;
+import com.ays.ms.model.Genres;
 import com.ays.ms.model.Serie;
-import com.ays.ms.service.AuthenticationService;
-import com.ays.ms.service.UserService;
+import com.ays.ms.service.*;
+import com.ays.ms.service.utils.MathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -24,6 +27,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private SerieService serieService;
+    @Autowired
+    private FilmService filmService;
+    @Autowired
+    private GenreService genreService;
 
     @Autowired
     private AuthenticationService authenticationService;
@@ -106,6 +115,58 @@ public class UserController {
     public String logout() {
         authenticationService.logout();
         return "redirect:/";
+    }
+
+    @GetMapping("/v/serie/{idSerie}/description")
+    public String getSerieDescription(@PathVariable("idSerie") long idSerie,
+                                      Model model) {
+
+        Serie serie = serieService.getSerie(idSerie);
+        model.addAttribute("serie", serie);
+        model.addAttribute("seasonChoose", serie.getSeasons().get(0));
+        model.addAttribute("listChapters", serie.getSeasons().get(0).getChapters());
+        return "user/serie-description";
+
+    }
+
+    @GetMapping("/v/serie/{idSerie}/description/{seasonNumber}")
+    public String getSerieSeasonChoose(@PathVariable("idSerie") long idSerie,
+                                       @PathVariable("seasonNumber") long seasonNumber,
+                                      Model model) {
+
+        Serie serie = serieService.getSerie(idSerie);
+        model.addAttribute("serie", serie);
+        model.addAttribute("seasonChoose", serie.getSeasons().get((int) (seasonNumber-1)));
+        model.addAttribute("listChapters", serie.getSeasons().get((int) (seasonNumber-1)).getChapters());
+//        return "user/serie-description";
+        return "user/serie-description :: .serieBox";
+
+    }
+
+    @GetMapping("/v/film/{idFilm}/description")
+    public String getFilmDescription(@PathVariable("idFilm") long idFilm,
+                                      Model model) {
+
+        Film film = filmService.getFilm(idFilm);
+        List<Film> recommendedFilm = userService.getRecommendedUserFilms();
+
+        model.addAttribute("film", film);
+        model.addAttribute("recommendedFilm", recommendedFilm);
+        return "user/film-description";
+
+    }
+
+    @GetMapping("/v/films")
+    public String getAllFilms(Model model) {
+
+        List<Film> allFilms = filmService.getFilms();
+
+        List<Genres> listGenres = genreService.getGenres();
+
+        model.addAttribute("listGenres", listGenres);
+        model.addAttribute("listFilms", allFilms);
+        return "user/film";
+
     }
 
 }

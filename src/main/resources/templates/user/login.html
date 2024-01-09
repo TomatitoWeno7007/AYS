@@ -20,7 +20,7 @@
                                 <p class="mensajeError" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
 
                                 <label for="passwordLogin" class="col-form-label">Password</label>
-                                <input type="text" th:field="*{password}" class="form-control" id="passwordLogin" placeholder="Password">
+                                <input type="password" th:field="*{password}" class="form-control" id="passwordLogin" placeholder="Password">
                                 <p class="mensajeError" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
 
                                 <p class="mensajeError" th:each="err : ${#fields.errors('global')}" th:text="${err}" />

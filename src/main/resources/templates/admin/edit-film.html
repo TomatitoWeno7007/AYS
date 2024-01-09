@@ -8,7 +8,7 @@
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                 <div class="modal-content bg-dark text-white">
                     <div class="modal-header">
-                        <h5 class="modal-title">Editar pelicula</h5>
+                        <h5 class="modal-title">Editar Pelicula</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
@@ -19,7 +19,7 @@
                                 <div class="mb-3 row mb-md-4">
                                     <label th:for="${'inputName' + film.id}" class="col-2 col-form-label">Nombre</label>
                                     <div class="col-10">
-                                        <input type="text" th:name="name" th:value="${film.name}" class="form-control" id="inputName">
+                                        <input type="text" th:name="name" th:value="${film.name}" class="form-control" th:id="${'inputName' + film.id}">
                                         <input type="hidden" th:name="id" th:value="${film.id}">
                                     </div>
                                 </div>
@@ -27,7 +27,7 @@
                                 <div class="mb-3 row mb-4">
                                     <label th:for="${'textAreaSinopsis' + film.id}" class="col-2 form-label">Descripción</label>
                                     <div class="ms-1 ms-sm-0 col-9 col-sm-10">
-                                        <textarea class="form-control" th:name="description" th:text="${film.description}" id="textAreaSinopsis" rows="3"></textarea>
+                                        <textarea class="form-control" th:name="description" th:text="${film.description}" th:id="${'textAreaSinopsis' + film.id}" rows="3"></textarea>
                                     </div>
                                 </div>
 
@@ -41,6 +41,7 @@
                                                        th:id="${'check' + genre.name + film.id}"
                                                        th:checked="${film.genres.contains(genre)}"
                                                        th:value="${genre.name}"
+                                                       th:attr="aria-checked=${film.genres.contains(genre) ? 'true' : 'false'}"
                                                        name="genres"/>
 
                                                 <label class="form-check-label" th:for="${'check' + genre.name + film.id}" th:text="${genre.name}"></label>
@@ -59,13 +60,15 @@
                                         <a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover"
                                            th:if="${film.img != ''}"
                                            th:id="editImg+${film.id}" href="#"
-                                           th:text="${film.img}"></a>
+                                           th:text="${film.img}"
+                                            th:attr="aria-label='Introducir imagen para la película: ' + ${film.name} + ', dirección de enlace: ' + ${film.img}"></a>
 
                                         <div th:id="divChooseImg+${film.id}" >
-                                            <input class="form-control" type="file" th:name="img">
+                                            <input class="form-control" type="file" th:name="img" title="Elegir archivo de imagen">
                                             <button class="btn btn-light mt-2"
-                                                    th:if="${film.img != ''}"
-                                                    th:id="btnCancelImg+${film.id}" type="button">Cancelar</button>
+                                                    th:if="${film.img != '' && film.img != null}"
+                                                    th:id="btnCancelImg+${film.id}"
+                                                    aria-label="Cancelar archivo de imagen" type="button">Cancelar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -73,10 +76,17 @@
                                 <div class="mb-3 row mb-4 align-items-center">
                                     <label th:for="inputVideo+${film.id}" class="col-2 col-form-label">Video</label>
                                     <div class="col-10">
-                                        <a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover" th:id="editVideo+${film.id}" href="#" th:text="${film.url}"></a>
+                                        <a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover"
+                                           th:id="editVideo+${film.id}" href="#"
+                                           th:if="${film.url != ''}"
+                                           th:text="${film.url}"
+                                           th:attr="aria-label='Introducir video para la película: ' + ${film.name} + ', dirección de enlace: ' + ${film.url}"></a>
                                         <div th:id="divChooseVideo+${film.id}">
-                                            <input class="form-control" type="file" th:name="url">
-                                            <button class="btn btn-light mt-2" th:id="btnCancelVideo+${film.id}" type="button">Cancelar</button>
+                                            <input class="form-control" type="file" th:name="url" title="Elegir archivo de video">
+                                            <button class="btn btn-light mt-2"
+                                                    th:if="${film.url != '' && film.url != null}"
+                                                    th:id="btnCancelVideo+${film.id}"
+                                                    aria-label="Cancelar archivo de video" type="button">Cancelar</button>
                                         </div>
                                     </div>
                                 </div>

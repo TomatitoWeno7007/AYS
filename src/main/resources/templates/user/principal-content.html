@@ -3,6 +3,7 @@
       layout:decorate="~{template}" xmlns:th="http://www.thymeleaf.org">
     <head>
         <link rel="stylesheet" href="/css/program/gallery.css">
+        <title>AYS - Inicio</title>
     </head>
     <body>
         <main layout:fragment="main-content">
@@ -12,16 +13,16 @@
                 </ol>
             </nav>
 
-            <h2 class="text-white">Recomendaciones</h2>
+            <h1 class="text-white">Recomendaciones</h1>
 
             <div class="containerProgram m-3">
                 <h2 class="text-white border-bottom">Películas</h2>
                 <div class="boxProgram pt-2 row row-cols-1 d-flex">
                     <!--<p th:text="${serie.name}" />-->
                     <div th:each="film : ${recommendedFilms}" class="cardProgram text-white " >
-                        <a class="linkProgram" href="#">
+                        <a class="linkProgram" href="#" th:href="@{/user/v/film/{idFilm}/description(idFilm=${film.id})}">
                             <figure class="imgProgram figure m-0 w-100">
-                                <img class="figure-img img-fluid" th:src="@{${film.img}}" alt="">
+                                <img class="figure-img img-fluid" th:src="@{${film.img}}">
                                 <div class="textProgramHover">
                                     <h3 th:text="${film.name}"></h3>
                                     <p th:text="${film.description}"></p>
@@ -39,7 +40,7 @@
                 <div class="boxProgram pt-2 row row-cols-1 d-flex">
                     <!--<p th:text="${serie.name}" />-->
                     <div th:each="serie : ${recommendedSeries}" class="cardProgram text-white ">
-                        <a class="linkProgram" href="#">
+                        <a class="linkProgram" href="#" th:href="@{/user/v/serie/{idSerie}/description (idSerie=${serie.id})}">
                             <figure class="imgProgram figure m-0 w-100">
                                 <img class="figure-img img-fluid" th:src="@{${serie.img}}" alt="">
                                 <div class="textProgramHover">

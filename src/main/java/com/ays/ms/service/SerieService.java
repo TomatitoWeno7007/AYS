@@ -1,10 +1,14 @@
 package com.ays.ms.service;
 
 //import com.ays.ms.model.ProgramGenre;
+import com.ays.ms.controller.dto.request.ChapterRequest;
 import com.ays.ms.controller.dto.request.SerieRequest;
+import com.ays.ms.controller.dto.response.ChapterResponse;
 import com.ays.ms.controller.dto.response.SerieResponse;
 import com.ays.ms.exceptions.ResourceNotFoundException;
+import com.ays.ms.model.Chapter;
 import com.ays.ms.model.Genres;
+import com.ays.ms.model.Season;
 import com.ays.ms.model.Serie;
 import com.ays.ms.respository.SerieRepository;
 import org.modelmapper.ModelMapper;
@@ -75,15 +79,28 @@ public class SerieService {
         this.serieRepository.deleteSerie(id);
     }
 
-    public void addSerie(SerieRequest serieRequest) {
+    public Serie saveOrUpdate(SerieRequest serieRequest) {
 
         Serie serie = new Serie();
         serie.setName(serieRequest.getName());
         serie.setDescription(serieRequest.getDescription());
         List<Genres> genres = genreService.getGenresByName(serieRequest.getGenres());
         serie.setGenres(genres);
+        if (! serieRequest.getImg().isEmpty()) {
+            serie.setImg(String.valueOf(serieRequest.getImg()));
+        }
 
-        this.serieRepository.addSerie(serie);
+        Season season = new Season();
+        season.setNumber(1);
+        List<Season> listSeason = new ArrayList<>();
+        listSeason.add(season);
+        serie.setSeasons(listSeason);
+
+        return this.saveOrUpdate(serie);
+    }
+
+    public Serie saveOrUpdate(Serie serie) {
+        return this.serieRepository.addSerie(serie);
     }
 
     @Transactional
@@ -106,5 +123,44 @@ public class SerieService {
         serie.setGenres(genres);
 
     }
+
+    public List<ChapterResponse> getChaptersFromView(Season season) {
+        List<Chapter> chapters = season.getChapters();
+
+        List<ChapterResponse> responses = chapters.stream()
+                .map( chapter -> modelMapper.map(chapter, ChapterResponse.class))
+                .collect(Collectors.toList());
+
+        responses.forEach( response ->  {
+            ChapterRequest request = new ChapterRequest();
+            request.setId(response.getId());
+            request.setName(response.getName());
+            request.setNumber(response.getNumber());
+            request.setSynopsis(response.getSynopsis());
+            request.setSynopsis(response.getSynopsis());
+            request.setSynopsis(response.getSynopsis());
+        });
+
+        return responses;
+    }
+
+    public void editSeason(Serie serie, List<Season> listSeason) {
+        serie.setSeasons(listSeason);
+    }
+
+
+
+//    public Serie getSerieBySeason(Season season) {
+//        List<Serie> listSerie = serieRepository.getSeries();
+//    }
+
+//    public Serie getSerieByIdSeason(Long id) {
+//        List<Serie> listSerie = serieRepository.getSeries();
+//        for (int x = 0; x < listSerie.size()-1; x++) {
+//            for (int y = 0; y < listSerie.get(x).getSeasons().size()-1; y++) {
+//
+//            }
+//        }
+//    }
 
 }

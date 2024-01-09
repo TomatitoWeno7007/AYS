@@ -1,7 +1,9 @@
 
-            /******************************/
-            /* Contenido Nuevo */
-            /******************************/
+            .mensajeError {
+                /* color: rgb(48, 241, 255); */
+                color: var(--main-third-color);
+            }
+
             /* Para que el footer se quede debajo */
             body{
                 min-height: 100vh;
@@ -22,9 +24,50 @@
                 white-space: nowrap;
             }
 
+
+/* description */
+.breadcrumb-item + .breadcrumb-item::before {
+    color: white;
+}
+
+.linkBreadcrumb {
+    color: rgb(48, 241, 255);
+}
+
+    .linkBreadcrumb:hover {
+        color: white;
+        transition: all 0.5s;
+    }
+
+.tableProgram caption {
+    left: -9990px;
+}
+
+.soundOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+#btnDeleteSeason {
+    margin-bottom: 0.5rem;
+}
+
         /*------------------------------*/
         @media only screen and (min-width: 576px) {
 
+        }
+
+        /*------------------------------*/
+        @media only screen and (min-width: 710px) {
+            #btnDeleteSeason {
+                margin-bottom: 0px;
+            }
         }
 
         /*------------------------------*/

@@ -117,13 +117,28 @@ public class UserService {
         for(; numberRecomendedSeries > 0; numberRecomendedSeries--) {
 
             long numSerie = MathUtils.randomNumber(1, numberSeries.intValue());
-            if(!seriesIds.contains(numSerie)) {
+            Serie serie = serieService.getSerie(numSerie);
+            if (serie == null) {
+                for (; serieService.getSerie(numSerie) == null ||
+                        seriesIds.contains(numSerie); ) {
+                    numSerie++;
+                }
+
                 // Se obtiene esa serie con el id y se añade a la lista
-                Serie serie = serieService.getSerie(numSerie);
+                serie = serieService.getSerie(numSerie);
                 recommendedSeries.add(serie);
                 seriesIds.add(serie.getId());
-            } else {
-                numberRecomendedSeries++;
+
+            }
+            else {
+                if (!seriesIds.contains(numSerie)) {
+                    // Se obtiene esa serie con el id y se añade a la lista
+                    serie = serieService.getSerie(numSerie);
+                    recommendedSeries.add(serie);
+                    seriesIds.add(serie.getId());
+                } else {
+                    numberRecomendedSeries++;
+                }
             }
         }
 
@@ -144,14 +159,28 @@ public class UserService {
         for (; numberRecomendedFilms > 0; numberRecomendedFilms--) {
 
             long numFilm = MathUtils.randomNumber(1, numberFilms.intValue());
+            Film film = filmService.getFilm(numFilm);
+            if (film == null) {
+                for (; filmService.getFilm(numFilm) == null ||
+                        filmsIds.contains(numFilm); ) {
+                    numFilm++;
+                }
 
-            if(!filmsIds.contains(numFilm)) {
-                Film film = filmService.getFilm(numFilm);
+                film = filmService.getFilm(numFilm);
                 recommendedFilms.add(film);
                 filmsIds.add(film.getId());
-            } else {
-                numberRecomendedFilms++;
             }
+
+            else {
+                if(!filmsIds.contains(numFilm)) {
+                    film = filmService.getFilm(numFilm);
+                    recommendedFilms.add(film);
+                    filmsIds.add(film.getId());
+                } else {
+                    numberRecomendedFilms++;
+                }
+            }
+
         }
 
         return recommendedFilms;

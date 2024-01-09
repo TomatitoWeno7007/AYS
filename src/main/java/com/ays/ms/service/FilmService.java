@@ -41,6 +41,12 @@ public class FilmService {
         film.setDescription(filmRequest.getDescription());
         List<Genres> genres = genreService.getGenresByName(filmRequest.getGenres());
         film.setGenres(genres);
+        if (! filmRequest.getImg().isEmpty()) {
+            film.setImg(String.valueOf(filmRequest.getImg()));
+        }
+        if (! filmRequest.getUrl().isEmpty()) {
+            film.setUrl(String.valueOf(filmRequest.getUrl()));
+        }
 
         this.filmRepository.addFilm(film);
     }

@@ -1,0 +1,296 @@
+.textLinkEpisode {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Puntos suspensivos al final */
+}
+
+.descriptionBox {
+    margin: 10px;
+    padding: 0px;
+}
+
+    .imgDescription {
+        width: 30%;
+        position: relative;
+    }
+
+        .imgDescription img {
+            width: 100%;
+            border-radius: 10px;
+            transition: all 0.5s;
+        }
+
+    .descriptionInfo {
+        width: 70%;
+        margin: 0rem 1rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .textDescription {
+            overflow-y: auto;
+            height: 25vw;
+        }
+
+.seasonBox {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+}
+
+    .seasonBox .nav {
+        flex-direction: column;
+        height: 60px;
+    }
+
+        .seasonBox .nav-item {
+            width: 30%;
+            text-align: center;
+        }
+
+        .seasonBox .nav-item:first-of-type {
+            margin-left: 2vw;
+        }
+
+.episodeContainer {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+}
+
+    .cardEpisode {
+        margin: 10px;
+        padding: 0px;
+        width: 35%;
+    }
+
+        .linkEpisode {
+            color: white;
+            transition: all 0.3s;
+        }
+
+            .linkEpisode:hover {
+                color: rgb(192, 191, 191);
+            }
+
+            .linkEpisode:hover img {
+                filter: brightness(60%);
+            }
+
+            .linkEpisode:hover .progressEpisode {
+                --bs-progress-height: 1.5rem;
+            }
+
+            .linkEpisode:hover .progress-bar {
+                color: black;
+            }
+
+            .linkEpisode:hover .progressLimit {
+                color: black;
+                opacity: 1;
+            }
+
+
+            .imgEpisode, .imgFilmDescription {
+                z-index: -10;
+                position: relative;
+            }
+
+                .imgEpisode img, .imgFilmDescription img {
+                    width: 10.5rem;
+                    height: 7rem;
+                    border-radius: 10px;
+                    transition: all 0.5s;
+                }
+
+            .progressEpisode {
+                bottom: 7px;
+                z-index: 100;
+                width: 100%;
+                --bs-progress-height: 0.8rem;
+                transition: all 0.5s;
+            }
+
+                .progressEpisode .progress-bar {
+                    color: rgba(var(--bs-info-rgb),var(--bs-bg-opacity));
+                    transition: all 0.5s;
+                    font-size: 1.2rem;
+                }
+
+                .progressLimit {
+                    position: absolute;
+                    right: 11px;
+                    bottom: -2.5px;
+                    font-size: 1.2rem;
+                    opacity: 0;
+                    transition: all 0.5s;
+                }
+
+            /* Breadcrumb */
+             .breadcrumb-item + .breadcrumb-item::before {
+                 color: white;
+             }
+
+             .linkBreadcrumb {
+                 color: rgb(48, 241, 255);
+             }
+
+                 .linkBreadcrumb:hover {
+                     color: white;
+                     transition: all 0.5s;
+                 }
+
+         .logoPrint {
+             display: none;
+         }
+
+
+
+/*------------------------------*/
+@media only screen and (min-width: 576px) {
+    .imgEpisode img, .imgFilmDescription img {
+        height: 20vw;
+    }
+
+    .seasonBox .nav-item {
+        width: 26%;
+    }
+
+}
+
+/*------------------------------*/
+@media only screen and (min-width: 768px) {
+    .cardEpisode {
+        width: 33%;
+    }
+
+        .imgEpisode img, .imgFilmDescription img {
+            height: 16vw;
+        }
+
+    .seasonBox .nav-item {
+        width: 20%;
+    }
+}
+
+/*------------------------------*/
+@media only screen and (min-width: 992px) {
+    .seasonBox .nav-item {
+        width: 15%;
+    }
+
+    .cardEpisode {
+        width: 30%;
+    }
+
+        .imgEpisode img, .imgFilmDescription img {
+            height: 14vw;
+        }
+}
+
+/*------------------------------*/
+@media only screen and (min-width: 1200px) {
+    .seasonBox {
+        width: 20%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-right: 10px;
+        padding-right: 20px;
+    }
+
+    .seasonBox .nav {
+        flex-direction: row;
+    }
+
+        .seasonBox .nav-item:first-of-type {
+            margin-left: 0px;
+        }
+
+        .seasonBox .nav-item {
+            width: 100%;
+        }
+
+        .serieBox {
+            display: flex;
+        }
+
+        .episodeBox {
+            width: 85%;
+        }
+
+    .episodeContainer {
+        margin-top: 10px;
+    }
+
+        .cardEpisode {
+            width: 33%;
+        }
+
+            .imgEpisode img {
+                height: 10vw;
+            }
+
+            .imgFilmDescription img {
+                height: 12vw;
+            }
+
+}
+
+/*------------------------------*/
+@media only screen and (min-width: 1400px) {
+    .seasonBox {
+        width: 15%;
+    }
+
+    .cardEpisode {
+        width: 28%;
+    }
+        .imgEpisode img {
+            height: 9vw;
+        }
+
+        .imgFilmDescription img {
+            height: 10vw;
+        }
+
+}
+
+@media print {
+            h2 {
+                text-align: center;
+            }
+
+            .imgDescription, .serieBox, header, footer {
+                display: none;
+            }
+
+            .descriptionBox {
+                margin-top: 5vw !important;
+                justify-content: center;
+            }
+
+                .descriptionInfo h3 {
+                    text-align: center;
+                }
+
+            .textDescription {
+                overflow: visible;
+            }
+
+            .logoPrint {
+                display: block;
+                position: absolute;
+                top: 60%;
+                bottom: 15%;
+                right: 0;
+                left: 0;
+            }
+
+                .logoPrint figure {
+                    width: 30%;
+                }
+
+                    .logoPrint figure img {
+                        opacity: 50%;
+                    }
+        }

@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+    <div th:fragment="modal-edit-chapter">
+        <div class="modal fade" tabindex="-1"
+             th:attr="id='modalEditChapter'+${chapter.id}" data-bs-backdrop="static" data-bs-keyboard="false"  aria-labelledby="Editar Capitulo" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar Capítulo</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="m-3">
+<!--                            @{/serie/{id}/seasons/{idSeason}/add-chapter (id=${serie.id}, idSeason=${seasonChoose})}-->
+                            <form class="text-white"  action="#" th:action="@{/serie/{id}/season/{idSeason}/edit-chapter (id=${serie.id}, idSeason=${seasonChoose})}" th:object="${chapter.editChapter}"
+                                    method="post" enctype="multipart/form-data">
+                                <div class="mb-3 row mb-md-4">
+                                    <label th:for="${'inputName' + chapter.id}" class="col-2 col-form-label">Nombre</label>
+                                    <div class="col-10">
+                                        <input type="text" th:name="name" th:value="${chapter.name}" class="form-control" th:id="${'inputName' + chapter.id}">
+                                        <input type="hidden" th:name="id" th:value="${chapter.id}">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 row mb-4">
+                                    <label th:for="${'textAreaSinopsis' + chapter.id}" class="col-2 form-label">Descripción</label>
+                                    <div class="ms-1 ms-sm-0 col-9 col-sm-10">
+                                        <textarea class="form-control" th:name="synopsis"
+                                                  th:text="${chapter.synopsis}"
+                                                  th:id="${'textAreaSinopsis' + chapter.id}" rows="3"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 row mb-4 align-items-center">
+                                    <label th:for="inputImg+${chapter.id}" class="col-2 col-form-label">Imagen</label>
+                                    <div class="col-10">
+
+                                        <a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover"
+                                           th:if="${chapter.img != ''}"
+                                           th:id="editImg+${chapter.id}" href="#"
+                                           th:text="${chapter.img}"
+                                           th:attr="aria-label='Introducir imagen para el capítulo: ' + ${chapter.name} + ', dirección de enlace: ' + ${chapter.img}"></a>
+
+                                        <div th:id="divChooseImg+${chapter.id}" >
+                                            <input class="form-control" type="file" th:name="img">
+                                            <button class="btn btn-light mt-2"
+                                                    th:if="${chapter.img != '' && chapter.img != null}"
+                                                    th:id="btnCancelImg+${chapter.id}"
+                                                    aria-label="Cancelar archivo de imagen" type="button">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 row mb-4 align-items-center">
+                                    <label th:for="inputVideo+${chapter.id}" class="col-2 col-form-label">Video</label>
+                                    <div class="col-10">
+                                        <a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover"
+                                           th:id="editVideo+${chapter.id}" href="#"
+                                           th:text="${chapter.url}"
+                                           th:attr="aria-label='Introducir video para el capítulo: ' + ${chapter.name} + ', dirección de enlace: ' + ${chapter.url}"></a>
+                                        <div th:id="divChooseVideo+${chapter.id}">
+                                            <input class="form-control" type="file" th:name="url">
+                                            <button class="btn btn-light mt-2"
+                                                    th:if="${chapter.url != '' && chapter.url != null}"
+                                                    th:id="btnCancelVideo+${chapter.id}"
+                                                    aria-label="Cancelar archivo de video" type="button">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="offset-md-8 offset-xl-9">
+                                    <input class="btn btn-primary col-12" type="submit" value="Guardar Capítulo">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

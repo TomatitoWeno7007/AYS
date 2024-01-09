@@ -82,6 +82,22 @@
                             margin: 0px;
                         }
 
+
+         /* Breadcrumb */
+         .breadcrumb-item + .breadcrumb-item::before {
+             color: white;
+         }
+
+         .linkBreadcrumb {
+             color: rgb(48, 241, 255);
+         }
+
+             .linkBreadcrumb:hover {
+                 color: white;
+                 transition: all 0.5s;
+             }
+
+
         /*------------------------------*/
         @media only screen and (min-width: 576px) {
             .linkProgram:hover .textProgramHover p {

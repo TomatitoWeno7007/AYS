@@ -1,6 +1,7 @@
 package com.ays.ms.respository;
 
 import com.ays.ms.model.Film;
+import com.ays.ms.model.Genres;
 import com.ays.ms.respository.springdata.FilmSpringDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

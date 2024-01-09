@@ -19,4 +19,10 @@ public class SeasonRepository {
         return optionalSeason.orElse(null);
     }
 
+    public Season addSeason(Season season) {
+        return seasonSpringDataRepository.save(season);
+    }
+
+    public void deleteSeason(Season season) { seasonSpringDataRepository.delete(season); }
+
 }

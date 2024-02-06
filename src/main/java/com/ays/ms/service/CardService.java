@@ -20,4 +20,8 @@ public class CardService {
         return cardRepository.saveCard(card);
     }
 
+    public void saveCard(Card card) {
+        cardRepository.saveCard(card);
+    }
+
 }

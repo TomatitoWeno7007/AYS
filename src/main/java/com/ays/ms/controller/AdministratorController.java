@@ -32,6 +32,13 @@ public class AdministratorController {
     @Autowired
     UserService userService;
 
+    @GetMapping("/v/principal/content")
+    public String getPrincipalContent(Model model) {
+        model.addAttribute("listSeries", serieService.getSerieFromView());
+        model.addAttribute("newSerie", new SerieRequest());
+        model.addAttribute("listGenres", genreService.getGenres());
+        return "admin/principal-content";
+    }
     @GetMapping("/v/serie")
     public String getSerie(Model model) {
         model.addAttribute("listSeries", serieService.getSerieFromView());

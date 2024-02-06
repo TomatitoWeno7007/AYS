@@ -7,7 +7,7 @@
     </head>
     <body>
         <main layout:fragment="main-content">
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="text-white">
+            <nav style="--bs-breadcrumb-divider: '>';" id="breadcrumbNoPrint" aria-label="breadcrumb" class="text-white">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item" aria-current="page">
                         <a class="linkBreadcrumb" href="/user/v/principal/content" aria-label="Inicio" title="Inicio">Inicio</a>
@@ -21,11 +21,18 @@
 
             <div class="descriptionBox text-white d-flex m-auto">
                 <figure class="imgDescription figure m-0">
-                    <img class="figure-img img-fluid" th:src="@{${film.img}}" th:alt="${film.name}">
+<!--                    <img class="figure-img img-fluid" th:src="@{${film.img}}" th:alt="${film.name}">-->
+                    <img class="figure-img img-fluid" src="https://www.crunchyroll.com/imgsrv/display/thumbnail/480x720/catalog/crunchyroll/35e4ac6339f5fdcc164160a5755790cd.jpe" th:alt="${film.name}">
                 </figure>
                 <div class="descriptionInfo">
                     <h2 class="border-bottom h3" th:text="${film.name}"></h2>
                     <div class="textDescription">
+                        <p class="mb-3">Género:
+                            <span th:each="genre, actualGenre : ${film.genres}">
+                                <span th:text="${genre.name}"></span>
+                                <span th:if="${!actualGenre.last}">, </span> <!-- Agregar coma si no es el último género -->
+                            </span>
+                        </p>
                         <p th:text="${film.description}"></p>
                     </div>
                 </div>
@@ -33,24 +40,28 @@
 
             <div class="logoPrint text-center">
                 <figure class="figure">
-                    <img class="figure-img img-fluid" src="/img/LogoNegro.png" alt="">
+                    <img class="figure-img img-fluid" src="/img/LogoNegro.png" alt="Logo">
                 </figure>
             </div>
 
-            <h3 class="text-light">Recomendaciones</h3>
-            <div class="episodeContainer row row-cols-1 d-flex">
-                <div th:each="filmGenre : ${recommendedFilm}" class="cardEpisode">
-                    <a class="linkEpisode keepWatchingProgram text-decoration-none" href="">
-                        <div class="boxImgEpisode position-relative">
-                            <figure class="imgEpisode figure m-0 w-100">
-                                <img class="figure-img w-100" th:src="@{${filmGenre.img}}" alt="">
-                            </figure>
-                        </div>
-                        <div class="textLinkEpisode">
-                            <h3 th:text="${filmGenre.name}"></h3>
-                            <p th:text="${filmGenre.description}"></p>
-                        </div>
-                    </a>
+            <div id="recommendedPrograms"
+                 th:if="${not #lists.isEmpty(recommendedFilm)}">
+                <h3 class="text-light">Recomendaciones</h3>
+                <div class="episodeContainer row row-cols-1 d-flex">
+                    <div th:each="filmGenre : ${recommendedFilm}" class="cardEpisode">
+                        <a class="linkEpisode keepWatchingProgram text-decoration-none"
+                           th:href="@{/user/v/film/{idFilm}/description(idFilm=${filmGenre.id})}">
+                            <div class="boxImgEpisode position-relative">
+                                <figure class="imgEpisode figure m-0 w-100">
+                                    <img class="figure-img w-100" th:src="@{${filmGenre.img}}" th:alt="${film.name}">
+                                </figure>
+                            </div>
+                            <div class="textLinkEpisode">
+                                <h3 th:text="${filmGenre.name}"></h3>
+                                <p th:text="${filmGenre.description}"></p>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
 

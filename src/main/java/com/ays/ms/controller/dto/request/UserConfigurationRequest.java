@@ -10,5 +10,4 @@ public class UserConfigurationRequest {
     private String secondLastName;
     private String dateBirth;
 
-
 }

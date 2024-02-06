@@ -1,18 +1,19 @@
 package com.ays.ms.service;
 
-import com.ays.ms.controller.dto.request.UserConfigurationRequest;
-import com.ays.ms.controller.dto.request.UserLoginRequest;
-import com.ays.ms.controller.dto.request.UserRegisterRequest;
+import com.ays.ms.controller.dto.request.*;
 import com.ays.ms.exceptions.AuthenticationAYSException;
 import com.ays.ms.model.Film;
 import com.ays.ms.model.Serie;
 import com.ays.ms.model.User;
+import com.ays.ms.model.Card;
 import com.ays.ms.respository.UserRepository;
 import com.ays.ms.service.utils.MathUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.ObjectError;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -53,17 +54,61 @@ public class UserService {
         authenticationService.login(user);
     }
 
+    public void delete() {
+        int idUser = (int) authenticationService.getIdLoginUser();
+        User user = this.getUser(idUser);
+        userRepository.delete(user);
+        authenticationService.logout();
+
+    }
+
     public void configuration(UserConfigurationRequest userConfigurationRequest) {
         User user = this.getUser(this.authenticationService.getIdLoginUser());
 
         DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate ld = LocalDate.parse(userConfigurationRequest.getDateBirth(), DATEFORMATTER);
-        LocalDateTime ldt = LocalDateTime.of(ld, LocalDateTime.now().toLocalTime());
+
         user.setDateBirth(ld);
         user.setName(userConfigurationRequest.getName());
         user.setLastName(userConfigurationRequest.getLastName());
         user.setSecondLastName(userConfigurationRequest.getSecondLastName());
         userRepository.save(user);
+    }
+
+    public void configurationCard(UserConfigurationCardRequest userConfigurationCardRequest) {
+        User user = this.getUser(this.authenticationService.getIdLoginUser());
+
+        DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate ld = LocalDate.parse(userConfigurationCardRequest.getExpirationDate(), DATEFORMATTER);
+
+        Card card = new Card();
+        card.setId(user.getCard().getId());
+        card.setCardNumber(userConfigurationCardRequest.getCardNumber());
+        card.setCardUser(userConfigurationCardRequest.getCardUser());
+        card.setCvv(userConfigurationCardRequest.getCvv());
+        card.setExpirationDate(ld);
+        user.setCard(card);
+        userRepository.save(user);
+        cardService.saveCard(card);
+    }
+
+    public ObjectError changePass(UserConfigurationPassRequest userConfigurationPassRequest) {
+
+        ObjectError errors = null;
+
+        User user = this.getUser(this.authenticationService.getIdLoginUser());
+
+        boolean isValid = ((userConfigurationPassRequest.getPass().equals(userConfigurationPassRequest.getRepeatPass()))
+        && user.getPassword().equals(userConfigurationPassRequest.getOldPass()));
+
+        if (Boolean.FALSE.equals(isValid)) {
+            errors = new ObjectError("globalError",
+                    "Las contraseñas no coinciden");
+        } else {
+            user.setPassword(userConfigurationPassRequest.getPass());
+            userRepository.save(user);
+        }
+        return errors;
     }
 
     public Boolean login(UserLoginRequest userLoginRequest) {

@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="modal-delete-user">
+    <div class="modal fade" tabindex="-1" id="modalDeleteUser" data-bs-backdrop="static" data-bs-keyboard="false"  aria-labelledby="Eliminar cuenta" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content bg-dark text-white text-start">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar Cuenta</h5>
+                    <button type="button" id="btnCloseModalDate" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="m-3">
+                        <form  th:action="@{/user/delete}" th:method="POST"
+                               class="bg-dark text-white">
+                            <div class="mb-3 row align-items-center">
+                                <p class="m-0 p-0">¿Seguro que quieres eliminar la cuenta?</p>
+                                <p class="mb-0 mt-4 p-0 text-danger">* Esta acción no se puede deshacer</p>
+                            </div>
+                            <input type="submit" class="btn btn-primary mt-3" value="Confirmar">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

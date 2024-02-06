@@ -7,10 +7,13 @@
     </head>
     <body>
         <main layout:fragment="main-content">
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="text-white">
+            <nav style="--bs-breadcrumb-divider: '>';" id="breadcrumbNoPrint" aria-label="breadcrumb" class="text-white">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
                         <a class="linkBreadcrumb" href="/user/v/principal/content" aria-label="Inicio" title="Inicio">Inicio</a>
+                    </li>
+                    <li class="breadcrumb-item" aria-current="page">
+                        <a class="linkBreadcrumb" href="/user/v/series" aria-label="Todas las Series" title="Series">Series</a>
                     </li>
                     <li th:text="${serie.name}" class="breadcrumb-item active text-light" aria-current="page"></li>
                 </ol>
@@ -18,11 +21,17 @@
 
             <div class="descriptionBox text-white d-flex m-auto">
                 <figure class="imgDescription figure m-0">
-                    <img class="figure-img img-fluid" th:src="@{${serie.img}}" alt="">
+                    <img class="figure-img img-fluid" th:src="@{${serie.img}}" th:alt="${serie.name}">
                 </figure>
                 <div class="descriptionInfo">
                     <h3 class="border-bottom" th:text="${serie.name}"></h3>
                     <div class="textDescription">
+                        <p class="mb-3">Género:
+                            <span th:each="genre, actualGenre : ${serie.genres}">
+                                <span th:text="${genre.name}"></span>
+                                <span th:if="${!actualGenre.last}">, </span> <!-- Agregar coma si no es el último género -->
+                            </span>
+                        </p>
                         <p th:text="${serie.description}"></p>
                     </div>
                 </div>
@@ -30,7 +39,7 @@
 
             <div class="logoPrint text-center">
                 <figure class="figure">
-                    <img class="figure-img img-fluid" src="/img/LogoNegro.png" alt="">
+                    <img class="figure-img img-fluid" src="/img/LogoNegro.png" alt="Logo">
                 </figure>
             </div>
 
@@ -52,7 +61,7 @@
                                 <a class="linkEpisode keepWatchingProgram text-decoration-none" href="">
                                     <div class="boxImgEpisode position-relative">
                                         <figure class="imgEpisode figure m-0 w-100">
-                                            <img class="figure-img w-100" th:src="@{${chapter.img}}" alt="">
+                                            <img class="figure-img w-100" th:src="@{${chapter.img}}" th:alt="${chapter.name}">
                                         </figure>
                                         <!-- Controlar con javascript/jquery -->
                                         <div class="progress progressEpisode position-absolute" role="progressbar"

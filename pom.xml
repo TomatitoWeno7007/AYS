@@ -73,6 +73,11 @@
 			<artifactId>thymeleaf-extras-java8time</artifactId>
 			<version>3.0.4.RELEASE</version>
 		</dependency>
+			<dependency>
+				<groupId>com.dropbox.core</groupId>
+				<artifactId>dropbox-core-sdk</artifactId>
+				<version>5.4.5</version>
+			</dependency>
 	</dependencies>
 
 	<build>

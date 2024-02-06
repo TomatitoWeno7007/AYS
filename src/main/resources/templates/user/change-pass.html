@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="modal-change-pass">
+    <div class="modal fade" tabindex="-1" id="modalChangePass" data-bs-backdrop="static" data-bs-keyboard="false"  aria-labelledby="Editar contraseña" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content bg-dark text-white text-start">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Contraseña</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="m-3">
+                        <form class="text-white" th:action="@{/user/changePass}" th:object="${userPass}"
+                              method="post">
+                            <div class="mb-3 row align-items-center">
+                                <label for="inputOldPass" class="col-sm-3 col-form-label">Antigua Contraseña</label>
+                                <div class="col-sm-9">
+                                    <input type="text" th:field="*{oldPass}" class="form-control" id="inputOldPass">
+                                </div>
+                                <span class="mensajeError" th:if="${#fields.hasErrors('oldPass')}" th:errors="*{oldPass}"></span>
+                            </div>
+
+                            <div class="mb-3 row align-items-center">
+                                <label for="inputPass" class="col-sm-3 col-form-label">Nueva Contraseña</label>
+                                <div class="col-sm-9">
+                                    <input type="text" th:field="*{pass}" class="form-control" id="inputPass">
+                                </div>
+                                <span class="mensajeError" th:if="${#fields.hasErrors('pass')}" th:errors="*{pass}"></span>
+                            </div>
+
+                            <div class="mb-3 row align-items-center">
+                                <label for="inputRepeatPass" class="col-sm-3 col-form-label">Repita Contraseña</label>
+                                <div class="col-sm-9">
+                                    <input type="text" th:field="*{repeatPass}" class="form-control" id="inputRepeatPass">
+                                </div>
+                                <span class="mensajeError" th:if="${#fields.hasErrors('repeatPass')}" th:errors="*{repeatPass}"></span>
+                            </div>
+
+                            <div class="offset-md-8 offset-xl-9">
+                                <input class="btn btn-primary col-12" type="submit" value="Cambiar Contraseña">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript" th:if="${#fields.hasErrors('userPass.*')}">
+        $( document ).ready(function() {
+            $("#modalChangePass").modal("show");
+        });
+    </script>
+
+</div>
+</body>
+</html>

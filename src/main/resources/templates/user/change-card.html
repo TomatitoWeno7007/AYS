@@ -13,25 +13,41 @@
 
                 <div class="modal-body">
                     <div class="m-3">
-                        <form class="text-white" action="">
+                        <form class="text-white" th:action="@{/user/configuration/card}" th:object="${userCard}"
+                              method="post">
+
+                            <div class="mb-3 row align-items-center">
+                                <label for="inputUser" class="col-sm-2 col-form-label">Titular de la tarjeta</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" th:field="*{cardUser}" th:value="${cardUser}" type="text" id="inputUser">
+                                    <span class="mensajeError" th:if="${#fields.hasErrors('cardUser')}" th:errors="*{cardUser}"></span>
+                                </div>
+                            </div>
+
                             <div class="mb-3 row align-items-center">
                                 <label for="inputNumCard" class="col-sm-2 col-form-label">Número de la tarjeta</label>
                                 <div class="col-sm-10">
-                                    <input type="text" th:value="${userInfo.card.cardNumber}" class="form-control" id="inputNumCard">
+                                    <input type="text" th:value="${userInfo.card.cardNumber}" th:field="*{cardNumber}"  class="form-control" id="inputNumCard">
+                                    <span class="mensajeError" th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}"></span>
                                 </div>
                             </div>
 
                             <div class="mb-3 row align-items-center">
                                 <label for="inputCvv" class="col-sm-2 col-form-label">CVV</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="text" id="inputCvv">
+                                    <input class="form-control" th:field="*{cvv}" th:value="${cvv}" type="text" id="inputCvv">
+                                    <span class="mensajeError" th:if="${#fields.hasErrors('cvv')}" th:errors="*{cvv}"></span>
                                 </div>
                             </div>
 
                             <div class="mb-3 row align-items-center">
                                 <label for="inputExpirationDate" class="col-sm-2 col-form-label">Fecha Caducidad</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="date" id="inputExpirationDate">
+                                    <input th:field="*{expirationDate}"
+                                           type="date" class="form-control"
+                                           th:attr="data-date=${expirationDate}"
+                                           id="inputExpirationDate">
+                                    <span class="mensajeError" th:if="${#fields.hasErrors('expirationDate')}" th:errors="*{expirationDate}"></span>
                                 </div>
                             </div>
 
@@ -39,6 +55,15 @@
                                 <input class="btn btn-primary col-12" type="submit" value="Guardar Cambios">
                             </div>
                         </form>
+                        <script>
+                            var date = document.getElementById("inputExpirationDate").getAttribute("data-date");
+                            document.getElementById("inputExpirationDate").value = date;
+                        </script>
+                        <script th:inline="javascript" th:if="${#fields.hasErrors('userCard.*')}">
+                            $( document ).ready(function() {
+                                $("#modalChangeCard").modal("show");
+                            });
+                        </script>
                     </div>
                 </div>
             </div>

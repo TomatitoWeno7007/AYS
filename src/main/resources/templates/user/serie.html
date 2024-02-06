@@ -3,7 +3,7 @@
       layout:decorate="~{template}" xmlns:th="http://www.thymeleaf.org">
     <head>
         <link rel="stylesheet" href="/css/program/gallery.css">
-        <title>AYS - Películas</title>
+        <title>AYS - Series</title>
     </head>
     <body>
         <main layout:fragment="main-content">
@@ -13,28 +13,28 @@
                         <a class="linkBreadcrumb" href="/user/v/principal/content"
                            aria-label="Inicio" title="Inicio">Inicio</a>
                     </li>
-                    <li class="breadcrumb-item active text-white" aria-current="page">Películas</li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">Series</li>
                 </ol>
             </nav>
 
-            <h2 class="text-white">Películas</h2>
+            <h2 class="text-white">Series</h2>
 
             <div class="containerProgram m-3 mt-4 pt-2 border-top border-top-light"
                  th:each="genre : ${listGenres}">
                 <h3 class="text-white" th:text="${genre.name}"></h3>
                 <div class="boxProgram pt-2 row row-cols-1 d-flex">
-                    <div th:each="film : ${listFilms}"
-                         th:if="${film.genres.contains(genre)}" class="cardProgram text-white">
-                        <a class="linkProgram" href="#" th:href="@{/user/v/film/{idFilm}/description(idFilm=${film.id})}">
+                    <div th:each="serie : ${listSeries}"
+                         th:if="${serie.genres.contains(genre)}" class="cardProgram text-white">
+                        <a class="linkProgram" href="#" th:href="@{/user/v/serie/{idSerie}/description(idSerie=${serie.id})}">
                             <figure class="imgProgram figure m-0 w-100">
-                                <img class="figure-img img-fluid" th:src="@{${film.img}}" th:alt="${film.name}">
+                                <img class="figure-img img-fluid" th:src="@{${serie.img}}" th:alt="${serie.name}">
                                 <div class="textProgramHover">
-                                    <h3 th:text="${film.name}"></h3>
-                                    <p th:text="${film.description}"></p>
+                                    <h3 th:text="${serie.name}"></h3>
+                                    <p th:text="${serie.description}"></p>
                                 </div>
                             </figure>
                         </a>
-                        <h3 class="titleProgram text-center" th:text="${film.name}"></h3>
+                        <h3 class="titleProgram text-center" th:text="${serie.name}"></h3>
                     </div>
                 </div>
             </div>

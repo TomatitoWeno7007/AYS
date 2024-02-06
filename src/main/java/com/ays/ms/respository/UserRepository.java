@@ -24,6 +24,8 @@ public class UserRepository {
         this.userSpringDataRepository.save(user);
     }
 
+    public void delete(User user) { this.userSpringDataRepository.delete(user); }
+
     public User replace(User user) {
         Optional<User> optionalUser = this.userSpringDataRepository.findById(user.getId());
         return optionalUser.orElse(null);

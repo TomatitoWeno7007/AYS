@@ -260,8 +260,12 @@
                 text-align: center;
             }
 
-            .imgDescription, .serieBox, header, footer {
+            .serieBox, header, footer, #breadcrumbNoPrint, #recommendedPrograms {
                 display: none;
+            }
+
+            .imgDescription img {
+                width: 50%;
             }
 
             .descriptionBox {

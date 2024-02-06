@@ -28,7 +28,7 @@ public class AuthenticationService {
         return String.valueOf(this.getSession().getAttribute(USER_EMAIL));
     }
 
-    private HttpSession getSession() {
+    public HttpSession getSession() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         return attr.getRequest().getSession(true);
     }

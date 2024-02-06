@@ -1,9 +1,6 @@
 package com.ays.ms.controller;
 
-import com.ays.ms.controller.dto.request.FilmRequest;
-import com.ays.ms.controller.dto.request.UserConfigurationRequest;
-import com.ays.ms.controller.dto.request.UserLoginRequest;
-import com.ays.ms.controller.dto.request.UserRegisterRequest;
+import com.ays.ms.controller.dto.request.*;
 import com.ays.ms.model.Film;
 import com.ays.ms.model.Genres;
 import com.ays.ms.model.Serie;
@@ -18,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("user")
@@ -53,6 +52,9 @@ public class UserController {
     public String getConfigurationView(Model model) {
         model.addAttribute("userInfo", userService.getUser(authenticationService.getIdLoginUser()));
         model.addAttribute("userConfiguration", new UserConfigurationRequest());
+        model.addAttribute("userCard", new UserConfigurationCardRequest());
+        model.addAttribute("userPass", new UserConfigurationPassRequest());
+
         return "user/configuration";
     }
 
@@ -91,7 +93,7 @@ public class UserController {
         }
 
         if (authenticationService.isAdmin()) {
-            return "redirect:/admin/v/serie";
+            return "redirect:/admin/v/principal/content";
         }
 
         return "redirect:/user/v/principal/content";
@@ -107,13 +109,41 @@ public class UserController {
     }
 
     @PostMapping("/configuration/card")
-    public String saveConfigurationCard() {
+    public String saveConfigurationCard(@ModelAttribute("userCard") @Valid UserConfigurationCardRequest userConfigurationCardRequest,
+                                    BindingResult result, Model model) {
+
+        if(result.hasErrors()) {
+            return "user/configuration";
+        }
+
+        userService.configurationCard(userConfigurationCardRequest);
+
+        return "redirect:/user/v/configuration";
+    }
+    @PostMapping("/changePass")
+    public String saveCard(@ModelAttribute("userPass") @Valid UserConfigurationPassRequest userConfigurationPassRequest,
+                           BindingResult result, Model model) {
+
+
+        ObjectError errors = userService.changePass(userConfigurationPassRequest);
+
+        if (errors != null) {
+            result.addError(errors);
+            return "user/configuration";
+        }
+
         return "redirect:/user/v/configuration";
     }
 
     @GetMapping("/logout")
     public String logout() {
         authenticationService.logout();
+        return "redirect:/";
+    }
+
+    @PostMapping("/delete")
+    public String deleteUser() {
+        userService.delete();
         return "redirect:/";
     }
 
@@ -147,11 +177,25 @@ public class UserController {
     public String getFilmDescription(@PathVariable("idFilm") long idFilm,
                                       Model model) {
 
-        Film film = filmService.getFilm(idFilm);
-        List<Film> recommendedFilm = userService.getRecommendedUserFilms();
+        Film filmFind = filmService.getFilm(idFilm);
+        List<Film> allFilms = filmService.getFilms();
 
-        model.addAttribute("film", film);
-        model.addAttribute("recommendedFilm", recommendedFilm);
+        List<Film> filmsByGenre = allFilms.stream()
+                .filter(film -> film.getGenres().stream().
+                        anyMatch(genre -> filmFind.getGenres().contains(genre)))
+                .collect(Collectors.toList());
+
+
+        // Elimina la peli actual y ordena la lista al azar
+        filmsByGenre.remove(filmFind);
+        Collections.shuffle(filmsByGenre);
+
+        if (filmsByGenre.size() > 5) {
+            filmsByGenre.subList(5, filmsByGenre.size()).clear();
+        }
+
+        model.addAttribute("film", filmFind);
+        model.addAttribute("recommendedFilm", filmsByGenre);
         return "user/film-description";
 
     }
@@ -163,9 +207,32 @@ public class UserController {
 
         List<Genres> listGenres = genreService.getGenres();
 
-        model.addAttribute("listGenres", listGenres);
+        List<Genres> clearGenres = listGenres.stream()
+                        .filter(genre ->
+                                allFilms.stream().anyMatch(film -> film.getGenres().contains(genre)))
+                .collect(Collectors.toList());
+
+        model.addAttribute("listGenres", clearGenres);
         model.addAttribute("listFilms", allFilms);
         return "user/film";
+
+    }
+
+    @GetMapping("/v/series")
+    public String getAllSeries(Model model) {
+
+        List<Serie> allSeries = serieService.getSeries();
+
+        List<Genres> listGenres = genreService.getGenres();
+
+        List<Genres> clearGenres = listGenres.stream()
+                        .filter(genre ->
+                                allSeries.stream().anyMatch(film -> film.getGenres().contains(genre)))
+                .collect(Collectors.toList());
+
+        model.addAttribute("listGenres", clearGenres);
+        model.addAttribute("listSeries", allSeries);
+        return "user/serie";
 
     }
 

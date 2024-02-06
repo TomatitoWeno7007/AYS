@@ -3,6 +3,7 @@ package com.ays.ms.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "card")
@@ -15,7 +16,7 @@ public class Card {
     private long id;
     private String cardUser;
     private String cardNumber;
-    private String expirationDate;
+    private LocalDate expirationDate;
     private String cvv;
 
 

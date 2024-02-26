@@ -2,20 +2,16 @@ package com.ays.ms.service;
 
 import com.ays.ms.controller.dto.request.*;
 import com.ays.ms.exceptions.AuthenticationAYSException;
-import com.ays.ms.model.Film;
-import com.ays.ms.model.Serie;
-import com.ays.ms.model.User;
-import com.ays.ms.model.Card;
+import com.ays.ms.model.*;
 import com.ays.ms.respository.UserRepository;
 import com.ays.ms.service.utils.MathUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.ObjectError;
+import org.springframework.validation.FieldError;
 
-import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +71,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void configurationCard(UserConfigurationCardRequest userConfigurationCardRequest) {
+    @Transactional
+    public void configurationCard(com.ays.ms.controller.dto.request.UserConfigurationCardRequest userConfigurationCardRequest) {
         User user = this.getUser(this.authenticationService.getIdLoginUser());
 
         DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -89,12 +86,11 @@ public class UserService {
         card.setExpirationDate(ld);
         user.setCard(card);
         userRepository.save(user);
-        cardService.saveCard(card);
     }
 
-    public ObjectError changePass(UserConfigurationPassRequest userConfigurationPassRequest) {
+    public FieldError changePass(UserConfigurationPassRequest userConfigurationPassRequest) {
 
-        ObjectError errors = null;
+        FieldError errors = null;
 
         User user = this.getUser(this.authenticationService.getIdLoginUser());
 
@@ -102,7 +98,7 @@ public class UserService {
         && user.getPassword().equals(userConfigurationPassRequest.getOldPass()));
 
         if (Boolean.FALSE.equals(isValid)) {
-            errors = new ObjectError("globalError",
+            errors = new FieldError("userPass", "repeatPass",
                     "Las contraseñas no coinciden");
         } else {
             user.setPassword(userConfigurationPassRequest.getPass());
@@ -122,6 +118,14 @@ public class UserService {
         }
 
         return isLogged;
+    }
+
+    public UserConfigurationCardRequest getUserFromView(long id) {
+        User user = this.getUser(id);
+
+        UserConfigurationCardRequest userConfigurationCardRequest = modelMapper.map(user.getCard(), UserConfigurationCardRequest.class);
+
+        return userConfigurationCardRequest;
     }
 
     public List<Serie> getRecommendedUserSeries() {

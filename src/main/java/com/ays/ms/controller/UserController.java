@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,10 +51,14 @@ public class UserController {
 
     @GetMapping("/v/configuration")
     public String getConfigurationView(Model model) {
-        model.addAttribute("userInfo", userService.getUser(authenticationService.getIdLoginUser()));
-        model.addAttribute("userConfiguration", new UserConfigurationRequest());
-        model.addAttribute("userCard", new UserConfigurationCardRequest());
-        model.addAttribute("userPass", new UserConfigurationPassRequest());
+        if (!model.containsAttribute("userInfo")) {
+            long idUser = authenticationService.getIdLoginUser();
+            model.addAttribute("userInfo", userService.getUser(idUser));
+            model.addAttribute("userConfigurationCard", userService.getUserFromView(idUser));
+            model.addAttribute("userConfiguration", new UserConfigurationRequest());
+            model.addAttribute("userPass", new UserConfigurationPassRequest());
+        }
+
 
         return "user/configuration";
     }
@@ -109,10 +114,15 @@ public class UserController {
     }
 
     @PostMapping("/configuration/card")
-    public String saveConfigurationCard(@ModelAttribute("userCard") @Valid UserConfigurationCardRequest userConfigurationCardRequest,
+    public String saveConfigurationCard(@ModelAttribute("userConfigurationCard") @Valid UserConfigurationCardRequest userConfigurationCardRequest,
                                     BindingResult result, Model model) {
 
         if(result.hasErrors()) {
+            long idUser = authenticationService.getIdLoginUser();
+            model.addAttribute("userInfo", userService.getUser(idUser));
+            model.addAttribute("userConfigurationCard", userConfigurationCardRequest);
+            model.addAttribute("userConfiguration", new UserConfigurationRequest());
+            model.addAttribute("userPass", new UserConfigurationPassRequest());
             return "user/configuration";
         }
 
@@ -120,14 +130,20 @@ public class UserController {
 
         return "redirect:/user/v/configuration";
     }
+
     @PostMapping("/changePass")
     public String saveCard(@ModelAttribute("userPass") @Valid UserConfigurationPassRequest userConfigurationPassRequest,
                            BindingResult result, Model model) {
 
 
-        ObjectError errors = userService.changePass(userConfigurationPassRequest);
+        FieldError errors = userService.changePass(userConfigurationPassRequest);
 
         if (errors != null) {
+            long idUser = authenticationService.getIdLoginUser();
+            model.addAttribute("userInfo", userService.getUser(idUser));
+            model.addAttribute("userConfigurationCard", userService.getUserFromView(idUser));
+            model.addAttribute("userConfiguration", new UserConfigurationRequest());
+            model.addAttribute("userPass", userConfigurationPassRequest);
             result.addError(errors);
             return "user/configuration";
         }

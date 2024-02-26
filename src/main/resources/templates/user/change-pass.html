@@ -42,18 +42,22 @@
                             <div class="offset-md-8 offset-xl-9">
                                 <input class="btn btn-primary col-12" type="submit" value="Cambiar Contraseña">
                             </div>
+                            <script th:inline="javascript" th:if="${#fields.hasErrors('*')}">
+                                $( document ).ready(function() {
+                                    $("#modalChangePass").modal("show");
+                                });
+                            </script>
+                            <script th:inline="javascript" th:else>
+                                $( document ).ready(function() {
+                                    $("#modalPassChanged").modal("show");
+                                });
+                            </script>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script th:inline="javascript" th:if="${#fields.hasErrors('userPass.*')}">
-        $( document ).ready(function() {
-            $("#modalChangePass").modal("show");
-        });
-    </script>
-
 </div>
 </body>
 </html>

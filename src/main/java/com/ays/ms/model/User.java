@@ -3,6 +3,7 @@ package com.ays.ms.model;
 import javax.persistence.*;
 import lombok.Data;
 
+import java.security.AlgorithmConstraints;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +26,7 @@ public class User {
     private String img;
     private boolean admin;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Card card;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

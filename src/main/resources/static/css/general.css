@@ -161,6 +161,17 @@ body {
     background-color: black;
 }
 
+.episodeSelected {
+    background-color: rgb(0, 191, 255, 0.5);
+    border-radius: 8%;
+    border-radius: 20px;
+    box-shadow: 0 0 15px 0px rgb(0, 191, 255);
+}
+
+.mensajeError {
+    /* color: rgb(48, 241, 255); */
+    color: var(--main-third-color);
+}
 
 /*
  * **********

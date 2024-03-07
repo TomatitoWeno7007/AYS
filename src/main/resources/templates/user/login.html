@@ -23,7 +23,7 @@
                                 <input type="password" th:field="*{password}" class="form-control" id="passwordLogin" placeholder="Password">
                                 <p class="mensajeError" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
 
-                                <p class="mensajeError" th:each="err : ${#fields.errors('global')}" th:text="${err}" />
+                                <p class="mensajeError" th:each="err : ${#fields.errors('global')}" th:text="${err}" ></p>
 
                                 <input type="submit" class="btn btn-primary-ays mt-3" value="Iniciar sesión">
                             </form>

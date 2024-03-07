@@ -4,44 +4,34 @@
 <head>
     <link rel="stylesheet" href="/css/program/description.css">
     <title th:text="'AYS - ' + ${serie.name}"></title>
+    <script src="/script/aksVideoPlayer.js"></script>
 </head>
 <body>
 <main layout:fragment="main-content">
-    <nav style="--bs-breadcrumb-divider: '>';" id="breadcrumbNoPrint" aria-label="breadcrumb" class="text-white">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a class="linkBreadcrumb" href="/user/v/principal/content" aria-label="Inicio" title="Inicio">Inicio</a>
-            </li>
-            <li class="breadcrumb-item" aria-current="page">
-                <a class="linkBreadcrumb" href="/user/v/series" aria-label="Todas las Series" title="Series">Series</a>
-            </li>
-            <li th:text="${serie.name}" class="breadcrumb-item active text-light" aria-current="page"></li>
-        </ol>
-    </nav>
 
-    <div class="descriptionBox text-white d-flex m-auto">
-        <figure class="imgDescription figure m-0">
-            <img class="figure-img img-fluid" th:src="@{${serie.img}}" th:alt="${serie.name}">
-        </figure>
-        <div class="descriptionInfo">
-            <h3 class="border-bottom" th:text="${serie.name}"></h3>
-            <div class="textDescription">
-                <p class="mb-3">Género:
-                    <span th:each="genre, actualGenre : ${serie.genres}">
-                                <span th:text="${genre.name}"></span>
-                                <span th:if="${!actualGenre.last}">, </span> <!-- Agregar coma si no es el último género -->
-                            </span>
-                </p>
-                <p th:text="${serie.description}"></p>
-            </div>
+    <div class="d-flex my-4 flex-wrap">
+        <div class="col-12 text-center">
+            <div id="playerVideo"></div>
+        </div>
+
+        <div class="col-12 mt-3 d-flex justify-content-evenly justify-content-xl-center">
+            <a type="button" class="btn btn-primary-ays mx-xl-2"
+               aria-label="Anterior Episodio"
+               th:if="${isBefore}"
+               th:href="@{/user/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player/false(idSerie=${serie.id}, chapterNumber=${chapter.number-1}, seasonNumber=${seasonChoose.number})}"><i class="bi bi-arrow-left"></i> Anterior</a>
+
+            <button type="button" class="btn btn-primary-ays mx-xl-2" id="btnListEpisodes"
+                    aria-label="Lista de episodios"><i class="bi bi-list"></i></button>
+
+            <a type="button" class="btn btn-primary-ays mx-xl-2"
+               aria-label="Siguiente Episodio"
+               th:if="${isNext}"
+               th:href="@{/user/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player/false(idSerie=${serie.id}, chapterNumber=${chapter.number+1}, seasonNumber=${seasonChoose.number})}">Siguiente <i class="bi bi-arrow-right"></i></a>
         </div>
     </div>
 
-    <div class="logoPrint text-center">
-        <figure class="figure">
-            <img class="figure-img img-fluid" src="/img/LogoNegro.png" alt="Logo">
-        </figure>
-    </div>
+
+
 
     <div id="serieContainer">
         <div class="serieBox">
@@ -57,9 +47,10 @@
             </div>
             <div class="episodeBox">
                 <div class="episodeContainer row row-cols-1 d-flex">
-                    <div th:each="chapter : ${listChapters}" class="cardEpisode">
+                    <div th:each="chapter : ${listChapters}" class="cardEpisode"
+                         th:classappend="${chapterNumber} == ${chapter.number} ? episodeSelected">
                         <a class="linkEpisode keepWatchingProgram text-decoration-none"
-                           th:href="@{/user/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player/true(idSerie=${serie.id}, chapterNumber=${chapter.number}, seasonNumber=${seasonChoose.number})}">
+                           th:href="@{/user/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player/false(idSerie=${serie.id}, chapterNumber=${chapter.number}, seasonNumber=${seasonChoose.number})}">
                             <div class="boxImgEpisode position-relative">
                                 <figure class="imgEpisode figure m-0 w-100">
                                     <img class="figure-img w-100" th:src="@{${chapter.img}}" th:alt="${chapter.name}">
@@ -85,18 +76,28 @@
     </div>
     <script th:inline="javascript">
         $(document).ready(function () {
+            var isShowSeasons = [(${showSeasons})];
+            if (isShowSeasons) {
+                $("#serieContainer").hide();
+            }
+
+            $("#btnListEpisodes").on("click", function() {
+                $("#serieContainer").slideToggle();
+            });
+
             $("#serieContainer").on("click", ".nav-link", function (e) {
                 e.preventDefault();
                 var seasonNumber = $(this).data("season-number");
                 loadEpisodes(seasonNumber);
             });
+
         });
 
         function loadEpisodes(seasonNumber) {
             var idSerie = [(${serie.id})];
             $.ajax({
                 type: "GET",
-                url: "/user/v/serie/" + idSerie + "/description/" + seasonNumber,
+                url: "/user/v/serie/" + idSerie + "/" + seasonNumber + "/player",
                 success: function (data) {
                     $("#serieContainer").html(data);
                 },
@@ -105,7 +106,6 @@
                 }
             });
         }
-
 
     </script>
 </main>

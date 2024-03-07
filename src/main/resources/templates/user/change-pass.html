@@ -11,9 +11,10 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
+                <div th:insert="user/pass-changed.html :: modal-pass-changed"></div>
                 <div class="modal-body">
                     <div class="m-3">
-                        <form class="text-white" th:action="@{/user/changePass}" th:object="${userPass}"
+                        <form class="text-white" id="formChangePass" th:action="@{/user/changePass}" th:object="${userPass}"
                               method="post">
                             <div class="mb-3 row align-items-center">
                                 <label for="inputOldPass" class="col-sm-3 col-form-label">Antigua Contraseña</label>
@@ -36,18 +37,19 @@
                                 <div class="col-sm-9">
                                     <input type="text" th:field="*{repeatPass}" class="form-control" id="inputRepeatPass">
                                 </div>
-                                <span class="mensajeError" th:if="${#fields.hasErrors('repeatPass')}" th:errors="*{repeatPass}"></span>
+                                <span class="mt-4 mensajeError" th:if="${#fields.hasErrors('repeatPass')}" th:errors="*{repeatPass}"></span>
                             </div>
 
                             <div class="offset-md-8 offset-xl-9">
                                 <input class="btn btn-primary col-12" type="submit" value="Cambiar Contraseña">
                             </div>
+
                             <script th:inline="javascript" th:if="${#fields.hasErrors('*')}">
                                 $( document ).ready(function() {
                                     $("#modalChangePass").modal("show");
                                 });
                             </script>
-                            <script th:inline="javascript" th:else>
+                            <script th:inline="javascript" th:if="${!#fields.hasErrors('*') && PassChange != null}">
                                 $( document ).ready(function() {
                                     $("#modalPassChanged").modal("show");
                                 });

@@ -26,10 +26,14 @@
                                type="date" class="form-control"
                                th:attr="data-date=${userInfo.dateBirth}"
                                id="inputBirthDate">
+
                     </div>
+                    <span class="mt-4 mensajeError" th:if="${#fields.hasErrors('dateBirth')}" th:errors="*{dateBirth}"></span>
+                    <p class="mensajeError" th:each="err : ${#fields.errors('global')}" th:text="${err}" ></p>
+                    <div th:if="${#fields.hasErrors('dateBirth')}" th:errors="*{dateBirth}">Email error</div>
                 </div>
                 <div class="my-5 text-end">
-                    <input class="col-12 col-md-5 col-xl-3 btn btn-primary" id="btnSubmitDate" type="button" value="Guardar Cambios">
+                    <input class="col-12 col-md-5 col-xl-3 btn btn-primary" id="btnSubmitDate" type="submit" value="Guardar Cambios">
                     <div th:insert="user/date-changed.html :: modal-date-changed"></div>
                 </div>
             </form>
@@ -71,13 +75,14 @@
 
             </form>
             <script>
-                $("#btnSubmitDate").click(function() {
-                    $("#modalDateChanged").modal('show');
-                });
+<!--                $("#btnSubmitDate").click(function() {-->
+<!--                    $("#modalDateChanged").modal('show');-->
+<!--                });-->
 
-                $("#btnCloseModalDate").click(function() {
-                    $("#formPassDate").submit();
-                });
+
+<!--                $("#btnCloseModalDate").click(function() {-->
+<!--                    $("#formPassDate").submit();-->
+<!--                });-->
 
                 var date = document.getElementById("inputBirthDate").getAttribute("data-date");
                 document.getElementById("inputBirthDate").value = date;

@@ -1,6 +1,7 @@
 package com.ays.ms.controller;
 
 import com.ays.ms.controller.dto.request.*;
+import com.ays.ms.model.Chapter;
 import com.ays.ms.model.Film;
 import com.ays.ms.model.Genres;
 import com.ays.ms.model.Serie;
@@ -63,6 +64,25 @@ public class UserController {
         return "user/configuration";
     }
 
+    @PostMapping("/configuration")
+    public String saveConfiguration(@ModelAttribute("userConfiguration") @Valid UserConfigurationRequest userConfigurationRequest,
+                                    BindingResult result, Model model) {
+
+        FieldError errors = userService.configuration(userConfigurationRequest);
+
+        if (errors != null) {
+            long idUser = authenticationService.getIdLoginUser();
+            model.addAttribute("userInfo", userService.getUser(idUser));
+            model.addAttribute("userConfigurationCard", userService.getUserFromView(idUser));
+            model.addAttribute("userConfiguration", new UserConfigurationRequest());
+            model.addAttribute("userPass", new UserConfigurationPassRequest());
+            result.addError(errors);
+            return "user/configuration";
+        }
+
+        return "redirect:/user/v/configuration";
+    }
+
     @PostMapping
     public String register(@ModelAttribute("userRegister") @Valid UserRegisterRequest userRegister,
             BindingResult result, Model model) {
@@ -104,15 +124,6 @@ public class UserController {
         return "redirect:/user/v/principal/content";
     }
 
-    @PostMapping("/configuration")
-    public String saveConfiguration(@ModelAttribute("userConfiguration") @Valid UserConfigurationRequest userConfigurationRequest,
-                           BindingResult result, Model model) {
-
-        userService.configuration(userConfigurationRequest);
-
-        return "redirect:/user/v/configuration";
-    }
-
     @PostMapping("/configuration/card")
     public String saveConfigurationCard(@ModelAttribute("userConfigurationCard") @Valid UserConfigurationCardRequest userConfigurationCardRequest,
                                     BindingResult result, Model model) {
@@ -137,19 +148,93 @@ public class UserController {
 
 
         FieldError errors = userService.changePass(userConfigurationPassRequest);
+        long idUser = authenticationService.getIdLoginUser();
+        model.addAttribute("userInfo", userService.getUser(idUser));
+        model.addAttribute("userConfigurationCard", userService.getUserFromView(idUser));
+        model.addAttribute("userConfiguration", new UserConfigurationRequest());
+        model.addAttribute("userPass", userConfigurationPassRequest);
+        model.addAttribute("PassChange", null);
 
         if (errors != null) {
-            long idUser = authenticationService.getIdLoginUser();
-            model.addAttribute("userInfo", userService.getUser(idUser));
-            model.addAttribute("userConfigurationCard", userService.getUserFromView(idUser));
-            model.addAttribute("userConfiguration", new UserConfigurationRequest());
-            model.addAttribute("userPass", userConfigurationPassRequest);
             result.addError(errors);
             return "user/configuration";
         }
 
-        return "redirect:/user/v/configuration";
+        model.addAttribute("PassChange", true);
+        return "user/configuration";
     }
+
+    @GetMapping("/v/serie/{idSerie}/{seasonNumber}/player")
+    public String getSeasonsPlayer(@PathVariable("idSerie") long idSerie,
+                                   @PathVariable("seasonNumber") long seasonNumber,
+                                   Model model) {
+
+        Serie serie = serieService.getSerie(idSerie);
+        model.addAttribute("serie", serie);
+        model.addAttribute("seasonChoose", serie.getSeasons().get((int) (seasonNumber-1)));
+        model.addAttribute("listChapters", serie.getSeasons().get((int) (seasonNumber-1)).getChapters());
+        return "user/player :: .serieBox";
+    }
+
+    @GetMapping("/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player/{showSeasons}")
+    public String getSeriePlayer(@PathVariable("idSerie") long idSerie,
+                                 @PathVariable("seasonNumber") long seasonNumber,
+                                 @PathVariable("chapterNumber") int chapterNumber,
+                                 @PathVariable("showSeasons") boolean showSeasons,
+                                 Model model) {
+
+        boolean isNext = false, isBefore = false;
+
+        Serie serie = serieService.getSerie(idSerie);
+
+        seasonNumber--;
+        var seasonChoose = serie.getSeasons().get((int) (seasonNumber));
+        Chapter chapter = null;
+
+        // BtnAnterior en Season>1 y cap = 1 para ir a la anterior season
+        if (chapterNumber == 0) {
+            seasonNumber--;
+            seasonChoose = serie.getSeasons().get((int) (seasonNumber));
+            chapter = seasonChoose.getChapters().get(seasonChoose.getChapters().size()-1);
+        } else if (chapterNumber > seasonChoose.getChapters().size()) {
+            //BtnSiguiente si tiene más seasons
+            seasonNumber++;
+            seasonChoose = serie.getSeasons().get((int) (seasonNumber));
+            chapter = seasonChoose.getChapters().get(0);
+        } else {
+            seasonChoose = serie.getSeasons().get((int) (seasonNumber));
+            chapter = seasonChoose.getChapters().get(chapterNumber - 1);
+        }
+
+        model.addAttribute("serie", serie);
+        model.addAttribute("chapter", chapter);
+        model.addAttribute("showSeasons", showSeasons);
+        model.addAttribute("seasonChoose", seasonChoose);
+        model.addAttribute("listChapters", seasonChoose.getChapters());
+        model.addAttribute("chapterNumber", chapter.getNumber());
+
+        //BtnAnterior visible para anterior season/cap
+        if (seasonNumber != 0) {
+            isBefore = true;
+        } else if (chapter.getNumber() != 1) {
+            isBefore = true;
+        }
+
+        // Es size -2, por el cambio de valor de seasonNumber
+        if (seasonNumber != serie.getSeasons().size()-1) {
+            isNext = true;
+        } else if (chapter.getNumber() != seasonChoose.getChapters().size()) {
+            isNext = true;
+        }
+
+        model.addAttribute("isNext", isNext);
+        model.addAttribute("isBefore", isBefore);
+
+
+        return "user/player";
+    }
+
+
 
     @GetMapping("/logout")
     public String logout() {
@@ -178,7 +263,7 @@ public class UserController {
     @GetMapping("/v/serie/{idSerie}/description/{seasonNumber}")
     public String getSerieSeasonChoose(@PathVariable("idSerie") long idSerie,
                                        @PathVariable("seasonNumber") long seasonNumber,
-                                      Model model) {
+                                       Model model) {
 
         Serie serie = serieService.getSerie(idSerie);
         model.addAttribute("serie", serie);
@@ -188,6 +273,7 @@ public class UserController {
         return "user/serie-description :: .serieBox";
 
     }
+
 
     @GetMapping("/v/film/{idFilm}/description")
     public String getFilmDescription(@PathVariable("idFilm") long idFilm,

@@ -58,17 +58,27 @@ public class UserService {
 
     }
 
-    public void configuration(UserConfigurationRequest userConfigurationRequest) {
+    public FieldError configuration(UserConfigurationRequest userConfigurationRequest) {
         User user = this.getUser(this.authenticationService.getIdLoginUser());
+
+        FieldError error = null;
 
         DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate ld = LocalDate.parse(userConfigurationRequest.getDateBirth(), DATEFORMATTER);
+        LocalDate dateToday = LocalDate.parse(LocalDate.now().toString(), DATEFORMATTER);
 
-        user.setDateBirth(ld);
-        user.setName(userConfigurationRequest.getName());
-        user.setLastName(userConfigurationRequest.getLastName());
-        user.setSecondLastName(userConfigurationRequest.getSecondLastName());
-        userRepository.save(user);
+        if (ld.isAfter(dateToday)) {
+            error = new FieldError("userConfiguration", "dateBirth",
+                    "La fecha de nacimiento no puede ser mayor a la fecha actual");
+        } else {
+            user.setDateBirth(ld);
+            user.setName(userConfigurationRequest.getName());
+            user.setLastName(userConfigurationRequest.getLastName());
+            user.setSecondLastName(userConfigurationRequest.getSecondLastName());
+            userRepository.save(user);
+        }
+
+        return error;
     }
 
     @Transactional

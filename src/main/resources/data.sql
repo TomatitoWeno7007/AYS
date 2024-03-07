@@ -43,17 +43,17 @@ INSERT INTO `film_genre`(`film_id`, `genre_id`) VALUES ('1','6'),
 
 INSERT INTO `serie`(`id`, `description`, `img`, `name`, `rating`, `views`)
 VALUES ('1','Trata de resolver misterios','pop','Sherlock Holmes','5','260'),
-('2','Sherlock descubre a Watson','','Sherlock Holmes','5','192'),
+('2','Sherlock descubre a Watson','','Vivaldi','5','192'),
 ('3','Ash compra a Pikachu','','Pokemon 62','1','22'),
-('4','La encrucijada','','Sherlock Holmes','5','192'),
-('5','El salvajismo','','Sherlock Holmes','5','260'),
-('6','Sherlock descubre a Moriarty','','Sherlock Holmes','5','192'),
-('7','Ash compra a Charizard','','Pokemon 62','1','22'),
-('8','Ash compra a Squitrle','','Pokemon 62','1','22'),
-('9','Ash compra a Venusaur','','Pokemon 62','1','22'),
-('10','Sherlock pelea con Moriarty p1','','Sherlock Holmes','5','192'),
-('11','Sherlock pelea con Moriarty p2','','Sherlock Holmes','5','192'),
-('12','Ash pierde la liga','','Pokemon 62','1','22');
+('4','La encrucijada','','Grandes','5','192'),
+('5','El salvajismo','','Visigodos','5','260'),
+('6','Sherlock descubre a Moriarty','','Aztecas','5','192'),
+('7','Ash compra a Charizard','','Francia','1','22'),
+('8','Ash compra a Squitrle','','Toledo','1','22'),
+('9','Ash compra a Venusaur','','Traicion','1','22'),
+('10','Sherlock pelea con Moriarty p1','','Venganza','5','192'),
+('11','Sherlock pelea con Moriarty p2','','Todo','5','192'),
+('12','Ash pierde la liga','','Nada','1','22');
 
 
 INSERT INTO `serie_genre`(`serie_id`, `genre_id`) VALUES ('1','6'),
@@ -68,7 +68,9 @@ INSERT INTO `serie_genre`(`serie_id`, `genre_id`) VALUES ('1','6'),
 INSERT INTO `card` (`id`, `card_number`, `card_user`, `cvv`, `expiration_date`) VALUES
 (1, NULL, NULL, NULL, NULL),
 (2, NULL, NULL, NULL, NULL),
-(3, NULL, NULL, NULL, NULL);
+(3, NULL, NULL, NULL, NULL),
+(4, '987654', 'Montesito', '123', '2024-02-15'),
+(5, NULL, NULL, NULL, NULL);
 
 
 INSERT INTO `user` (`id`, `admin`, `date_birth`, `email`, `img`, `last_name`, `name`, `password`, `second_last_name`, `card_id`) VALUES
@@ -76,7 +78,9 @@ INSERT INTO `user` (`id`, `admin`, `date_birth`, `email`, `img`, `last_name`, `n
 (2, b'0', NULL, 'user@user.com', NULL, NULL, NULL, '123', NULL, 1),
 (3, b'0', NULL, 'user2@user.com', NULL, NULL, NULL, '123', NULL, 2),
 (4, b'0', NULL, 'fran@fran.com', NULL, NULL, NULL, '123', NULL, 3),
-(5, b'1', NULL, 'admin@admin.com', NULL, NULL, NULL, '123', NULL, NULL);
+(5, b'1', NULL, 'admin@admin.com', NULL, NULL, NULL, '123', NULL, NULL),
+(6, b'0', '2017-02-05', 'user3@user.com', NULL, NULL, NULL, '123', NULL, 4),
+(7, b'0', NULL, 'averaver@ahas.com', NULL, NULL, NULL, '123', NULL, 5);
 
 
 INSERT INTO `chapter` (`id`, `duration`, `img`, `name`, `number`, `synopsis`, `url`) VALUES

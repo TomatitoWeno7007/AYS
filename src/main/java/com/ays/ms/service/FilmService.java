@@ -1,7 +1,12 @@
 package com.ays.ms.service;
 
 import com.ays.ms.controller.dto.request.FilmRequest;
-import com.ays.ms.controller.dto.request.SerieRequest;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import com.ays.ms.controller.dto.response.FilmResponse;
 import com.ays.ms.exceptions.ResourceNotFoundException;
 import com.ays.ms.model.Film;
@@ -41,11 +46,36 @@ public class FilmService {
         film.setDescription(filmRequest.getDescription());
         List<Genres> genres = genreService.getGenresByName(filmRequest.getGenres());
         film.setGenres(genres);
+        MultipartFile imgFile = filmRequest.getImg();
+        MultipartFile urlFile = filmRequest.getUrl();
         if (! filmRequest.getImg().isEmpty()) {
-            film.setImg(String.valueOf(filmRequest.getImg()));
+//            Path path = Paths.get("resources/static/media/" + imgFile);
+
+            String imgFilmName = StringUtils.cleanPath(imgFile.getOriginalFilename());
+            // Crea una carpeta con el nombre de la peli para tenerlo más ordenado
+            Path path = Paths.get("resources", "static", "media", "img" , film.getName()).resolve(imgFilmName);
+
+            try {
+                // Verificar si el directorio existe, si no, lo crea
+                Files.createDirectories(path.getParent());
+                Files.write(path, imgFile.getBytes());
+                film.setImg(filmRequest.getImg().getOriginalFilename());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
         if (! filmRequest.getUrl().isEmpty()) {
-            film.setUrl(String.valueOf(filmRequest.getUrl()));
+            String urlFilmName = StringUtils.cleanPath(urlFile.getOriginalFilename());
+            Path path = Paths.get("resources", "static", "media", "video" , film.getName()).resolve(urlFilmName);
+
+            try {
+                Files.createDirectories(path.getParent());
+                Files.write(path, urlFile.getBytes());
+                film.setUrl(filmRequest.getUrl().getOriginalFilename());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         this.filmRepository.addFilm(film);
@@ -61,7 +91,7 @@ public class FilmService {
 
 
         if (! filmRequest.getImg().isEmpty()) {
-            film.setImg(String.valueOf(filmRequest.getImg()));
+            film.setImg(filmRequest.getImg().getOriginalFilename());
         }
         if (! filmRequest.getUrl().isEmpty()) {
             film.setUrl(String.valueOf(filmRequest.getUrl()));

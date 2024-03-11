@@ -287,7 +287,6 @@ public class UserController {
                         anyMatch(genre -> filmFind.getGenres().contains(genre)))
                 .collect(Collectors.toList());
 
-
         // Elimina la peli actual y ordena la lista al azar
         filmsByGenre.remove(filmFind);
         Collections.shuffle(filmsByGenre);

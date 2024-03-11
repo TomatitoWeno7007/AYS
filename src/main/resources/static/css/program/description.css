@@ -145,6 +145,10 @@
          }
 
 
+    #playerVideo {
+        width: 265px;
+    }
+
 
 /*------------------------------*/
 @media only screen and (min-width: 576px) {
@@ -171,6 +175,10 @@
     .seasonBox .nav-item {
         width: 20%;
     }
+
+    #playerVideo {
+        width: 340px;
+    }
 }
 
 /*------------------------------*/
@@ -186,6 +194,10 @@
         .imgEpisode img, .imgFilmDescription img {
             height: 14vw;
         }
+
+    #playerVideo {
+        width: 450px;
+    }
 }
 
 /*------------------------------*/
@@ -233,7 +245,6 @@
             .imgFilmDescription img {
                 height: 12vw;
             }
-
 }
 
 /*------------------------------*/
@@ -253,48 +264,52 @@
             height: 10vw;
         }
 
+    #playerVideo {
+        width: 500px;
+    }
+
 }
 
 @media print {
-            h2 {
-                text-align: center;
-            }
+    h2 {
+        text-align: center;
+    }
 
-            .serieBox, header, footer, #breadcrumbNoPrint, #recommendedPrograms {
-                display: none;
-            }
+    .serieBox, header, footer, #breadcrumbNoPrint, #recommendedPrograms {
+        display: none;
+    }
 
-            .imgDescription img {
-                width: 50%;
-            }
+    .imgDescription img {
+        width: 50%;
+    }
 
-            .descriptionBox {
-                margin-top: 5vw !important;
-                justify-content: center;
-            }
+    .descriptionBox {
+        margin-top: 5vw !important;
+        justify-content: center;
+    }
 
-                .descriptionInfo h3 {
-                    text-align: center;
-                }
-
-            .textDescription {
-                overflow: visible;
-            }
-
-            .logoPrint {
-                display: block;
-                position: absolute;
-                top: 60%;
-                bottom: 15%;
-                right: 0;
-                left: 0;
-            }
-
-                .logoPrint figure {
-                    width: 30%;
-                }
-
-                    .logoPrint figure img {
-                        opacity: 50%;
-                    }
+        .descriptionInfo h3 {
+            text-align: center;
         }
+
+    .textDescription {
+        overflow: visible;
+    }
+
+    .logoPrint {
+        display: block;
+        position: absolute;
+        top: 60%;
+        bottom: 15%;
+        right: 0;
+        left: 0;
+    }
+
+        .logoPrint figure {
+            width: 30%;
+        }
+
+            .logoPrint figure img {
+                opacity: 50%;
+            }
+}

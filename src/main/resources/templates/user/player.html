@@ -11,22 +11,28 @@
 
     <div class="d-flex my-4 flex-wrap">
         <div class="col-12 text-center">
-            <div id="playerVideo"></div>
+            <video id="playerVideo" controls>
+                <source src="/media/video/Sherloc/1.mp4" type="video/mp4">
+                <source src="movie.ogg" type="video/ogg">
+                Tu navegador no soporta el tipo de video.
+            </video>
         </div>
 
         <div class="col-12 mt-3 d-flex justify-content-evenly justify-content-xl-center">
             <a type="button" class="btn btn-primary-ays mx-xl-2"
                aria-label="Anterior Episodio"
+               id="btnAnterior"
                th:if="${isBefore}"
-               th:href="@{/user/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player/false(idSerie=${serie.id}, chapterNumber=${chapter.number-1}, seasonNumber=${seasonChoose.number})}"><i class="bi bi-arrow-left"></i> Anterior</a>
+               th:href="@{/user/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player/(idSerie=${serie.id}, chapterNumber=${chapter.number-1}, seasonNumber=${seasonChoose.number})}"><i class="bi bi-arrow-left"></i> Anterior</a>
 
-            <button type="button" class="btn btn-primary-ays mx-xl-2" id="btnListEpisodes"
+            <button id="btnListEpisodes" type="button" class="btn btn-primary-ays mx-xl-2"
                     aria-label="Lista de episodios"><i class="bi bi-list"></i></button>
 
             <a type="button" class="btn btn-primary-ays mx-xl-2"
                aria-label="Siguiente Episodio"
+               id="btnSiguiente"
                th:if="${isNext}"
-               th:href="@{/user/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player/false(idSerie=${serie.id}, chapterNumber=${chapter.number+1}, seasonNumber=${seasonChoose.number})}">Siguiente <i class="bi bi-arrow-right"></i></a>
+               th:href="@{/user/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player/(idSerie=${serie.id}, chapterNumber=${chapter.number+1}, seasonNumber=${seasonChoose.number})}">Siguiente <i class="bi bi-arrow-right"></i></a>
         </div>
     </div>
 
@@ -82,8 +88,29 @@
             }
 
             $("#btnListEpisodes").on("click", function() {
+                if (isShowSeasons) {
+                    isShowSeasons = false;
+                } else {
+                    isShowSeasons = true;
+                }
+                console.log(isShowSeasons);
                 $("#serieContainer").slideToggle();
+
             });
+
+
+            $("#btnAnterior").on("click", function() {
+                var urlAnterior = $('#btnAnterior').attr('href');
+                var nuevaUrl = urlAnterior + isShowSeasons;
+                $('#btnAnterior').attr('href', nuevaUrl);
+            });
+
+            $("#btnSiguiente").on("click", function() {
+                var urlSiguiente = $('#btnSiguiente').attr('href');
+                var nuevaUrl = urlSiguiente + isShowSeasons;
+                $('#btnSiguiente').attr('href', nuevaUrl);
+            });
+
 
             $("#serieContainer").on("click", ".nav-link", function (e) {
                 e.preventDefault();

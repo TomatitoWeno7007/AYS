@@ -63,12 +63,13 @@
 
                 <div th:insert="user/change-card.html :: modal-change-card"></div>
             </div>
-            <form class="text-white">
+            <form class="text-white" th:action="@{/user/delete}" method="post">
                 <h5 class="border-bottom"></h5>
                 <div class="mt-3 text-end">
-                    <button class="btn btn-link link-primary text-decoration-none"
-                       data-bs-toggle="modal"
-                       data-bs-target="#modalDeleteUser">Eliminar cuenta de usuario</button>
+                    <button type="button"
+                            class="btn btn-link link-danger text-decoration-none"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalDeleteUser">Eliminar cuenta de usuario</button>
 
                     <div th:insert="user/delete-user.html :: modal-delete-user"></div>
                 </div>

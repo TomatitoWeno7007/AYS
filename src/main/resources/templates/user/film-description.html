@@ -22,7 +22,7 @@
             <div class="descriptionBox text-white d-flex m-auto">
                 <figure class="imgDescription figure m-0">
 <!--                    <img class="figure-img img-fluid" th:src="@{${film.img}}" th:alt="${film.name}">-->
-                    <img class="figure-img img-fluid" th:src="@{/media/img/{filmName}/{imgFilm}(filmName=${film.name}, imgFilm=${film.img})}" th:alt="${film.name}">
+                    <img class="figure-img img-fluid" src="https://m.media-amazon.com/images/M/MV5BN2E5NDA0ODAtNTFjYS00OTQ0LTkxZTEtZDlhN2Y4OGY4MDEzXkEyXkFqcGdeQXVyMjAxNTI3OTQ@._V1_QL75_UY207_CR3" th:alt="${film.name}">
                 </figure>
                 <div class="descriptionInfo">
                     <h2 class="border-bottom h3" th:text="${film.name}"></h2>
@@ -53,7 +53,7 @@
                            th:href="@{/user/v/film/{idFilm}/description(idFilm=${filmRecommended.id})}">
                             <div class="boxImgEpisode position-relative">
                                 <figure class="imgEpisode figure m-0 w-100">
-                                    <img class="figure-img w-100" th:src="@{/media/img/{filmName}/{imgFilm}(filmName=${filmRecommended.name}, imgFilm=${filmRecommended.img})}" th:alt="${filmRecommended.name}">
+                                    <img class="figure-img w-100" src="https://m.media-amazon.com/images/M/MV5BN2E5NDA0ODAtNTFjYS00OTQ0LTkxZTEtZDlhN2Y4OGY4MDEzXkEyXkFqcGdeQXVyMjAxNTI3OTQ@._V1_QL75_UY207_CR3" th:alt="${filmRecommended.name}">
                                 </figure>
                             </div>
                             <div class="textLinkEpisode">

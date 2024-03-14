@@ -37,14 +37,29 @@
                     <div th:insert="user/date-changed.html :: modal-date-changed"></div>
                 </div>
             </form>
-            <div class="mt-1 text-end">
-                <button class="btn btn-link link-primary text-decoration-none"
-                        data-bs-toggle="modal"
-                        data-bs-target="#modalChangePass"
-                        type="button">Cambiar contraseña</button>
+            <form class="text-white" id="formChangePass" th:action="@{/user/changePass}" th:object="${userPass}"
+                  method="post">
+                <div class="mt-1 text-end">
+                    <button class="btn btn-link link-primary text-decoration-none"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalChangePass"
+                            type="button">Cambiar contraseña
+                    </button>
 
-                <div th:insert="user/change-pass.html :: modal-change-pass"></div>
-            </div>
+                    <div th:insert="user/change-pass.html :: modal-change-pass"></div>
+                    <div th:insert="user/pass-changed.html :: modal-pass-changed"></div>
+                </div>
+                <script th:inline="javascript" th:if="${#fields.hasErrors('*')}">
+                    $( document ).ready(function() {
+                        $("#modalChangePass").modal("show");
+                    });
+                </script>
+                <script th:inline="javascript" th:if="${!#fields.hasErrors('*') && PassChange != null}">
+                    $( document ).ready(function() {
+                        $("#modalPassChanged").modal("show");
+                    });
+                </script>
+            </form>
             <div class="text-light">
                 <h3 class="border-bottom">Tarjeta de crédito</h3>
                 <div class="mb-3 row align-items-center">

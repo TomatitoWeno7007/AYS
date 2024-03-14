@@ -14,8 +14,7 @@
                 <div th:insert="user/pass-changed.html :: modal-pass-changed"></div>
                 <div class="modal-body">
                     <div class="m-3">
-                        <form class="text-white" id="formChangePass" th:action="@{/user/changePass}" th:object="${userPass}"
-                              method="post">
+
                             <div class="mb-3 row align-items-center">
                                 <label for="inputOldPass" class="col-sm-3 col-form-label">Antigua Contraseña</label>
                                 <div class="col-sm-9">
@@ -44,17 +43,8 @@
                                 <input class="btn btn-primary col-12" type="submit" value="Cambiar Contraseña">
                             </div>
 
-                            <script th:inline="javascript" th:if="${#fields.hasErrors('*')}">
-                                $( document ).ready(function() {
-                                    $("#modalChangePass").modal("show");
-                                });
-                            </script>
-                            <script th:inline="javascript" th:if="${!#fields.hasErrors('*') && PassChange != null}">
-                                $( document ).ready(function() {
-                                    $("#modalPassChanged").modal("show");
-                                });
-                            </script>
-                        </form>
+
+
                     </div>
                 </div>
             </div>

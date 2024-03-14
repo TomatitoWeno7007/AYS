@@ -16,6 +16,7 @@
                               class="bg-dark text-white">
 
                             <p>¿Estas seguro de eliminar la serie "<span th:text="${serie.name}"></span>" ?</p>
+                            <p class="text-danger"><i>*Se eliminarán todas sus temporadas*</i></p>
                             <input type="hidden" th:value="${serie.id}" name="id"/>
 <!--                            <a href="newRecordForm.html" class="btn btn-primary" th:attr="href='/record/'+${record.id}+'/deleteRecord'">Yes</a>-->
                             <input type="submit" class="btn btn-primary mt-3" value="Confirmar">

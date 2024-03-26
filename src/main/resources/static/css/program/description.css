@@ -34,6 +34,23 @@
             height: 25vw;
         }
 
+
+
+    #btnLikeProgram {
+        height: 24px;
+        width: fit-content;
+        width: -moz-fit-content;
+    }
+
+        #btnLikeProgram .bi {
+            font-size: 100%;
+            transition: all 0.5s;
+        }
+
+            #btnLikeProgram:hover .bi {
+                font-size: 115%;
+            }
+
 .seasonBox {
     overflow-x: auto;
     flex-wrap: nowrap;
@@ -143,7 +160,6 @@
          .logoPrint {
              display: none;
          }
-
 
     #playerVideo {
         width: 265px;
@@ -290,6 +306,10 @@
 
         .descriptionInfo h3 {
             text-align: center;
+        }
+
+        iconInvisible {
+            display: none;
         }
 
     .textDescription {

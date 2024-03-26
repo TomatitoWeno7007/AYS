@@ -44,6 +44,11 @@ public class UserController {
         List<Serie> recommendedSerie = userService.getRecommendedUserSeries();
         List<Film> recommendedFilm = userService.getRecommendedUserFilms();
 
+        List<Film> likedFilms = userService.getLikedUserFilms();
+        List<Serie> likedSeries = userService.getLikedUserSeries();
+
+        model.addAttribute("likedFilms", (likedFilms.isEmpty()) ? null : likedFilms );
+        model.addAttribute("likedSeries", (likedSeries.isEmpty()) ? null : likedSeries );
         model.addAttribute("recommendedSeries", recommendedSerie);
         model.addAttribute("recommendedFilms", recommendedFilm);
 
@@ -118,7 +123,7 @@ public class UserController {
         }
 
         if (authenticationService.isAdmin()) {
-            return "redirect:/admin/v/principal/content";
+            return "redirect:/admin/v/serie";
         }
 
         return "redirect:/user/v/principal/content";
@@ -253,7 +258,16 @@ public class UserController {
                                       Model model) {
 
         Serie serie = serieService.getSerie(idSerie);
+        boolean isLiked = false;
+
+        // Busca si la serie está en favoritos
+        List <Serie> listSeriesLiked = userService.getLikedUserSeries();
+        if (listSeriesLiked.contains(serie)) {
+            isLiked = true;
+        }
+
         model.addAttribute("serie", serie);
+        model.addAttribute("isLiked", isLiked);
         model.addAttribute("seasonChoose", serie.getSeasons().get(0));
         model.addAttribute("listChapters", serie.getSeasons().get(0).getChapters());
         return "user/serie-description";
@@ -281,6 +295,7 @@ public class UserController {
 
         Film filmFind = filmService.getFilm(idFilm);
         List<Film> allFilms = filmService.getFilms();
+        boolean isLiked = false;
 
         List<Film> filmsByGenre = allFilms.stream()
                 .filter(film -> film.getGenres().stream().
@@ -291,14 +306,64 @@ public class UserController {
         filmsByGenre.remove(filmFind);
         Collections.shuffle(filmsByGenre);
 
+        // Busca si la peli está en favoritos
+        List <Film> listFilmsLiked = userService.getLikedUserFilms();
+        if (listFilmsLiked.contains(filmFind)) {
+            isLiked = true;
+        }
+
         if (filmsByGenre.size() > 5) {
             filmsByGenre.subList(5, filmsByGenre.size()).clear();
         }
 
         model.addAttribute("film", filmFind);
+        model.addAttribute("isLiked", isLiked);
         model.addAttribute("recommendedFilm", filmsByGenre);
         return "user/film-description";
 
+    }
+
+    @GetMapping("/v/film/{idFilm}/description/{isLiked}")
+    public String getLikedFilm(@PathVariable("idFilm") long idFilm,
+                               @PathVariable("isLiked") boolean isLiked,
+                               Model model) {
+
+        Film filmFind = filmService.getFilm(idFilm);
+        List <Film> listFilmsLiked = userService.getLikedUserFilms();
+
+
+        if (isLiked) {
+            listFilmsLiked.add(filmFind);
+        } else {
+            listFilmsLiked.remove(filmFind);
+        }
+        userService.setLikedUserFilms(listFilmsLiked);
+
+        model.addAttribute("film", filmFind);
+        model.addAttribute("isLiked", isLiked);
+
+        return "user/film-description :: .descriptionBox";
+    }
+
+    @GetMapping("/v/serie/{idSerie}/description/showLike/{isLiked}")
+    public String getLikedSerie(@PathVariable("idSerie") long idSerie,
+                               @PathVariable("isLiked") boolean isLiked,
+                               Model model) {
+
+        Serie serieFind = serieService.getSerie(idSerie);
+        List <Serie> listSeriesLiked = userService.getLikedUserSeries();
+
+        if (isLiked) {
+            listSeriesLiked.add(serieFind);
+        } else {
+            listSeriesLiked.remove(serieFind);
+        }
+        userService.setLikedUserSeries(listSeriesLiked);
+
+        model.addAttribute("serie", serieFind);
+        model.addAttribute("isLiked", isLiked);
+
+        return "user/serie-description :: .descriptionBox";
     }
 
     @GetMapping("/v/films")

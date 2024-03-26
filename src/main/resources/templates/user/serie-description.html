@@ -19,20 +19,32 @@
         </ol>
     </nav>
 
-    <div class="descriptionBox text-white d-flex m-auto">
-        <figure class="imgDescription figure m-0">
-            <img class="figure-img img-fluid" th:src="@{${serie.img}}" th:alt="${serie.name}">
-        </figure>
-        <div class="descriptionInfo">
-            <h3 class="border-bottom" th:text="${serie.name}"></h3>
-            <div class="textDescription">
-                <p class="mb-3">Género:
-                    <span th:each="genre, actualGenre : ${serie.genres}">
-                                <span th:text="${genre.name}"></span>
-                                <span th:if="${!actualGenre.last}">, </span> <!-- Agregar coma si no es el último género -->
-                            </span>
-                </p>
-                <p th:text="${serie.description}"></p>
+    <div id="descriptionContainer">
+        <div class="descriptionBox text-white d-flex m-auto">
+            <figure class="imgDescription figure m-0">
+                <img class="figure-img img-fluid" th:src="@{${serie.img}}" th:alt="${serie.name}">
+            </figure>
+            <div class="descriptionInfo">
+                <h2 class="border-bottom h3" th:text="${serie.name}"></h2>
+                <a id="btnLikeProgram" href=""
+                   th:classappend="${!isLiked} ? text-danger">
+                    <span th:if="${isLiked}" class="text-danger">
+                       <i class="bi bi-heart-fill"></i>
+                    </span>
+                    <span th:if="${!isLiked}" class="text-light">
+                         <i class="bi bi-heart"></i>
+                    </span>
+                </a>
+                <div class="textDescription">
+                    <p class="mb-3">Género:
+                        <span th:each="genre, actualGenre : ${serie.genres}">
+                            <span th:text="${genre.name}"></span>
+                            <span th:if="${!actualGenre.last}">, </span>
+                        <!-- Agregar coma si no es el último género -->
+                        </span>
+                    </p>
+                    <p th:text="${serie.description}"></p>
+                </div>
             </div>
         </div>
     </div>
@@ -90,6 +102,13 @@
                 var seasonNumber = $(this).data("season-number");
                 loadEpisodes(seasonNumber);
             });
+
+            $("#descriptionContainer").on("click", "#btnLikeProgram", function (e) {
+                e.preventDefault();
+                var isLikedSerie = $("#btnLikeProgram").hasClass("text-danger");
+                console.log(isLikedSerie);
+                loadLiked(isLikedSerie);
+            });
         });
 
         function loadEpisodes(seasonNumber) {
@@ -102,6 +121,20 @@
                 },
                 error: function (error) {
                     console.log("Error al cargar episodios: " + error);
+                }
+            });
+        }
+
+        function loadLiked(isLiked) {
+            var idSerie = [(${serie.id})];
+            $.ajax({
+                type: "GET",
+                url: "/user/v/serie/" + idSerie + "/description/showLike/" + isLiked,
+                success: function (data) {
+                    $("#descriptionContainer").html(data);
+                },
+                error: function (error) {
+                    console.log("Error al cargar el 'le gusta': " + error);
                 }
             });
         }

@@ -54,6 +54,13 @@ public class AdministratorController {
         model.addAttribute("listGenres", genreService.getGenres());
         return "admin/film";
     }
+    @GetMapping("/v/statistics")
+    public String getStatistics(Model model) {
+        model.addAttribute("listSeries", serieService.getSerieFromView());
+        model.addAttribute("listFilms", filmService.getFilmFromView());
+        model.addAttribute("listGenres", genreService.getGenres());
+        return "admin/statistics";
+    }
     @GetMapping("/v/users")
     public String getUsers(Model model) {
         model.addAttribute("listUsers", userService.getUsers());

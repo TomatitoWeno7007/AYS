@@ -27,7 +27,7 @@
                          th:if="${film.genres.contains(genre)}" class="cardProgram text-white">
                         <a class="linkProgram" href="#" th:href="@{/user/v/film/{idFilm}/description(idFilm=${film.id})}">
                             <figure class="imgProgram figure m-0 w-100">
-                                <img class="figure-img img-fluid" src="https://m.media-amazon.com/images/M/MV5BN2E5NDA0ODAtNTFjYS00OTQ0LTkxZTEtZDlhN2Y4OGY4MDEzXkEyXkFqcGdeQXVyMjAxNTI3OTQ@._V1_QL75_UY207_CR3" th:alt="${film.name}">
+                                <img class="figure-img img-fluid" th:src="@{/media/img/{filmName}/{imgFilm}(filmName=${film.name}, imgFilm=${film.img})}" th:alt="${film.name}">
                                 <div class="textProgramHover">
                                     <h3 th:text="${film.name}"></h3>
                                     <p th:text="${film.description}"></p>

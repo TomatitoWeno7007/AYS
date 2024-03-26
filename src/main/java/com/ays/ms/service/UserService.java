@@ -160,6 +160,52 @@ public class UserService {
         return user.getRecommendedFilms();
     }
 
+    public List<Film> getLikedUserFilms() {
+        long userId = authenticationService.getIdLoginUser();
+
+        if (userId == 0) {
+            throw new AuthenticationAYSException("Usuario no logueado");
+        }
+
+        User user = this.getUser(userId);
+        return user.getLikedFilms();
+    }
+
+    public List<Serie> getLikedUserSeries() {
+        long userId = authenticationService.getIdLoginUser();
+
+        if (userId == 0) {
+            throw new AuthenticationAYSException("Usuario no logueado");
+        }
+
+        User user = this.getUser(userId);
+        return user.getLikedSeries();
+    }
+
+    public void setLikedUserFilms(List<Film> likedFilms) {
+        long userId = authenticationService.getIdLoginUser();
+
+        if (userId == 0) {
+            throw new AuthenticationAYSException("Usuario no logueado");
+        }
+
+        User user = this.getUser(userId);
+        user.setLikedFilms(likedFilms);
+        userRepository.save(user);
+    }
+
+    public void setLikedUserSeries(List<Serie> likedSeries) {
+        long userId = authenticationService.getIdLoginUser();
+
+        if (userId == 0) {
+            throw new AuthenticationAYSException("Usuario no logueado");
+        }
+
+        User user = this.getUser(userId);
+        user.setLikedSeries(likedSeries);
+        userRepository.save(user);
+    }
+
     private List<Serie> getRecommendedSeriesDefault() {
 
         List<Serie> recommendedSeries = new ArrayList<>();

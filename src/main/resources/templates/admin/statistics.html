@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/template-admin}"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>AYS - Admin - Películas</title>
+        <link rel="stylesheet" href="/css/admin/administration-content.css">
+
+        <!-- Script Tabla -->
+        <script src="/script/canvasjs.min.js"></script>
+
+
+    </head>
+    <body>
+        <main class="m-auto" layout:fragment="main-content">
+            <nav style="&#45;&#45;bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="text-white">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item " aria-current="page">
+                        <a class="linkBreadcrumb" href="/admin/v/serie"
+                           aria-label="Inicio" title="Inicio">Inicio</a>
+                    </li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">Estadísticas</li>
+                </ol>
+            </nav>
+
+            <div class="text-light border-bottom d-flex mb-3 p-2">
+                <div class="col-6">
+                    <h4 class="text-light mt-1">Visualizaciones de géneros</h4>
+                </div>
+            </div>
+
+
+            <div class="mb-3" id="chartFilm" style="height: 300px; width: 100%;"></div>
+            <div class="mb-3" id="chartSerie" style="height: 300px; width: 100%;"></div>
+
+            <script>
+                window.onload = function () {
+
+                var chartFilm = new CanvasJS.Chart("chartFilm", {
+                    animationEnabled: true,
+                    theme: "light2", // "light1", "light2", "dark1", "dark2"
+                    title:{
+                        text: "Películas"
+                    },
+
+                    data: [{
+                        type: "column",
+                        showInLegend: true,
+                        legendMarkerColor: "grey",
+                        dataPoints: [
+                            { y: 3000, label: "Comedia" },
+                            { y: 2000,  label: "Drama" },
+                            { y: 1000,  label: "Misterio" },
+                            { y: 2500,  label: "Animación" }
+                        ]
+                    }]
+                });
+
+                var chartSerie = new CanvasJS.Chart("chartSerie", {
+                    animationEnabled: true,
+                    theme: "light2", // "light1", "light2", "dark1", "dark2"
+                    title:{
+                        text: "Series"
+                    },
+                    data: [{
+                        type: "column",
+                        showInLegend: true,
+                        legendMarkerColor: "grey",
+                        legendText: "Géneros de Series",
+                        dataPoints: [
+                            { y: 3000, label: "Comedia" },
+                            { y: 2000,  label: "Drama" },
+                            { y: 1000,  label: "Misterio" },
+                            { y: 2500,  label: "Animación" }
+                        ]
+                    }]
+                });
+                chartFilm.render();
+                chartSerie.render();
+
+                }
+            </script>
+        </main>
+    </body>
+</html>

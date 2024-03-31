@@ -26,7 +26,7 @@
                             <div class="mb-3 row mb-4">
                                 <label for="inputImg" class="col-2 col-form-label">Imagen</label>
                                 <div class="col-10">
-                                    <input th:field="*{img}" class="form-control" type="file" id="inputImg">
+                                    <input th:field="*{img}" class="form-control" accept="image/*" type="file" id="inputImg">
                                 </div>
                                 <p class="mensajeError" th:if="${#fields.hasErrors('img')}" th:errors="*{img}"></p>
                             </div>

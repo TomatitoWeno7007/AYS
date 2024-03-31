@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -56,14 +57,22 @@ public class FilmController {
             return "admin/film";
         }
 
-        filmService.editFilm(editFilm);
+        try {
+            filmService.editFilm(editFilm);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return "redirect:/admin/v/film";
     }
 
     @PostMapping("/delete")
     public String deleteFilm(Long id, Model model) {
-        filmService.deleteFilm(id);
+        try {
+            filmService.deleteFilm(id);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/admin/v/film";
     }
 }

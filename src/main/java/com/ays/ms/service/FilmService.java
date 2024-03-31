@@ -82,19 +82,55 @@ public class FilmService {
     }
 
     @Transactional
-    public void editFilm(FilmRequest filmRequest) {
+    public void editFilm(FilmRequest filmRequest) throws IOException {
         Film film = this.getFilm(filmRequest.getId());
 
         if (film == null) {
             throw new ResourceNotFoundException("No existe la película a editar");
         }
 
-
         if (! filmRequest.getImg().isEmpty()) {
-            film.setImg(filmRequest.getImg().getOriginalFilename());
+            MultipartFile imgFile = filmRequest.getImg();
+
+            // Borra la anterior ruta, obteniendo la peli antes de editarla
+            if (film.getImg() != null) {
+                Path pathDelete = Paths.get("resources", "static", "media", "img" , film.getName()).resolve(film.getImg());
+                Files.deleteIfExists(pathDelete);
+            }
+
+            String imgFilmName = StringUtils.cleanPath(imgFile.getOriginalFilename());
+            Path path = Paths.get("resources", "static", "media", "img" , film.getName()).resolve(imgFilmName);
+
+            try {
+                // Verificar si el directorio existe, si no, lo crea
+                Files.createDirectories(path.getParent());
+                Files.write(path, imgFile.getBytes());
+                film.setImg(filmRequest.getImg().getOriginalFilename());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
         if (! filmRequest.getUrl().isEmpty()) {
-            film.setUrl(String.valueOf(filmRequest.getUrl()));
+            MultipartFile urlFile = filmRequest.getUrl();
+
+            // Borra la anterior ruta, obteniendo la peli antes de editarla
+            if (film.getUrl() != null) {
+                Path pathDelete = Paths.get("resources", "static", "media", "video" , film.getName()).resolve(film.getUrl());
+                Files.deleteIfExists(pathDelete);
+            }
+
+            String urlFilmName = StringUtils.cleanPath(urlFile.getOriginalFilename());
+            Path path = Paths.get("resources", "static", "media", "video" , film.getName()).resolve(urlFilmName);
+
+            try {
+                Files.createDirectories(path.getParent());
+                Files.write(path, urlFile.getBytes());
+                film.setUrl(filmRequest.getUrl().getOriginalFilename());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
         film.setDescription(filmRequest.getDescription());
         film.setName(filmRequest.getName());
@@ -105,7 +141,7 @@ public class FilmService {
     }
 
     @Transactional
-    public void deleteFilm(Long id) {
+    public void deleteFilm(Long id) throws IOException {
         Film film = this.getFilm(id);
 
         if (film == null) {
@@ -113,6 +149,16 @@ public class FilmService {
         }
 
         film.getGenres().forEach(genre -> genre.getSerieGenre().remove(film));
+
+        if (film.getImg() != null) {
+            Path pathDelete = Paths.get("resources", "static", "media", "img" , film.getName()).resolve(film.getImg());
+            Files.deleteIfExists(pathDelete);
+        }
+
+        if (film.getUrl() != null) {
+            Path pathDelete = Paths.get("resources", "static", "media", "video" , film.getName()).resolve(film.getUrl());
+            Files.deleteIfExists(pathDelete);
+        }
 
         film.setUsersLiked(null);
         film.setUsersWatched(null);

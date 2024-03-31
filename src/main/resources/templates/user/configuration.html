@@ -65,11 +65,10 @@
                 <div class="mb-3 row align-items-center">
                     <label for="inputNumCard" class="col-sm-2 col-form-label">Número de la tarjeta</label>
                     <div class="col-sm-10">
-                        <span th:text="${#strings.repeat('*', userInfo.card.cardNumber.length() - 3)} + ${userInfo.card.cardNumber.substring(userInfo.card.cardNumber.length() - 3)}"></span>
-                        -
-                        <input type="text" readonly th:value="${'*****' + #strings.substring(userInfo.card.cardNumber, #strings.length(userInfo.card.cardNumber)-3, #strings.length(userInfo.card.cardNumber))}"
+                        <input type="text" readonly th:value="${#strings.repeat('*', userInfo.card.cardNumber.length() - 3)} + ${userInfo.card.cardNumber.substring(userInfo.card.cardNumber.length() - 3)}"
                                class="form-control-plaintext text-white" id="inputNumCard">
-<!--                        <input type="text" readonly th:value="${userInfo.card.cardNumber}"-->
+
+                        <!--                        <input type="text" readonly th:value="${'*****' + #strings.substring(userInfo.card.cardNumber, #strings.length(userInfo.card.cardNumber)-3, #strings.length(userInfo.card.cardNumber))}"-->
 <!--                               class="form-control-plaintext text-white" id="inputNumCard">-->
                     </div>
                 </div>

@@ -3,6 +3,7 @@
       layout:decorate="~{template}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>AYS - Configuración</title>
+    <script src="/script/jquery.validate.js"></script>
 </head>
 <body>
     <main layout:fragment="main-content">
@@ -28,9 +29,10 @@
                                id="inputBirthDate">
 
                     </div>
-                    <span class="mt-4 mensajeError" th:if="${#fields.hasErrors('dateBirth')}" th:errors="*{dateBirth}"></span>
-                    <p class="mensajeError" th:each="err : ${#fields.errors('global')}" th:text="${err}" ></p>
-                    <div th:if="${#fields.hasErrors('dateBirth')}" th:errors="*{dateBirth}">Email error</div>
+                    <span class="offset-2 mt-4 mensajeError"></span>
+<!--                    <span class="mt-4 mensajeError" th:if="${#fields.hasErrors('dateBirth')}" th:errors="*{dateBirth}"></span>-->
+<!--                    <p class="mensajeError" th:each="err : ${#fields.errors('global')}" th:text="${err}" ></p>-->
+<!--                    <div th:if="${#fields.hasErrors('dateBirth')}" th:errors="*{dateBirth}">Email error</div>-->
                 </div>
                 <div class="my-5 text-end">
                     <input class="col-12 col-md-5 col-xl-3 btn btn-primary" id="btnSubmitDate" type="submit" value="Guardar Cambios">
@@ -105,6 +107,48 @@
 
                 var date = document.getElementById("inputBirthDate").getAttribute("data-date");
                 document.getElementById("inputBirthDate").value = date;
+
+                $.validator.addMethod("fechaValida", function(value, element) {
+                    var fechaIntroducida = new Date(value);
+                    var fechaActual = new Date();
+
+                    // Calcular la diferencia en milisegundos entre las fechas
+<!--                    var diferenciaMilisegundos = fechaActual.getTime() - fechaIntroducida.getTime();-->
+
+                    // Convierte 18 años en milisegundos
+<!--                    var dieciochoAniosEnMilisegundos = 18 * 365 * 24 * 60 * 60 * 1000;-->
+
+                    // Verificar si la diferencia es mayor o igual a 18 años
+<!--                    return diferenciaMilisegundos >= dieciochoAniosEnMilisegundos;-->
+                    return fechaIntroducida < fechaActual;
+                });
+
+
+                $(document).ready(function(){
+                    // Inicializa el formulario y agrega las reglas de validación
+                    $("#formPassDate").validate({
+                        rules: {
+                            dateBirth: {
+                              required: true,
+                              fechaValida: true
+                            }
+                        },
+                        messages: {
+                            dateBirth: {
+                              required: "Por favor introduce una fecha",
+                              fechaValida: "La fecha introducida no es válida, no se admiten usuarios menores de edad"
+                            }
+                        },
+                        errorPlacement: function(error, element) {
+                            // Muestra el mensaje de error en el elemento con la clase "mensajeError"
+                            $(".mensajeError").html(error);
+                        },
+                        submitHandler: function(form) {
+                            $("#modalDateChanged").modal("show");
+                            form.submit();
+                        }
+                    });
+                });
             </script>
         </div>
     </main>

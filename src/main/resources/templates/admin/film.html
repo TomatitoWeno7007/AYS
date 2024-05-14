@@ -120,6 +120,11 @@
                     </tbody>
                 </table>
             </div>
+            <script th:inline="javascript" th:if="${#fields.hasErrors('newFilm.*')}">
+                $( document ).ready(function() {
+                    $("#modalAddFilm").modal("show");
+                });
+            </script>
             <script type="text/javascript">
                 $(document).ready(function() {
                     $(".tableProgram").fancyTable({

@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.util.List;
 
 @Controller
@@ -38,13 +39,34 @@ public class FilmController {
     public String add(@ModelAttribute("newFilm") @Valid FilmRequest newFilm, BindingResult result,
                       Model model) {
 
+
+        if (! newFilm.getImg().isEmpty() ||
+            ! newFilm.getUrl().isEmpty()) {
+            if (!isImageFile(newFilm.getImg().getOriginalFilename())) {
+                result.rejectValue("img", "error.img", "Tipo de img no valido");
+            }
+            if (!isVideoFile(newFilm.getUrl().getOriginalFilename())) {
+                result.rejectValue("url", "error.url", "Tipo de video no valido");
+            }
+        }
+
         if(result.hasErrors()) {
             model.addAttribute("listFilms", filmService.getFilmFromView());
             model.addAttribute("listGenres", genreService.getGenres());
             return "admin/film";
+        } else {
+            filmService.addFilm(newFilm);
+            return "redirect:/admin/v/film";
         }
-        filmService.addFilm(newFilm);
-        return "redirect:/admin/v/film";
+    }
+
+    public static boolean isImageFile(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("image");
+    }
+    public static boolean isVideoFile(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("video");
     }
 
     @PostMapping("/edit-film")

@@ -4,6 +4,7 @@ import com.ays.ms.controller.dto.request.FilmRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,12 +50,9 @@ public class FilmService {
         MultipartFile imgFile = filmRequest.getImg();
         MultipartFile urlFile = filmRequest.getUrl();
         if (! filmRequest.getImg().isEmpty()) {
-//            Path path = Paths.get("resources/static/media/" + imgFile);
-
             String imgFilmName = StringUtils.cleanPath(imgFile.getOriginalFilename());
             // Crea una carpeta con el nombre de la peli para tenerlo más ordenado
-            Path path = Paths.get("resources", "static", "media", "img" , film.getName()).resolve(imgFilmName);
-
+            Path path = Paths.get("static", "media", "img" , film.getName()).resolve(imgFilmName);
             try {
                 // Verificar si el directorio existe, si no, lo crea
                 Files.createDirectories(path.getParent());
@@ -64,10 +62,11 @@ public class FilmService {
                 e.printStackTrace();
             }
 
+
         }
         if (! filmRequest.getUrl().isEmpty()) {
             String urlFilmName = StringUtils.cleanPath(urlFile.getOriginalFilename());
-            Path path = Paths.get("resources", "static", "media", "video" , film.getName()).resolve(urlFilmName);
+            Path path = Paths.get("static", "media", "video" , film.getName()).resolve(urlFilmName);
 
             try {
                 Files.createDirectories(path.getParent());

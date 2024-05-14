@@ -112,6 +112,11 @@
                 </table>
 
             </div>
+            <script th:inline="javascript" th:if="${#fields.hasErrors('newSerie.*')}">
+                $( document ).ready(function() {
+                    $("#modalAddSerie").modal("show");
+                });
+            </script>
             <script type="text/javascript">
                 <!-- Habilitar el tooltip (lo de las temporadas)-->
                 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')

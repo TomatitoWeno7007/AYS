@@ -28,7 +28,7 @@
                                 <div class="col-10">
                                     <input th:field="*{img}" class="form-control" accept="image/*" type="file" id="inputImg">
                                 </div>
-                                <p class="mensajeError" th:if="${#fields.hasErrors('img')}" th:errors="*{img}"></p>
+                                <p class="offset-2 mensajeError" th:if="${#fields.hasErrors('img')}" th:errors="*{img}"></p>
                             </div>
 
 
@@ -50,7 +50,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <p class="mensajeError" th:if="${#fields.hasErrors('genres')}" th:errors="*{genres}"></p>
+                                <p class="offset-2 mensajeError" th:if="${#fields.hasErrors('genres')}" th:errors="*{genres}"></p>
                             </div>
 
 
@@ -59,7 +59,7 @@
                                 <div class="col-10">
                                     <input th:field="*{url}" class="form-control" type="file" id="inputVideo">
                                 </div>
-                                <p class="mensajeError" th:if="${#fields.hasErrors('url')}" th:errors="*{url}"></p>
+                                <p class="offset-2 mensajeError" th:if="${#fields.hasErrors('url')}" th:errors="*{url}"></p>
                             </div>
 
                             <div class="offset-md-8 offset-xl-9">

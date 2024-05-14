@@ -22,7 +22,8 @@
     <div id="descriptionContainer">
         <div class="descriptionBox text-white d-flex m-auto">
             <figure class="imgDescription figure m-0">
-                <img class="figure-img img-fluid" th:src="@{${serie.img}}" th:alt="${serie.name}">
+                <img class="figure-img img-fluid"
+                     th:src="@{/media/img/{serieName}/{imgSerie}(serieName=${serie.name}, imgSerie=${serie.img})}">
             </figure>
             <div class="descriptionInfo">
                 <h2 class="border-bottom h3" th:text="${serie.name}"></h2>

@@ -21,12 +21,15 @@
 
             <div id="descriptionContainer">
                 <div class="descriptionBox text-white d-flex m-auto">
-                    <figure class="imgDescription figure m-0">
-                        <!--                    <img class="figure-img img-fluid" th:src="@{${film.img}}" th:alt="${film.name}">-->
-                        <img class="figure-img img-fluid"
-                             th:src="@{/media/img/{filmName}/{imgFilm}(filmName=${film.name}, imgFilm=${film.img})}"
-                             th:alt="${film.name}">
-                    </figure>
+
+                        <figure class="imgDescription figure m-0">
+                            <a class="m-0"
+                               th:href="@{/user/v/film/{idFilm}/player(idFilm=${film.id})}">
+                                <img class="figure-img img-fluid"
+                                     th:src="@{/media/img/{filmName}/{imgFilm}(filmName=${film.name}, imgFilm=${film.img})}"
+                                     th:alt="${film.name}">
+                            </a>
+                        </figure>
                     <div class="descriptionInfo">
                         <h2 class="border-bottom h3" th:text="${film.name}"></h2>
                         <a id="btnLikeProgram" href=""

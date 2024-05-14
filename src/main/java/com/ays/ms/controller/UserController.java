@@ -16,6 +16,8 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -169,6 +171,15 @@ public class UserController {
         return "user/configuration";
     }
 
+    @GetMapping("/v/film/{idFilm}/player")
+    public String getFilmPlayer(@PathVariable("idFilm") long idFilm,
+                                   Model model) {
+
+        Film film = filmService.getFilm(idFilm);
+        model.addAttribute("film", film);
+        return "user/playerFilm";
+    }
+
     @GetMapping("/v/serie/{idSerie}/{seasonNumber}/player")
     public String getSeasonsPlayer(@PathVariable("idSerie") long idSerie,
                                    @PathVariable("seasonNumber") long seasonNumber,
@@ -178,7 +189,7 @@ public class UserController {
         model.addAttribute("serie", serie);
         model.addAttribute("seasonChoose", serie.getSeasons().get((int) (seasonNumber-1)));
         model.addAttribute("listChapters", serie.getSeasons().get((int) (seasonNumber-1)).getChapters());
-        return "user/player :: .serieBox";
+        return "user/playerSerie :: .serieBox";
     }
 
     @GetMapping("/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player/{showSeasons}")
@@ -236,7 +247,7 @@ public class UserController {
         model.addAttribute("isBefore", isBefore);
 
 
-        return "user/player";
+        return "user/playerSerie";
     }
 
 

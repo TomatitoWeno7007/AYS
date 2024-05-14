@@ -22,6 +22,7 @@ public class FilmRequest {
     @NotEmpty
     private String description;
 
+
     private MultipartFile img;
 
     private MultipartFile url;

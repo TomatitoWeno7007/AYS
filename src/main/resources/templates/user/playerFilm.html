@@ -58,8 +58,9 @@
 
             var ruta = "/media/video/"
             var filmName = [[${film.name}]];
+            var filmUrl = [[${film.url}]];
 
-            $("#playerVideo").attr("src", ruta + filmName + ".mp4");
+            $("#playerVideo").attr("src", ruta + filmName + "/" + filmUrl);
 
         });
 

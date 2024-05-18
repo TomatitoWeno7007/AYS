@@ -14,8 +14,14 @@ import com.ays.ms.respository.SerieRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,8 +92,19 @@ public class SerieService {
         serie.setDescription(serieRequest.getDescription());
         List<Genres> genres = genreService.getGenresByName(serieRequest.getGenres());
         serie.setGenres(genres);
+        MultipartFile imgFile = serieRequest.getImg();
         if (! serieRequest.getImg().isEmpty()) {
-            serie.setImg(String.valueOf(serieRequest.getImg()));
+            String imgSerieName = StringUtils.cleanPath(imgFile.getOriginalFilename());
+            // Crea una carpeta con el nombre de la peli para tenerlo más ordenado
+            Path path = Paths.get("static", "media", "img" , serie.getName()).resolve(imgSerieName);
+            try {
+                // Verificar si el directorio existe, si no, lo crea
+                Files.createDirectories(path.getParent());
+                Files.write(path, imgFile.getBytes());
+                serie.setImg(serieRequest.getImg().getOriginalFilename());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         Season season = new Season();

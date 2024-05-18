@@ -65,7 +65,12 @@
                         <div class="dropdown text-center">
                             <button class="btn btnLogin dropdown-toggle p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Abrir menú de perfil">
                                 <figure class="figure m-0">
-                                    <img class="figure-img rounded-circle m-0 p-1" src="https://images.unsplash.com/photo-1452570053594-1b985d6ea890?auto=format&fit=crop&q=80&w=1374&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+                                    <img th:if="${userInfo.img} != null"
+                                         th:src="@{/media/user/{userName}/{userImg}(userName=${userInfo.name != null ?
+                                             userInfo.name : userInfo.email}, userImg=${userInfo.img})}"
+                                         th:alt="'Imagen de ' + (${userInfo.name != null ? userInfo.name : userInfo.email})"
+                                         class="figure-img rounded-circle m-0 p-1" >
+                                    <img th:if="${userInfo.img} == null" class="figure-img rounded-circle m-0 p-1" src="https://images.unsplash.com/photo-1452570053594-1b985d6ea890?auto=format&fit=crop&q=80&w=1374&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Img de perfil">
                                 </figure>
                             </button>
                             <ul class="dropdown-menu dropdownLogin" aria-label="Abrir submenú de configuración">

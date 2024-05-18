@@ -9,13 +9,55 @@
     <main layout:fragment="main-content">
         <div class="m-3">
             <form id="formPassDate" class="text-white" th:action="@{/user/configuration}" th:object="${userConfiguration}"
-                  method="post">
-                <h3 class="border-bottom">Detalles de la cuenta</h3>
+                  method="post" enctype="multipart/form-data">
+                <h3 class="border-bottom"
+                     th:text="${userInfo.name != null ? 'Detalles de la cuenta ' + userInfo.name : 'Detalles de la cuenta ' + userInfo.email}"></h3>
+
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-2 col-form-label">Correo</label>
                     <div class="col-5">
                         <input type="text" readonly class="form-control-plaintext text-white" id="staticEmail"
                                th:value="${userInfo.email}">
+                    </div>
+                </div>
+
+                <div class="mb-3 row align-items-center">
+                    <label for="inputName" class="col-sm-2 col-form-label">Nombre</label>
+                    <div class="col-sm-10">
+                        <input th:value="${userInfo.name}"
+                               th:name="name"
+                               type="text" class="form-control"
+                               id="inputName">
+                    </div>
+                    <span class="offset-2 mt-4 mensajeError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </div>
+                <div class="mb-3 row align-items-center">
+                    <label for="inputLastname" class="col-sm-2 col-form-label">Apellido</label>
+                    <div class="col-sm-10">
+                        <input th:value="${userInfo.lastName}"
+                               th:name="lastName"
+                               type="text" class="form-control"
+                               id="inputLastName">
+                    </div>
+                    <span class="offset-2 mt-4 mensajeError" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                </div>
+
+                <div class="mb-3 row align-items-center">
+                    <label th:for="inputImg" class="col-2 col-form-label">Imagen</label>
+                    <div class="col-10">
+                        <a class="link-light link-underline-opacity-0 link-underline-opacity-100-hover"
+                           th:if="${userInfo.img != ''}"
+                           th:id="editImg" href="#"
+                           th:text="${userInfo.img}"
+                           aria-label="Introducir imagen para la foto de perfil del usuario"></a>
+
+                        <div th:id="divChooseImg" >
+                            <input class="form-control" type="file" th:name="img" title="Elegir archivo de imagen">
+                            <button class="btn btn-light mt-2"
+                                    th:if="${userInfo.img != '' && userInfo.img != null}"
+                                    th:id="btnCancelImg"
+                                    aria-label="Cancelar archivo de imagen" type="button">Cancelar</button>
+                        </div>
                     </div>
                 </div>
 
@@ -30,9 +72,6 @@
 
                     </div>
                     <span class="offset-2 mt-4 mensajeError"></span>
-<!--                    <span class="mt-4 mensajeError" th:if="${#fields.hasErrors('dateBirth')}" th:errors="*{dateBirth}"></span>-->
-<!--                    <p class="mensajeError" th:each="err : ${#fields.errors('global')}" th:text="${err}" ></p>-->
-<!--                    <div th:if="${#fields.hasErrors('dateBirth')}" th:errors="*{dateBirth}">Email error</div>-->
                 </div>
                 <div class="my-5 text-end">
                     <input class="col-12 col-md-5 col-xl-3 btn btn-primary" id="btnSubmitDate" type="submit" value="Guardar Cambios">
@@ -67,11 +106,11 @@
                 <div class="mb-3 row align-items-center">
                     <label for="inputNumCard" class="col-sm-2 col-form-label">Número de la tarjeta</label>
                     <div class="col-sm-10">
-                        <input type="text" readonly th:value="${#strings.repeat('*', userInfo.card.cardNumber.length() - 3)} + ${userInfo.card.cardNumber.substring(userInfo.card.cardNumber.length() - 3)}"
-                               class="form-control-plaintext text-white" id="inputNumCard">
-
-                        <!--                        <input type="text" readonly th:value="${'*****' + #strings.substring(userInfo.card.cardNumber, #strings.length(userInfo.card.cardNumber)-3, #strings.length(userInfo.card.cardNumber))}"-->
+<!--                        <input type="text" readonly th:value="${#strings.repeat('*', userInfo.card.cardNumber.length() - 3)} + ${userInfo.card.cardNumber.substring(userInfo.card.cardNumber.length() - 3)}"-->
 <!--                               class="form-control-plaintext text-white" id="inputNumCard">-->
+
+                        <input type="text" readonly th:value="${'*****' + #strings.substring(userInfo.card.cardNumber, #strings.length(userInfo.card.cardNumber)-3, #strings.length(userInfo.card.cardNumber))}"
+                           class="form-control-plaintext text-white" id="inputNumCard">
                     </div>
                 </div>
             </div>
@@ -96,14 +135,19 @@
 
             </form>
             <script>
-<!--                $("#btnSubmitDate").click(function() {-->
-<!--                    $("#modalDateChanged").modal('show');-->
-<!--                });-->
+                if ($("#editImg").text().length > 0) {
+                    $("#divChooseImg").hide();
+                    $("#editImg").on("click", function() {
+                        $("#divChooseImg").show();
+                        $("#editImg").hide();
+                    });
+                    $("#btnCancelImg").on("click", function() {
+                        $("#divChooseImg input").val("");
+                        $("#divChooseImg").hide();
+                        $("#editImg").show();
+                    });
+                }
 
-
-<!--                $("#btnCloseModalDate").click(function() {-->
-<!--                    $("#formPassDate").submit();-->
-<!--                });-->
 
                 var date = document.getElementById("inputBirthDate").getAttribute("data-date");
                 document.getElementById("inputBirthDate").value = date;
@@ -125,7 +169,7 @@
 
 
                 $(document).ready(function(){
-                    // Inicializa el formulario y agrega las reglas de validación
+                    // Inicializa el formulario de la fecha
                     $("#formPassDate").validate({
                         rules: {
                             dateBirth: {
@@ -140,12 +184,17 @@
                             }
                         },
                         errorPlacement: function(error, element) {
-                            // Muestra el mensaje de error en el elemento con la clase "mensajeError"
                             $(".mensajeError").html(error);
                         },
                         submitHandler: function(form) {
+                            // Detiene el envío automático del formulario
+                            event.preventDefault();
+
                             $("#modalDateChanged").modal("show");
-                            form.submit();
+
+                            $("#modalDateChanged").on("hidden.bs.modal", function () {
+                                form.submit();
+                            });
                         }
                     });
                 });

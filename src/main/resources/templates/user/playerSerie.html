@@ -62,7 +62,7 @@
                     <div th:each="chapter : ${listChapters}" class="cardEpisode"
                          th:classappend="${chapterNumber} == ${chapter.number} ? episodeSelected">
                         <a class="linkEpisode keepWatchingProgram text-decoration-none"
-                           th:href="@{/user/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player/false(idSerie=${serie.id}, chapterNumber=${chapter.number}, seasonNumber=${seasonChoose.number})}">
+                           th:href="@{/user/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player(idSerie=${serie.id}, chapterNumber=${chapter.number}, seasonNumber=${seasonChoose.number})}">
                             <div class="boxImgEpisode position-relative">
                                 <figure class="imgEpisode figure m-0 w-100">
                                     <img class="figure-img w-100" th:src="@{${chapter.img}}" th:alt="${chapter.name}">
@@ -88,9 +88,15 @@
     </div>
     <script th:inline="javascript">
         $(document).ready(function () {
-            var isShowSeasons = [(${showSeasons})];
-            if (isShowSeasons) {
-                $("#serieContainer").hide();
+            // Inicializar el valor en el sessionStorage si no existe
+            if(sessionStorage.getItem("isShowSeasons") == null) {
+                sessionStorage.setItem("isShowSeasons", "False");
+            }
+            var isShowSeasons = sessionStorage.getItem("isShowSeasons");
+            console.log(isShowSeasons);
+
+            if (isShowSeasons == "False") {
+                $("#serieContainer").hide()
             }
 
             var ruta = "/media/video/"
@@ -105,28 +111,29 @@
 
 
             $("#btnListEpisodes").on("click", function() {
-                if (isShowSeasons) {
-                    isShowSeasons = false;
+                if (isShowSeasons == "True") {
+                    isShowSeasons = "False";
                 } else {
-                    isShowSeasons = true;
+                    isShowSeasons = "True";
                 }
+                sessionStorage.setItem("isShowSeasons", isShowSeasons);
                 console.log(isShowSeasons);
                 $("#serieContainer").slideToggle();
 
             });
 
 
-            $("#btnAnterior").on("click", function() {
-                var urlAnterior = $('#btnAnterior').attr('href');
-                var nuevaUrl = urlAnterior + isShowSeasons;
-                $('#btnAnterior').attr('href', nuevaUrl);
-            });
+<!--            $("#btnAnterior").on("click", function() {-->
+<!--                var urlAnterior = $('#btnAnterior').attr('href');-->
+<!--                var nuevaUrl = urlAnterior;-->
+<!--                $('#btnAnterior').attr('href', nuevaUrl);-->
+<!--            });-->
 
-            $("#btnSiguiente").on("click", function() {
-                var urlSiguiente = $('#btnSiguiente').attr('href');
-                var nuevaUrl = urlSiguiente + isShowSeasons;
-                $('#btnSiguiente').attr('href', nuevaUrl);
-            });
+<!--            $("#btnSiguiente").on("click", function() {-->
+<!--                var urlSiguiente = $('#btnSiguiente').attr('href');-->
+<!--                var nuevaUrl = urlSiguiente;-->
+<!--                $('#btnSiguiente').attr('href', nuevaUrl);-->
+<!--            });-->
 
 
             $("#serieContainer").on("click", ".nav-link", function (e) {

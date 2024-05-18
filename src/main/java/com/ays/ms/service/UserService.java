@@ -8,9 +8,15 @@ import com.ays.ms.service.utils.MathUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.FieldError;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -74,7 +80,28 @@ public class UserService {
             user.setDateBirth(ld);
             user.setName(userConfigurationRequest.getName());
             user.setLastName(userConfigurationRequest.getLastName());
-            user.setSecondLastName(userConfigurationRequest.getSecondLastName());
+
+
+            if (! userConfigurationRequest.getImg().isEmpty()) {
+                MultipartFile imgFile = userConfigurationRequest.getImg();
+                String imgUser = StringUtils.cleanPath(imgFile.getOriginalFilename());
+                // Crea una carpeta con el nombre de la peli para tenerlo más ordenado
+                Path path;
+                if (user.getName() == null) {
+                    path = Paths.get("static", "media", "user" , user.getEmail()).resolve(imgUser);
+                } else {
+                    path = Paths.get("static", "media", "user" , user.getName()).resolve(imgUser);
+                }
+                try {
+                    // Verificar si el directorio existe, si no, lo crea
+                    Files.createDirectories(path.getParent());
+                    Files.write(path, imgFile.getBytes());
+                    user.setImg(userConfigurationRequest.getImg().getOriginalFilename());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
             userRepository.save(user);
         }
 

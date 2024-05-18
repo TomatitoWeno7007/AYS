@@ -53,6 +53,9 @@ public class UserController {
         model.addAttribute("likedSeries", (likedSeries.isEmpty()) ? null : likedSeries );
         model.addAttribute("recommendedSeries", recommendedSerie);
         model.addAttribute("recommendedFilms", recommendedFilm);
+        long idUser = authenticationService.getIdLoginUser();
+        model.addAttribute("userInfo", userService.getUser(idUser));
+
 
         return "user/principal-content";
     }
@@ -175,9 +178,26 @@ public class UserController {
     public String getFilmPlayer(@PathVariable("idFilm") long idFilm,
                                    Model model) {
 
-        Film film = filmService.getFilm(idFilm);
-        model.addAttribute("film", film);
+        Film filmFind = filmService.getFilm(idFilm);
+        List<Film> allFilms = filmService.getFilms();
+
+        List<Film> filmsByGenre = allFilms.stream()
+                .filter(film -> film.getGenres().stream().
+                        anyMatch(genre -> filmFind.getGenres().contains(genre)))
+                .collect(Collectors.toList());
+
+        // Elimina la peli actual y ordena la lista al azar
+        filmsByGenre.remove(filmFind);
+        Collections.shuffle(filmsByGenre);
+
+        if (filmsByGenre.size() > 5) {
+            filmsByGenre.subList(5, filmsByGenre.size()).clear();
+        }
+
+        model.addAttribute("film", filmFind);
+        model.addAttribute("recommendedFilm", filmsByGenre);
         return "user/playerFilm";
+
     }
 
     @GetMapping("/v/serie/{idSerie}/{seasonNumber}/player")
@@ -192,11 +212,10 @@ public class UserController {
         return "user/playerSerie :: .serieBox";
     }
 
-    @GetMapping("/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player/{showSeasons}")
+    @GetMapping("/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player")
     public String getSeriePlayer(@PathVariable("idSerie") long idSerie,
                                  @PathVariable("seasonNumber") long seasonNumber,
                                  @PathVariable("chapterNumber") int chapterNumber,
-                                 @PathVariable("showSeasons") boolean showSeasons,
                                  Model model) {
 
         boolean isNext = false, isBefore = false;
@@ -224,7 +243,6 @@ public class UserController {
 
         model.addAttribute("serie", serie);
         model.addAttribute("chapter", chapter);
-        model.addAttribute("showSeasons", showSeasons);
         model.addAttribute("seasonChoose", seasonChoose);
         model.addAttribute("listChapters", seasonChoose.getChapters());
         model.addAttribute("chapterNumber", chapter.getNumber());

@@ -72,7 +72,7 @@
                 <div class="episodeContainer row row-cols-1 d-flex">
                     <div th:each="chapter : ${listChapters}" class="cardEpisode">
                         <a class="linkEpisode keepWatchingProgram text-decoration-none"
-                           th:href="@{/user/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player/true(idSerie=${serie.id}, chapterNumber=${chapter.number}, seasonNumber=${seasonChoose.number})}">
+                           th:href="@{/user/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player(idSerie=${serie.id}, chapterNumber=${chapter.number}, seasonNumber=${seasonChoose.number})}">
                             <div class="boxImgEpisode position-relative">
                                 <figure class="imgEpisode figure m-0 w-100">
                                     <img class="figure-img w-100" th:src="@{${chapter.img}}" th:alt="${chapter.name}">

@@ -93,12 +93,12 @@ public class FilmService {
 
             // Borra la anterior ruta, obteniendo la peli antes de editarla
             if (film.getImg() != null) {
-                Path pathDelete = Paths.get("resources", "static", "media", "img" , film.getName()).resolve(film.getImg());
+                Path pathDelete = Paths.get("static", "media", "img" , film.getName()).resolve(film.getImg());
                 Files.deleteIfExists(pathDelete);
             }
 
             String imgFilmName = StringUtils.cleanPath(imgFile.getOriginalFilename());
-            Path path = Paths.get("resources", "static", "media", "img" , film.getName()).resolve(imgFilmName);
+            Path path = Paths.get("static", "media", "img" , film.getName()).resolve(imgFilmName);
 
             try {
                 // Verificar si el directorio existe, si no, lo crea
@@ -115,12 +115,12 @@ public class FilmService {
 
             // Borra la anterior ruta, obteniendo la peli antes de editarla
             if (film.getUrl() != null) {
-                Path pathDelete = Paths.get("resources", "static", "media", "video" , film.getName()).resolve(film.getUrl());
+                Path pathDelete = Paths.get("static", "media", "video" , film.getName()).resolve(film.getUrl());
                 Files.deleteIfExists(pathDelete);
             }
 
             String urlFilmName = StringUtils.cleanPath(urlFile.getOriginalFilename());
-            Path path = Paths.get("resources", "static", "media", "video" , film.getName()).resolve(urlFilmName);
+            Path path = Paths.get("static", "media", "video" , film.getName()).resolve(urlFilmName);
 
             try {
                 Files.createDirectories(path.getParent());
@@ -150,12 +150,12 @@ public class FilmService {
         film.getGenres().forEach(genre -> genre.getSerieGenre().remove(film));
 
         if (film.getImg() != null) {
-            Path pathDelete = Paths.get("resources", "static", "media", "img" , film.getName()).resolve(film.getImg());
+            Path pathDelete = Paths.get("static", "media", "img" , film.getName()).resolve(film.getImg());
             Files.deleteIfExists(pathDelete);
         }
 
         if (film.getUrl() != null) {
-            Path pathDelete = Paths.get("resources", "static", "media", "video" , film.getName()).resolve(film.getUrl());
+            Path pathDelete = Paths.get("static", "media", "video" , film.getName()).resolve(film.getUrl());
             Files.deleteIfExists(pathDelete);
         }
 

@@ -3,9 +3,6 @@ package com.ays.ms.controller;
 import com.ays.ms.controller.dto.request.ChapterRequest;
 import com.ays.ms.controller.dto.request.SerieRequest;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import com.ays.ms.model.Chapter;
 import com.ays.ms.model.Season;
 import com.ays.ms.model.Serie;
@@ -18,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -97,7 +96,6 @@ public class SerieController {
     @GetMapping("/{id}/seasons")
     public String getSeason(@PathVariable("id") long id, Model model) {
         Serie serie = serieService.getSerie(id);
-//        session.setAttribute("serie", serie);
         model.addAttribute("serie", serie);
         model.addAttribute("listSeason", serie.getSeasons());
         model.addAttribute("newChapter", new ChapterRequest());
@@ -183,6 +181,7 @@ public class SerieController {
 //        List<Season> listSeasons = serie.getSeasons();
 //        listSeasons.add((int) season.getNumber()-1, season);
 //        serie.setSeasons(listSeasons);
+
         serieService.saveOrUpdate(serie);
 
         return "redirect:/serie/" + serie.getId() + "/season/" + season.getId() + "/chapters";

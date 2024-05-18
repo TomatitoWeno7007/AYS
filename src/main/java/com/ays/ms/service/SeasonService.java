@@ -72,22 +72,6 @@ public class SeasonService {
         for (int i = 0; i < season.getChapters().size(); i++) {
             season.getChapters().get(i).setNumber(i+1);
         }
-
-
-//        Serie serie = serieService.getSerie(idSerie);
-//        Season season = serie.getSeasons().get((int) (number-1));
-//
-//        if (season == null) {
-//            throw new ResourceNotFoundException("No existe la temporada a eliminar");
-//        }
-//
-//        serie.getSeasons().remove((int) (number-1));
-//        for (int i = 0; i < serie.getSeasons().size(); i++) {
-//            serie.getSeasons().get(i).setNumber(i+1);
-//        }
-//
-//        this.serieService.saveOrUpdate(serie);
-
     }
 
     public Season getLastSeasonBySerie(Serie serie) {

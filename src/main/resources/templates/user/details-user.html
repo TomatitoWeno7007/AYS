@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="modal-details-film">
+    <div class="modal fade" tabindex="-1" id="modalDetailsUser" data-bs-backdrop="static" data-bs-keyboard="false"  aria-labelledby="Detalles Usuario" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detalles</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="m-3">
+                        <form class="text-white" th:action="@{/user/configurationDetails}" th:object="${userConfiguration}"
+                        action="#" method="post" enctype="multipart/form-data">
+                            <div class="mb-3 row mb-md-4">
+                                <label for="inputName" class="col-2 col-form-label">Nombre</label>
+                                <div class="col-10">
+                                    <input th:field="*{name}" type="text" class="form-control" id="inputName">
+                                    <p class="mensajeError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row mb-4">
+                                <label for="inputImg" class="col-2 col-form-label">Imagen</label>
+                                <div class="col-10">
+                                    <input th:field="*{img}" class="form-control" accept="image/*" type="file" id="inputImg">
+                                </div>
+                                <p class="offset-2 mensajeError" th:if="${#fields.hasErrors('img')}" th:errors="*{img}"></p>
+                            </div>
+
+                            <div class="offset-md-8 offset-xl-9">
+                                <input class="btn btn-primary col-12" type="submit" value="Cambiar detalles">
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

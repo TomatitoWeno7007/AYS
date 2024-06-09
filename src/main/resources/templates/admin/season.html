@@ -138,7 +138,11 @@
                     </tbody>
                 </table>
             </div>
-
+            <script th:inline="javascript" th:if="${#fields.hasErrors('newChapter.*')}">
+                $( document ).ready(function() {
+                    $("#modalAddChapter").modal("show");
+                });
+            </script>
             <script type="text/javascript">
                 $(document).ready(function() {
                     $("#selectSeason").change(function() {

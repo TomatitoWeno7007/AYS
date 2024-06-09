@@ -75,7 +75,15 @@
                            th:href="@{/user/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player(idSerie=${serie.id}, chapterNumber=${chapter.number}, seasonNumber=${seasonChoose.number})}">
                             <div class="boxImgEpisode position-relative">
                                 <figure class="imgEpisode figure m-0 w-100">
-                                    <img class="figure-img w-100" th:src="@{${chapter.img}}" th:alt="${chapter.name}">
+                                    <img class="figure-img w-100"
+                                         th:if="${chapter.img != null && !#strings.isEmpty(chapter.img)}"
+                                         th:src="@{/media/img/{serieName}/{seasonNumber}/{chapterNumber}/{chapterImg}(serieName=${serie.name}, seasonNumber=${seasonChoose.number}, chapterNumber=${chapter.number}, chapterImg=${chapter.img})}"
+                                         th:alt="${chapter.name}">
+
+                                    <img class="figure-img w-100"
+                                         th:if="${chapter.img == null || #strings.isEmpty(chapter.img)}"
+                                         th:src="@{/media/img/{serieName}/{imgSerie}(serieName=${serie.name}, imgSerie=${serie.img})}"
+                                         th:alt="${chapter.name}">
                                 </figure>
                                 <!-- Controlar con javascript/jquery -->
                                 <div class="progress progressEpisode position-absolute" role="progressbar"

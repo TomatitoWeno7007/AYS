@@ -1,15 +1,11 @@
 package com.ays.ms.controller;
 
 import com.ays.ms.controller.dto.request.ChapterRequest;
+import com.ays.ms.controller.dto.request.FilmRequest;
 import com.ays.ms.controller.dto.request.SerieRequest;
 
-import com.ays.ms.model.Chapter;
-import com.ays.ms.model.Season;
-import com.ays.ms.model.Serie;
-import com.ays.ms.service.ChapterService;
-import com.ays.ms.service.GenreService;
-import com.ays.ms.service.SeasonService;
-import com.ays.ms.service.SerieService;
+import com.ays.ms.model.*;
+import com.ays.ms.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.net.URLConnection;
 import java.util.List;
 
 @Controller
@@ -29,6 +27,8 @@ public class SerieController {
 
     @Autowired
     private SerieService serieService;
+    @Autowired
+    private UserService userService;
     @Autowired
     private SeasonService seasonService;
     @Autowired
@@ -47,6 +47,14 @@ public class SerieController {
     public String add(@ModelAttribute("newSerie") @Valid SerieRequest newSerie, BindingResult result,
                       Model model) {
 
+        if (newSerie.getImg().isEmpty()) {
+            result.rejectValue("img", "error.img", "La img es obligatoria");
+        }
+
+        if (!isImageFile(newSerie.getImg().getOriginalFilename())) {
+            result.rejectValue("img", "error.img", "Tipo de img no valido");
+        }
+
         if(result.hasErrors()) {
             model.addAttribute("listSeries", serieService.getSerieFromView());
             model.addAttribute("listGenres", genreService.getGenres());
@@ -63,12 +71,13 @@ public class SerieController {
         model.addAttribute("seasonChoose", season.getId());
 
         return "redirect:/serie/" + serie.getId() + "/season/" + idSeason + "/chapters";
-//        return "redirect:/serie/" + serie.getId() + "/seasons";
     }
 
     @PostMapping("/edit-serie")
     public String edit(@ModelAttribute("editSerie")  @Valid SerieRequest editSerie, BindingResult result,
                       Model model) {
+
+        Serie serieBeforeEdit = serieService.getSerie(editSerie.getId());
 
         if(result.hasErrors()) {
             model.addAttribute("listSeries", serieService.getSerieFromView());
@@ -76,14 +85,31 @@ public class SerieController {
             return "admin/serie";
         }
 
-        serieService.editSerie(editSerie);
+        try {
+            serieService.editSerie(editSerie);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return "redirect:/admin/v/serie";
     }
 
     @PostMapping("/delete")
     public String deleteSerie(Long id, Model model) {
-        serieService.deleteSerie(id);
+        Serie serieDelete = serieService.getSerie(id);
+        List<User> listUsers = userService.getUsers();
+        listUsers.forEach(user ->
+                user.getLikedSeries().
+                        removeIf(serie -> serie.equals(serieDelete))
+        );
+        listUsers.forEach(user ->
+                user.getRecommendedSeries().
+                        removeIf(serie -> serie.equals(serieDelete))
+        );
+
+        try {
+            serieService.deleteSerie(id);
+        } finally {}
         return "redirect:/admin/v/serie";
     }
 
@@ -148,14 +174,27 @@ public class SerieController {
                               @PathVariable("idSeason") long idSeason,
                               Model model, BindingResult result) {
 
-        if(result.hasErrors()) {
-            return "admin/serie";
+        if (!isVideoFile(editChapter.getUrl().getOriginalFilename())) {
+            result.rejectValue("url", "error.url", "Tipo de video no valido");
         }
-
-        chapterService.editChapter(editChapter);
 
         Serie serie = serieService.getSerie(id);
         Season season = seasonService.getSeason(idSeason);
+        if(result.hasErrors()) {
+            Long numberEpisode = chapterService.getLastEpisodeBySeason(season);
+            model.addAttribute("lastChapter", numberEpisode);
+            model.addAttribute("serie", serie);
+            model.addAttribute("listSeason", serie.getSeasons());
+            model.addAttribute("seasonSelected", season);
+            model.addAttribute("seasonChoose", idSeason);
+            return "admin/serie";
+        }
+
+        try {
+            chapterService.editChapter(editChapter);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return "redirect:/serie/" + serie.getId() + "/season/" + season.getId() + "/chapters";
 
@@ -165,16 +204,35 @@ public class SerieController {
     public String addChapter(@ModelAttribute("newChapter") @Valid ChapterRequest newChapter,
                              BindingResult result, Model model,
                              @PathVariable("id") long id,
-                             @PathVariable("idSeason") long idSeason) {
+                             @PathVariable("idSeason") long idSeason) throws IOException {
 
-        if(result.hasErrors()) {
-            return "admin/serie";
+        if (newChapter.getUrl().isEmpty()) {
+            result.rejectValue("url", "error.url", "El video es obligatorio");
+        }
+        else if (!isVideoFile(newChapter.getUrl().getOriginalFilename())) {
+            result.rejectValue("url", "error.url", "Tipo de video no valido");
+        }
+        if (!newChapter.getImg().isEmpty() &&
+                !isImageFile(newChapter.getImg().getOriginalFilename())) {
+            result.rejectValue("img", "error.img", "Tipo de img no valido");
         }
 
         Serie serie = serieService.getSerie(id);
         Season season = seasonService.getSeason(idSeason);
 
-        Chapter chapter = chapterService.addChapter(newChapter);
+        if(result.hasErrors()) {
+            Long numberEpisode = chapterService.getLastEpisodeBySeason(season);
+            model.addAttribute("lastChapter", numberEpisode);
+            model.addAttribute("serie", serie);
+            model.addAttribute("listSeason", serie.getSeasons());
+            model.addAttribute("seasonSelected", season);
+            model.addAttribute("seasonChoose", idSeason);
+            return "admin/season";
+        }
+
+
+
+        Chapter chapter = chapterService.addChapter(newChapter, serie, season);
         List<Chapter> listChapters = season.getChapters();
         listChapters.add(chapter);
 //        season.setChapters(listChapters);
@@ -187,6 +245,15 @@ public class SerieController {
         return "redirect:/serie/" + serie.getId() + "/season/" + season.getId() + "/chapters";
 
     }
+    public static boolean isImageFile(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("image");
+    }
+    public static boolean isVideoFile(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("video");
+    }
+
     @PostMapping("/{id}/season/{idSeason}/delete")
     public String deleteChapter(@PathVariable("id") long id,
                                 @PathVariable("idSeason") long idSeason,

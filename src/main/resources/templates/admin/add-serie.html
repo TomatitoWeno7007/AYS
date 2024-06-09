@@ -42,7 +42,7 @@
                                             </div>
 
                                         </div>
-                                        <p class="offset-2 mt-2 mensajeError" th:if="${#fields.hasErrors('genres')}" th:errors="*{genres}"></p>
+                                        <p class="mt-2 mensajeError" th:if="${#fields.hasErrors('genres')}" th:errors="*{genres}"></p>
                                     </div>
 
                                 </div>
@@ -51,8 +51,8 @@
                                     <label for="inputImg" class="col-2 col-form-label">Imagen</label>
                                     <div class="col-10">
                                         <input th:field="*{img}" class="form-control" type="file" id="inputImg">
+                                        <p class="mensajeError" th:if="${#fields.hasErrors('img')}" th:errors="*{img}"></p>
                                     </div>
-                                    <p class="mensajeError" th:if="${#fields.hasErrors('img')}" th:errors="*{img}"></p>
                                 </div>
 
 
@@ -60,11 +60,7 @@
                                     <input class="btn btn-primary col-12" type="submit" value="Guardar Programa">
                                 </div>
                             </form>
-                            <script th:inline="javascript" th:if="${#fields.hasErrors('newSerie.*')}">
-                                $( document ).ready(function() {
-                                    $("#modalAddSerie").modal("show");
-                                });
-                            </script>
+
                         </div>
                     </div>
                 </div>

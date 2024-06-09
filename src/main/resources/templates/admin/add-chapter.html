@@ -43,16 +43,16 @@
                                 <label for="inputImg" class="col-2 col-form-label">Imagen</label>
                                 <div class="col-10">
                                     <input th:field="*{img}" class="form-control" type="file" id="inputImg">
+                                    <p class="mensajeError" th:if="${#fields.hasErrors('img')}" th:errors="*{img}"></p>
                                 </div>
-                                <p class="mensajeError" th:if="${#fields.hasErrors('img')}" th:errors="*{img}"></p>
                             </div>
 
                             <div class="mb-3 row mb-4">
                                 <label for="inputVideo" class="col-2 col-form-label">Video</label>
                                 <div class="col-10">
                                     <input th:field="*{url}" class="form-control" type="file" id="inputVideo">
+                                    <p class="mensajeError" th:if="${#fields.hasErrors('url')}" th:errors="*{url}"></p>
                                 </div>
-                                <p class="mensajeError" th:if="${#fields.hasErrors('url')}" th:errors="*{url}"></p>
                             </div>
 
                             <div class="offset-md-8 offset-xl-9">

@@ -14,6 +14,7 @@
                 <div class="modal-body">
                     <div class="m-3">
                         <form class="text-white" th:action="@{/user/configuration/card}" th:object="${userConfigurationCard}"
+                              id="formChangeCard"
                               method="post">
 
                             <div class="mb-3 row align-items-center">
@@ -48,7 +49,7 @@
                                            type="date" class="form-control"
                                            th:attr="data-date=${userConfigurationCard.expirationDate}"
                                            id="inputExpirationDateCardEdit">
-                                    <span class="mensajeError" th:if="${#fields.hasErrors('expirationDate')}" th:errors="*{expirationDate}"></span>
+                                    <span id="expirationDateError" class="mt-4 mensajeError"></span>
                                 </div>
                             </div>
 

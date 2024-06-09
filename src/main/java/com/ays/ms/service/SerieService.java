@@ -121,7 +121,7 @@ public class SerieService {
     }
 
     @Transactional
-    public void editSerie(SerieRequest serieRequest) {
+    public void editSerie(SerieRequest serieRequest) throws IOException {
         Serie serie = this.getSerie(serieRequest.getId());
 
         if (serie == null) {
@@ -131,6 +131,28 @@ public class SerieService {
 
         if (! serieRequest.getImg().isEmpty()) {
             serie.setImg(String.valueOf(serieRequest.getImg()));
+        }
+
+        if (! serieRequest.getImg().isEmpty()) {
+            MultipartFile imgFile = serieRequest.getImg();
+
+            // Borra la anterior ruta, obteniendo la peli antes de editarla
+            if (serie.getImg() != null) {
+                Path pathDelete = Paths.get("static", "media", "img" , serie.getName()).resolve(serie.getImg());
+                Files.deleteIfExists(pathDelete);
+            }
+
+            String imgFilmName = StringUtils.cleanPath(imgFile.getOriginalFilename());
+            Path path = Paths.get("static", "media", "img" , serie.getName()).resolve(imgFilmName);
+
+            try {
+                // Verificar si el directorio existe, si no, lo crea
+                Files.createDirectories(path.getParent());
+                Files.write(path, imgFile.getBytes());
+                serie.setImg(serieRequest.getImg().getOriginalFilename());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         serie.setDescription(serieRequest.getDescription());

@@ -1,15 +1,20 @@
 package com.ays.ms.controller;
 
 import com.ays.ms.controller.dto.request.FilmRequest;
+import com.ays.ms.controller.dto.response.FilmResponse;
 import com.ays.ms.model.Film;
+import com.ays.ms.model.User;
 import com.ays.ms.service.FilmService;
 import com.ays.ms.service.GenreService;
+import com.ays.ms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URLConnection;
@@ -21,6 +26,9 @@ public class FilmController {
 
     @Autowired
     private FilmService filmService;
+
+    @Autowired
+    private UserService userService;
     @Autowired
     private GenreService genreService;
 
@@ -39,9 +47,14 @@ public class FilmController {
     public String add(@ModelAttribute("newFilm") @Valid FilmRequest newFilm, BindingResult result,
                       Model model) {
 
+        if (newFilm.getUrl().isEmpty() ||
+            newFilm.getImg().isEmpty()) {
+            if (newFilm.getUrl().isEmpty())
+                result.rejectValue("url", "error.url", "El video es obligatorio");
+            if (newFilm.getImg().isEmpty())
+                result.rejectValue("img", "error.img", "La img es obligatoria");
 
-        if (! newFilm.getImg().isEmpty() ||
-            ! newFilm.getUrl().isEmpty()) {
+        } else {
             if (!isImageFile(newFilm.getImg().getOriginalFilename())) {
                 result.rejectValue("img", "error.img", "Tipo de img no valido");
             }
@@ -73,9 +86,21 @@ public class FilmController {
     public String edit(@ModelAttribute("editFilm")  @Valid FilmRequest editFilm, BindingResult result,
                        Model model) {
 
+        Film filmBeforeEdit = filmService.getFilm(editFilm.getId());
+
+        if (!isImageFile(editFilm.getImg().getOriginalFilename())) {
+            result.rejectValue("img", "error.img", "Tipo de img no valido");
+        }
+        if (!isVideoFile(editFilm.getUrl().getOriginalFilename())) {
+            result.rejectValue("url", "error.url", "Tipo de video no valido");
+        }
+
         if(result.hasErrors()) {
             model.addAttribute("listFilms", filmService.getFilmFromView());
             model.addAttribute("listGenres", genreService.getGenres());
+            model.addAttribute("newFilm", new FilmRequest());
+            model.addAttribute("idEditFilm", editFilm.getId());
+
             return "admin/film";
         }
 
@@ -88,8 +113,22 @@ public class FilmController {
         return "redirect:/admin/v/film";
     }
 
+    @Transactional
     @PostMapping("/delete")
     public String deleteFilm(Long id, Model model) {
+
+        Film filmDelete = filmService.getFilm(id);
+        List<User> listUsers = userService.getUsers();
+        listUsers.forEach(user ->
+                user.getLikedFilms().
+                        removeIf(film -> film.equals(filmDelete))
+        );
+
+        listUsers.forEach(user ->
+                user.getRecommendedFilms().
+                        removeIf(film -> film.equals(filmDelete))
+        );
+
         try {
             filmService.deleteFilm(id);
         } catch (IOException e) {

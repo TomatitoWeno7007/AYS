@@ -171,6 +171,9 @@ body {
 .mensajeError {
     /* color: rgb(48, 241, 255); */
     color: var(--main-third-color);
+    width: fit-content;
+    width: -moz-fit-content; /* Para Firefox */
+    width: -webkit-fit-content; /* Para Chrome y Safari */
 }
 
 /*

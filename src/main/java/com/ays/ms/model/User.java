@@ -7,6 +7,7 @@ import java.security.AlgorithmConstraints;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -70,4 +71,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "film_id")
     )
     private List<Film> recommendedFilms;
+
+//    @OneToMany(mappedBy = "currentUserId")
+//    private Set<UserCurrentFilm> filmsCurrent;
+
 }

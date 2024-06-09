@@ -10,6 +10,7 @@ public class Program {
 
     protected String name;
     protected int views;
+    @Lob
     protected String description;
     protected int rating;
     protected String img;

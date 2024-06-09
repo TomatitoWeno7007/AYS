@@ -27,7 +27,9 @@
                          th:if="${serie.genres.contains(genre)}" class="cardProgram text-white">
                         <a class="linkProgram" href="#" th:href="@{/user/v/serie/{idSerie}/description(idSerie=${serie.id})}">
                             <figure class="imgProgram figure m-0 w-100">
-                                <img class="figure-img img-fluid" th:src="@{${serie.img}}" th:alt="${serie.name}">
+                                <img class="figure-img w-100"
+                                     th:src="@{/media/img/{serieName}/{imgSerie}(serieName=${serie.name}, imgSerie=${serie.img})}"
+                                     th:alt="${serie.name}">
                                 <div class="textProgramHover">
                                     <h3 th:text="${serie.name}"></h3>
                                     <p th:text="${serie.description}"></p>

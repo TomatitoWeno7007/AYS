@@ -51,6 +51,36 @@
 
             $("#playerVideo").attr("src", ruta + filmName + "/" + filmUrl);
 
+
+            var video = $('#playerVideo')[0];
+            var videoDuration;
+
+            // Log video duration when metadata is loaded
+            video.addEventListener('loadedmetadata', function() {
+                videoDuration = Math.trunc(video.duration);
+                console.log('Video Duration: ' + video.duration + ' seconds');
+            });
+
+            // Log current time periodically while the video is playing
+            video.addEventListener('timeupdate', function() {
+                console.log('Current Time: ' + Math.trunc(video.currentTime) + ' seconds');
+
+                // Send the current time to the server every 5 seconds
+                if (Math.floor(video.currentTime) % 5 === 0 &&
+                    video.currentTime > 1) {
+                    var percentage = (video.currentTime / videoDuration) * 100;
+                    console.log(Math.trunc(percentage) + "%");
+                }
+            });
+
+            // Log current time periodically while the video is playing
+            video.addEventListener('ratechange', function() {
+                console.log('NOPE');
+            });
+
+
+
+
         });
 
     </script>

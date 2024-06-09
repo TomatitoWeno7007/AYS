@@ -102,7 +102,7 @@ INSERT INTO `chapter` (`id`, `duration`, `img`, `name`, `number`, `synopsis`, `u
 (1, '22:36', 'nohay', 'El Comienzo', 1, 'Parece que empieza la aventura de una forma inusual', NULL),
 (2, '19:56', 'nohay', 'Primera Pista', 2, 'Después del primer asesinato, parece que se encuentran con la bestia.', NULL),
 (3, '20:13', 'nohay', 'Mi primer Pokemon', 1, 'Ash empieza la aventura de capturar a los 4398116 pokemon.', NULL),
-(4, '22:36', 'nohay', 'El Amanecer', 3, 'Amanece de forma sorprendente', NULL),
+(4, '22:36', 'nohay', 'El Amanecer', 1, 'Amanece de forma sorprendente', NULL),
 (5, '22:36', 'nohay', 'Ahora Bulbasaur', 2, 'Por fin obtiene al inicial', NULL);
 
 INSERT INTO `season` (`id`, `number`) VALUES
@@ -145,3 +145,7 @@ INSERT INTO `user_recommended_series` (`user_id`, `serie_id`) VALUES
 (11, 2),(11, 9),(11, 6),
 (11, 7),(11, 12),(11, 8),
 (11, 3),(11, 1),(11, 5);
+
+
+--INSERT INTO `user_watching_film`(`user_id`, `film_id`, `actual_time`)
+--VALUES ('6','25','74');

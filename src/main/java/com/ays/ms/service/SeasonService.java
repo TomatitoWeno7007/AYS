@@ -28,7 +28,8 @@ public class SeasonService {
     public Season addSeason(Serie serie) {
         List<Season> listSeason =  serie.getSeasons();
 
-        Long numberSeason = listSeason.get(listSeason.size()-1).getNumber() + 1;
+        Long numberSeason = listSeason.size() == 0 ? 1 :
+                listSeason.get(listSeason.size()-1).getNumber() + 1;
 
         Season season = new Season();
         season.setNumber(numberSeason);

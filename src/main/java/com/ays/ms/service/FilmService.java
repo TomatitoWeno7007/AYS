@@ -49,6 +49,8 @@ public class FilmService {
         film.setGenres(genres);
         MultipartFile imgFile = filmRequest.getImg();
         MultipartFile urlFile = filmRequest.getUrl();
+        film.setDuration(filmRequest.getDuration());
+
         if (! filmRequest.getImg().isEmpty()) {
             String imgFilmName = StringUtils.cleanPath(imgFile.getOriginalFilename());
             // Crea una carpeta con el nombre de la peli para tenerlo más ordenado
@@ -62,11 +64,12 @@ public class FilmService {
                 e.printStackTrace();
             }
 
-
         }
         if (! filmRequest.getUrl().isEmpty()) {
             String urlFilmName = StringUtils.cleanPath(urlFile.getOriginalFilename());
             Path path = Paths.get("static", "media", "video" , film.getName()).resolve(urlFilmName);
+
+
 
             try {
                 Files.createDirectories(path.getParent());

@@ -70,7 +70,6 @@ public class UserController {
             model.addAttribute("userPass", new UserConfigurationPassRequest());
         }
 
-
         return "user/configuration";
     }
 
@@ -89,7 +88,6 @@ public class UserController {
             result.addError(errors);
             return "user/configuration";
         }
-
         return "redirect:/user/v/configuration";
     }
 
@@ -177,6 +175,9 @@ public class UserController {
     @GetMapping("/v/film/{idFilm}/player")
     public String getFilmPlayer(@PathVariable("idFilm") long idFilm,
                                    Model model) {
+        long idUser = authenticationService.getIdLoginUser();
+        model.addAttribute("userInfo", userService.getUser(idUser));
+
 
         Film filmFind = filmService.getFilm(idFilm);
         List<Film> allFilms = filmService.getFilms();
@@ -204,6 +205,9 @@ public class UserController {
     public String getSeasonsPlayer(@PathVariable("idSerie") long idSerie,
                                    @PathVariable("seasonNumber") long seasonNumber,
                                    Model model) {
+        long idUser = authenticationService.getIdLoginUser();
+        model.addAttribute("userInfo", userService.getUser(idUser));
+
 
         Serie serie = serieService.getSerie(idSerie);
         model.addAttribute("serie", serie);
@@ -217,6 +221,8 @@ public class UserController {
                                  @PathVariable("seasonNumber") long seasonNumber,
                                  @PathVariable("chapterNumber") int chapterNumber,
                                  Model model) {
+        long idUser = authenticationService.getIdLoginUser();
+        model.addAttribute("userInfo", userService.getUser(idUser));
 
         boolean isNext = false, isBefore = false;
 
@@ -285,6 +291,8 @@ public class UserController {
     @GetMapping("/v/serie/{idSerie}/description")
     public String getSerieDescription(@PathVariable("idSerie") long idSerie,
                                       Model model) {
+        long idUser = authenticationService.getIdLoginUser();
+        model.addAttribute("userInfo", userService.getUser(idUser));
 
         Serie serie = serieService.getSerie(idSerie);
         boolean isLiked = false;
@@ -307,7 +315,6 @@ public class UserController {
     public String getSerieSeasonChoose(@PathVariable("idSerie") long idSerie,
                                        @PathVariable("seasonNumber") long seasonNumber,
                                        Model model) {
-
         Serie serie = serieService.getSerie(idSerie);
         model.addAttribute("serie", serie);
         model.addAttribute("seasonChoose", serie.getSeasons().get((int) (seasonNumber-1)));
@@ -321,6 +328,8 @@ public class UserController {
     @GetMapping("/v/film/{idFilm}/description")
     public String getFilmDescription(@PathVariable("idFilm") long idFilm,
                                       Model model) {
+        long idUser = authenticationService.getIdLoginUser();
+        model.addAttribute("userInfo", userService.getUser(idUser));
 
         Film filmFind = filmService.getFilm(idFilm);
         List<Film> allFilms = filmService.getFilms();
@@ -397,6 +406,8 @@ public class UserController {
 
     @GetMapping("/v/films")
     public String getAllFilms(Model model) {
+        long idUser = authenticationService.getIdLoginUser();
+        model.addAttribute("userInfo", userService.getUser(idUser));
 
         List<Film> allFilms = filmService.getFilms();
 
@@ -415,6 +426,8 @@ public class UserController {
 
     @GetMapping("/v/series")
     public String getAllSeries(Model model) {
+        long idUser = authenticationService.getIdLoginUser();
+        model.addAttribute("userInfo", userService.getUser(idUser));
 
         List<Serie> allSeries = serieService.getSeries();
 

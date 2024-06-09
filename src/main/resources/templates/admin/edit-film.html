@@ -14,7 +14,7 @@
 
                     <div class="modal-body">
                         <div class="m-3">
-                            <form class="text-white"  action="#" th:action="@{/film/edit-film}" th:object="${film.editFilm}"
+                            <form id="formEditFilm" class="text-white"  action="#" th:action="@{/film/edit-film}" th:object="${film.editFilm}"
                                     method="post" enctype="multipart/form-data">
                                 <div class="mb-3 row mb-md-4">
                                     <label th:for="${'inputName' + film.id}" class="col-2 col-form-label">Nombre</label>
@@ -64,7 +64,9 @@
                                             th:attr="aria-label='Introducir imagen para la película: ' + ${film.name} + ', dirección de enlace: ' + ${film.img}"></a>
 
                                         <div th:id="divChooseImg+${film.id}" >
-                                            <input class="form-control" type="file" th:name="img" title="Elegir archivo de imagen">
+                                            <input class="form-control"
+                                                   th:id="${'inputImg' + film.id}"
+                                                   type="file" th:name="img" title="Elegir archivo de imagen">
                                             <button class="btn btn-light mt-2"
                                                     th:if="${film.img != '' && film.img != null}"
                                                     th:id="btnCancelImg+${film.id}"

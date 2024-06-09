@@ -33,4 +33,7 @@ public class Film extends Program {
     @ManyToMany(mappedBy = "watchFilms")
     private Set<User> usersWatched;
 
+//    @OneToMany(mappedBy = "currentFilmId")
+//    private Set<UserCurrentFilm> usersCurrent;
+
 }

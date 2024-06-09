@@ -14,7 +14,8 @@
                 <div class="modal-body">
                     <div class="m-3">
                         <form class="text-white" th:action="@{/film/add-film}" th:object="${newFilm}"
-                        action="#" method="post" enctype="multipart/form-data">
+                        id="formAddFilm"
+                              action="#" method="post" enctype="multipart/form-data">
                             <div class="mb-3 row mb-md-4">
                                 <label for="inputName" class="col-2 col-form-label">Nombre</label>
                                 <div class="col-10">
@@ -60,6 +61,7 @@
                                     <input th:field="*{url}" class="form-control" type="file" id="inputVideo">
                                 </div>
                                 <p class="offset-2 mensajeError" th:if="${#fields.hasErrors('url')}" th:errors="*{url}"></p>
+                                <input type="hidden" id="inputDuration" th:field="*{duration}">
                             </div>
 
                             <div class="offset-md-8 offset-xl-9">

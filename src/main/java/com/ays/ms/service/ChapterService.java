@@ -5,6 +5,7 @@ import com.ays.ms.controller.dto.request.FilmRequest;
 import com.ays.ms.exceptions.ResourceNotFoundException;
 import com.ays.ms.model.*;
 import com.ays.ms.respository.ChapterRepository;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -17,6 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ChapterService {
@@ -57,6 +60,7 @@ public class ChapterService {
                 Files.createDirectories(pathUrl.getParent());
                 Files.write(pathUrl, urlFile.getBytes());
                 chapter.setUrl(chapterRequest.getUrl().getOriginalFilename());
+                chapter.setDuration(this.getVideoDuration(urlFile));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -113,6 +117,7 @@ public class ChapterService {
                 Files.createDirectories(path.getParent());
                 Files.write(path, urlFile.getBytes());
                 chapter.setUrl(chapterRequest.getUrl().getOriginalFilename());
+                chapter.setDuration(this.getVideoDuration(urlFile));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -138,5 +143,33 @@ public class ChapterService {
 
         return numberEpisode;
     }
+
+    public String getVideoDuration(MultipartFile multipartFile) {
+        long durationInMicroseconds = 0;
+        String duration = "00:00:00";
+        try {
+            File tempFile = File.createTempFile("video", UUID.randomUUID().toString());
+            multipartFile.transferTo(tempFile);
+
+            FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(tempFile);
+            grabber.start();
+
+            durationInMicroseconds = grabber.getLengthInTime();
+
+            grabber.stop();
+            tempFile.delete();
+
+            long seconds = TimeUnit.MICROSECONDS.toSeconds(durationInMicroseconds);
+            long hours = seconds / 3600;
+            long minutes = (seconds % 3600) / 60;
+            long remainingSeconds = seconds % 60;
+
+            duration = String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds);
+
+        } catch (Exception e) {}
+
+        return duration;
+    }
+
 
 }

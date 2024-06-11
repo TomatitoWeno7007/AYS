@@ -1,13 +1,11 @@
 package com.ays.ms.controller;
 
 import com.ays.ms.controller.dto.request.*;
-import com.ays.ms.model.Chapter;
-import com.ays.ms.model.Film;
-import com.ays.ms.model.Genres;
-import com.ays.ms.model.Serie;
+import com.ays.ms.model.*;
 import com.ays.ms.service.*;
 import com.ays.ms.service.utils.MathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,12 +31,18 @@ public class UserController {
     @Autowired
     private SerieService serieService;
     @Autowired
+    private ChapterService chapterService;
+    @Autowired
     private FilmService filmService;
     @Autowired
     private GenreService genreService;
 
     @Autowired
     private AuthenticationService authenticationService;
+    @Autowired
+    private UserFilmWatchingService userFilmWatchingService;
+    @Autowired
+    private UserChapterWatchingService userChapterWatchingService;
 
     @GetMapping("/v/principal/content")
     public String getPrincipalContentView(Model model) {
@@ -49,10 +53,20 @@ public class UserController {
         List<Film> likedFilms = userService.getLikedUserFilms();
         List<Serie> likedSeries = userService.getLikedUserSeries();
 
+        List<UserFilmWatching> watchingFilms = userService.getWatchingUserFilms();
+        List<UserChapterWatching> watchingChapters = userService.getWatchingUserChapters();
+
+        List<Film> watchedFilms = userService.getWatchedUserFilms();
+        List<Serie> watchedSeries = userService.getWatchedUserSeries();
+
         model.addAttribute("likedFilms", (likedFilms.isEmpty()) ? null : likedFilms );
         model.addAttribute("likedSeries", (likedSeries.isEmpty()) ? null : likedSeries );
         model.addAttribute("recommendedSeries", recommendedSerie);
         model.addAttribute("recommendedFilms", recommendedFilm);
+        model.addAttribute("watchingFilms", (watchingFilms.isEmpty()) ? null : watchingFilms );
+        model.addAttribute("watchingChapters", (watchingChapters.isEmpty()) ? null : watchingChapters );
+        model.addAttribute("watchedFilms", (watchedFilms.isEmpty()) ? null : watchedFilms );
+        model.addAttribute("watchedSeries", (watchedSeries.isEmpty()) ? null : watchedSeries );
         long idUser = authenticationService.getIdLoginUser();
         model.addAttribute("userInfo", userService.getUser(idUser));
 
@@ -195,10 +209,94 @@ public class UserController {
             filmsByGenre.subList(5, filmsByGenre.size()).clear();
         }
 
+        // Para recoger el tiempo en caso de que lo tenga
+        UserFilmWatching filmWatching = userFilmWatchingService.getFilmWatching(userService.getUser(idUser), filmFind);
+
         model.addAttribute("film", filmFind);
         model.addAttribute("recommendedFilm", filmsByGenre);
+        model.addAttribute("filmActualTime", filmWatching == null ? null : filmWatching.getActualTime());
         return "user/playerFilm";
 
+    }
+
+
+    @PostMapping("/v/serie/{idChapter}/{actualDuration}")
+    public ResponseEntity<String> getDurationChapter(@PathVariable("idChapter") long idChapter,
+                                                  @PathVariable("actualDuration") int actualDuration,
+                                                  Model model) {
+
+        try {
+            UserChapterWatching chapterWatching = new UserChapterWatching();
+            long idUser = authenticationService.getIdLoginUser();
+            User user = userService.getUser(idUser);
+            Chapter chapterFind = chapterService.getChapterById(idChapter);
+
+            chapterWatching.setId(new UserChapterWatchingId(user, chapterFind));
+            chapterWatching.setActualTime(String.valueOf(actualDuration));
+            userChapterWatchingService.saveChapterWatching(chapterWatching);
+
+            List <UserChapterWatching> listChaptersWatching = userService.getWatchingUserChapters();
+
+            listChaptersWatching.add(chapterWatching);
+            userService.setWatchingUserChapters(listChaptersWatching);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            System.err.println("Error updating duration: " + e.getMessage());
+            return ResponseEntity.status(404).body("Error updating duration: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/v/film/{idFilm}/{actualDuration}")
+    public ResponseEntity<String> getDurationFilm(@PathVariable("idFilm") long idFilm,
+                                                  @PathVariable("actualDuration") int actualDuration,
+                                                  Model model) {
+
+        try {
+            UserFilmWatching filmWatching = new UserFilmWatching();
+            long idUser = authenticationService.getIdLoginUser();
+            User user = userService.getUser(idUser);
+            Film filmFind = filmService.getFilm(idFilm);
+
+            filmWatching.setId(new UserFilmWatchingId(user, filmFind));
+            filmWatching.setActualTime(String.valueOf(actualDuration));
+            userFilmWatchingService.saveFilmWatching(filmWatching);
+
+            List <UserFilmWatching> listFilmsWatching = userService.getWatchingUserFilms();
+
+            listFilmsWatching.add(filmWatching);
+            userService.setWatchingUserFilms(listFilmsWatching);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            System.err.println("Error updating duration: " + e.getMessage());
+            return ResponseEntity.status(404).body("Error updating duration: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/v/film/{idFilm}/watchedFilm")
+    public ResponseEntity<String> getDurationFilm(@PathVariable("idFilm") long idFilm,
+                                                  Model model) {
+
+        try {
+            long idUser = authenticationService.getIdLoginUser();
+            User user = userService.getUser(idUser);
+            Film filmFind = filmService.getFilm(idFilm);
+
+            UserFilmWatchingId idFilmWatchDelete = new UserFilmWatchingId(user, filmFind);
+            UserFilmWatching userFilmWatching = userFilmWatchingService.getFilmWatching(user, filmFind);
+
+            List <UserFilmWatching> listFilmsWatching = userService.getWatchingUserFilms();
+            listFilmsWatching.remove(userFilmWatching);
+            userFilmWatchingService.deleteFilmWatching(idFilmWatchDelete);
+            userService.setWatchingUserFilms(listFilmsWatching);
+
+            List <Film> listUserWatchedFilms  = userService.getWatchedUserFilms();
+            listUserWatchedFilms.add(filmFind);
+            userService.setWatchedUserFilms(listUserWatchedFilms);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            System.err.println("Error updating duration: " + e.getMessage());
+            return ResponseEntity.status(404).body("Error updating duration: " + e.getMessage());
+        }
     }
 
     @GetMapping("/v/serie/{idSerie}/{seasonNumber}/player")
@@ -208,13 +306,58 @@ public class UserController {
         long idUser = authenticationService.getIdLoginUser();
         model.addAttribute("userInfo", userService.getUser(idUser));
 
-
         Serie serie = serieService.getSerie(idSerie);
+
+        // Para recoger el tiempo en caso de que lo tenga
+        UserChapterWatching chapterWatching = userChapterWatchingService.getChapterWatching(userService.getUser(idUser),
+                serie.getSeasons().get((int) (seasonNumber-1)).getChapters().get(0));
+
         model.addAttribute("serie", serie);
         model.addAttribute("seasonChoose", serie.getSeasons().get((int) (seasonNumber-1)));
         model.addAttribute("listChapters", serie.getSeasons().get((int) (seasonNumber-1)).getChapters());
+        model.addAttribute("chapterActualTime", chapterWatching == null ? null : chapterWatching.getActualTime());
         return "user/playerSerie :: .serieBox";
     }
+
+    @GetMapping("/v/serie/{idSerie}/{numberSeason}/{idChapter}/watchedChapter")
+    public ResponseEntity<String> getWatchedSerie(@PathVariable("idSerie") long idSerie,
+                                                  @PathVariable("numberSeason") int numberSeason,
+                                                  @PathVariable("idChapter") long idChapter,
+                                                  Model model) {
+
+        try {
+            long idUser = authenticationService.getIdLoginUser();
+            User user = userService.getUser(idUser);
+            Chapter chapterFind = chapterService.getChapterById(idChapter);
+            Serie serieFind = serieService.getSerie(idSerie);
+            Season seasonFind = serieFind.getSeasons().get(numberSeason-1);
+
+            UserChapterWatchingId idChapterWatchDelete = new UserChapterWatchingId(user, chapterFind);
+            UserChapterWatching userChapterWatching = userChapterWatchingService.getChapterWatching(user, chapterFind);
+
+            List <UserChapterWatching> listChapterWatching = userService.getWatchingUserChapters();
+            listChapterWatching.remove(userChapterWatching);
+            userChapterWatchingService.deleteChapterWatching(idChapterWatchDelete);
+            userService.setWatchingUserChapters(listChapterWatching);
+
+            // Comprueba si acabó la serie
+            if (seasonFind == serieFind.getSeasons().get(serieFind.getSeasons().size()-1)) {
+                List <Serie> listUserWatchedSeries = userService.getWatchedUserSeries();
+                listUserWatchedSeries.add(serieFind);
+                userService.setWatchedUserSeries(listUserWatchedSeries);
+            }
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            System.err.println("Error updating duration: " + e.getMessage());
+            return ResponseEntity.status(404).body("Error updating duration: " + e.getMessage());
+        }
+    }
+
+
+
+
+
 
     @GetMapping("/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player")
     public String getSeriePlayer(@PathVariable("idSerie") long idSerie,
@@ -267,6 +410,12 @@ public class UserController {
             isNext = true;
         }
 
+
+        // Para recoger el tiempo en caso de que lo tenga
+        UserChapterWatching chapterWatching = userChapterWatchingService.getChapterWatching(userService.getUser(idUser),
+                chapter);
+
+        model.addAttribute("chapterActualTime", chapterWatching == null ? null : chapterWatching.getActualTime());
         model.addAttribute("isNext", isNext);
         model.addAttribute("isBefore", isBefore);
 
@@ -303,10 +452,13 @@ public class UserController {
             isLiked = true;
         }
 
+        List<UserChapterWatching> listWatchingChapters = userService.getWatchingUserChapters();
+
         model.addAttribute("serie", serie);
         model.addAttribute("isLiked", isLiked);
         model.addAttribute("seasonChoose", serie.getSeasons().get(0));
         model.addAttribute("listChapters", serie.getSeasons().get(0).getChapters());
+        model.addAttribute("listWatchingChapters", listWatchingChapters);
         return "user/serie-description";
 
     }
@@ -319,6 +471,9 @@ public class UserController {
         model.addAttribute("serie", serie);
         model.addAttribute("seasonChoose", serie.getSeasons().get((int) (seasonNumber-1)));
         model.addAttribute("listChapters", serie.getSeasons().get((int) (seasonNumber-1)).getChapters());
+
+        List<UserChapterWatching> listWatchingChapters = userService.getWatchingUserChapters();
+        model.addAttribute("listWatchingChapters", listWatchingChapters);
 //        return "user/serie-description";
         return "user/serie-description :: .serieBox";
 

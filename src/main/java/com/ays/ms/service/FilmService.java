@@ -1,10 +1,12 @@
 package com.ays.ms.service;
 
 import com.ays.ms.controller.dto.request.FilmRequest;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 import java.io.IOException;
-import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,7 +14,6 @@ import com.ays.ms.controller.dto.response.FilmResponse;
 import com.ays.ms.exceptions.ResourceNotFoundException;
 import com.ays.ms.model.Film;
 import com.ays.ms.model.Genres;
-import com.ays.ms.model.Serie;
 import org.modelmapper.ModelMapper;
 import com.ays.ms.respository.FilmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,7 +52,6 @@ public class FilmService {
         film.setGenres(genres);
         MultipartFile imgFile = filmRequest.getImg();
         MultipartFile urlFile = filmRequest.getUrl();
-        film.setDuration(filmRequest.getDuration());
 
         if (! filmRequest.getImg().isEmpty()) {
             String imgFilmName = StringUtils.cleanPath(imgFile.getOriginalFilename());
@@ -69,12 +71,11 @@ public class FilmService {
             String urlFilmName = StringUtils.cleanPath(urlFile.getOriginalFilename());
             Path path = Paths.get("static", "media", "video" , film.getName()).resolve(urlFilmName);
 
-
-
             try {
                 Files.createDirectories(path.getParent());
                 Files.write(path, urlFile.getBytes());
                 film.setUrl(filmRequest.getUrl().getOriginalFilename());
+                film.setDuration(this.getVideoDuration(urlFile));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -129,6 +130,7 @@ public class FilmService {
                 Files.createDirectories(path.getParent());
                 Files.write(path, urlFile.getBytes());
                 film.setUrl(filmRequest.getUrl().getOriginalFilename());
+                film.setDuration(this.getVideoDuration(urlFile));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -187,6 +189,33 @@ public class FilmService {
         });
 
         return responses;
+    }
+
+    public String getVideoDuration(MultipartFile multipartFile) {
+        long durationInMicroseconds = 0;
+        String duration = "00:00:00";
+        try {
+            File tempFile = File.createTempFile("video", UUID.randomUUID().toString());
+            multipartFile.transferTo(tempFile);
+
+            FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(tempFile);
+            grabber.start();
+
+            durationInMicroseconds = grabber.getLengthInTime();
+
+            grabber.stop();
+            tempFile.delete();
+
+            long seconds = TimeUnit.MICROSECONDS.toSeconds(durationInMicroseconds);
+            long hours = seconds / 3600;
+            long minutes = (seconds % 3600) / 60;
+            long remainingSeconds = seconds % 60;
+
+            duration = String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds);
+
+        } catch (Exception e) {}
+
+        return duration;
     }
 
 }

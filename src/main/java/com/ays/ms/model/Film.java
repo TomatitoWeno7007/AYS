@@ -33,7 +33,7 @@ public class Film extends Program {
     @ManyToMany(mappedBy = "watchFilms")
     private Set<User> usersWatched;
 
-//    @OneToMany(mappedBy = "currentFilmId")
-//    private Set<UserCurrentFilm> usersCurrent;
+    @OneToMany(mappedBy = "id.film", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserFilmWatching> currentUsers;
 
 }

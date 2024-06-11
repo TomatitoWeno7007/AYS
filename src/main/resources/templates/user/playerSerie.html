@@ -109,12 +109,9 @@
 
             var ruta = "/media/video/"
             var serieName = [[${serie.name}]];
-<!--            @{/user/v/serie/{idSerie}/{seasonNumber}/{chapterNumber}/player/(idSerie=${serie.id}, chapterNumber=${chapter.number-1}, seasonNumber=${seasonChoose.number})}-->
             var seasonSelected = [(${seasonChoose.number})];
             var chapterSelected = [(${chapter.number})];
             var chapterVideo = [[${chapter.url}]];
-
-<!--            var player = new Clappr.Player({source: ruta + serieName + "/" + seasonSelected + "/" + chapterSelected + ".mp4", parentId: "#player"});-->
 
             $("#playerVideo").attr("src", ruta + serieName + "/" + seasonSelected + "/" +  chapterSelected + "/" + chapterVideo);
 
@@ -130,19 +127,6 @@
                 $("#serieContainer").slideToggle();
 
             });
-
-
-<!--            $("#btnAnterior").on("click", function() {-->
-<!--                var urlAnterior = $('#btnAnterior').attr('href');-->
-<!--                var nuevaUrl = urlAnterior;-->
-<!--                $('#btnAnterior').attr('href', nuevaUrl);-->
-<!--            });-->
-
-<!--            $("#btnSiguiente").on("click", function() {-->
-<!--                var urlSiguiente = $('#btnSiguiente').attr('href');-->
-<!--                var nuevaUrl = urlSiguiente;-->
-<!--                $('#btnSiguiente').attr('href', nuevaUrl);-->
-<!--            });-->
 
 
             $("#serieContainer").on("click", ".nav-link", function (e) {
@@ -166,6 +150,58 @@
                 }
             });
         }
+
+        var video = $('#playerVideo')[0];
+        var videoDuration;
+        var chapterActualTime = [[${chapterActualTime}]];
+        var lastSentTime = -1;
+        var isPutActualTime = false;
+
+        // Log current time periodically while the video is playing
+            video.addEventListener('timeupdate', function() {
+                if (chapterActualTime !== null) {
+                    if (!isPutActualTime) {
+                        video.currentTime = chapterActualTime;
+                        isPutActualTime = true;
+                    }
+
+                }
+                // Guarda cada 5 seg
+                if (Math.floor(video.currentTime) % 5 === 0 &&
+                    video.currentTime > 1 &&
+                    Math.floor(video.currentTime) !== lastSentTime) {
+                    lastSentTime = Math.floor(video.currentTime);
+                    console.log('Current Time: ' + Math.floor(video.currentTime) + ' seconds');
+
+
+                    var idChapter = /*[[${chapter.id}]]*/;
+                    var currentTime = Math.trunc(video.currentTime);
+                    var url = "/v/chapter/" + idChapter + "/" + currentTime;
+                    console.log('AJAX URL:', url); // Depura la URL generada
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/user/v/serie/" + idChapter + "/" + currentTime,
+                        success: function(response) {},
+                        error: function(xhr, status, error) {}
+                    });
+                }
+
+                if (Math.floor(video.currentTime) == videoDuration) {
+                    console.log('Chapter Finalizado:', url); // Depura la URL generada
+
+                    var idChapter = /*[[${chapter.id}]]*/;
+                    var idSerie = /*[[${serie.id}]]*/;
+                    var numberSeason = /*[[${seasonChoose.number}]]*/;
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/user/v/serie/" + idSerie + "/" + numberSeason + "/" + idChapter + "/watchedChapter",
+                        success: function(response) {},
+                        error: function(xhr, status, error) {}
+                    });
+                }
+            });
 
     </script>
 </main>

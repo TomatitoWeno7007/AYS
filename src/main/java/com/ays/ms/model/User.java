@@ -3,11 +3,8 @@ package com.ays.ms.model;
 import javax.persistence.*;
 import lombok.Data;
 
-import java.security.AlgorithmConstraints;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -72,7 +69,11 @@ public class User {
     )
     private List<Film> recommendedFilms;
 
-//    @OneToMany(mappedBy = "currentUserId")
-//    private Set<UserCurrentFilm> filmsCurrent;
+    @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserFilmWatching> currentFilms;
+
+    @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserChapterWatching> currentChapters;
+
 
 }

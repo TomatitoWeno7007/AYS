@@ -13,6 +13,53 @@
                 </ol>
             </nav>
 
+            <div th:if="${watchingFilms} or ${watchingChapters}">
+                <h1 class="text-white">Seguir viendo</h1>
+                <div class="containerProgram m-3" th:if="${watchingFilms}">
+                    <h2 class="text-white border-bottom">Películas</h2>
+                    <div class="boxProgram pt-2 row row-cols-1 d-flex">
+                        <div th:each="watchingFilm : ${watchingFilms}" class="cardProgram text-white">
+                            <a class="linkProgram" href="#"
+                               th:href="@{/user/v/film/{idFilm}/description(idFilm=${watchingFilm.id.film.id})}">
+                                <figure class="imgProgram figure m-0 w-100">
+                                    <img class="figure-img img-fluid"
+                                         th:src="@{/media/img/{filmName}/{imgFilm}(filmName=${watchingFilm.id.film.name}, imgFilm=${watchingFilm.id.film.img})}"
+                                         th:alt="${watchingFilm.id.film.name}">
+                                    <div class="textProgramHover">
+                                        <h3 th:text="${watchingFilm.id.film.name}"></h3>
+                                        <p th:text="${watchingFilm.id.film.description}"></p>
+                                    </div>
+                                </figure>
+                            </a>
+                            <h3 class="titleProgram text-center" th:text="${watchingFilm.id.film.name}"></h3>
+                        </div>
+
+                    </div>
+                </div>
+
+<!--                <div class="containerProgram m-3" th:if="${watchingChapters}">-->
+<!--                    <h2 class="text-white border-bottom">Series</h2>-->
+<!--                    <div class="boxProgram pt-2 row row-cols-1 d-flex">-->
+<!--                        <div th:each="watchingChapter : ${watchingChapters}" class="cardProgram text-white">-->
+<!--                            <a class="linkProgram" href="#"-->
+<!--                               th:href="@{/user/v/serie/{idChapter}/description(idChapter=${watchingChapter.id.chapter.id})}">-->
+<!--                                <figure class="imgProgram figure m-0 w-100">-->
+<!--                                    <img class="figure-img img-fluid"-->
+<!--                                         th:src="@{/media/img/{chapterName}/{imgChapter}(chapterName=${watchingChapter.id.chapter.name}, imgChapter=${watchingChapter.id.chapter.img})}"-->
+<!--                                         th:alt="${watchingChapter.id.chapter.name}">-->
+<!--                                    <div class="textProgramHover">-->
+<!--                                        <h3 th:text="${watchingChapter.id.chapter.name}"></h3>-->
+<!--                                        <p th:text="${watchingChapter.id.chapter.synopsis}"></p>-->
+<!--                                    </div>-->
+<!--                                </figure>-->
+<!--                            </a>-->
+<!--                            <h3 class="titleProgram text-center" th:text="${watchingChapter.id.chapter.name}"></h3>-->
+<!--                        </div>-->
+
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+
             <div th:if="${likedFilms} or ${likedSeries}">
                 <h1 class="text-white">Me gustan</h1>
                 <div class="containerProgram m-3" th:if="${likedFilms}">
@@ -58,50 +105,102 @@
                 </div>
             </div>
 
+            <div th:if="${watchedFilms} or ${watchedSeries}">
+                <h1 class="text-white">Volver a ver</h1>
+                <div class="containerProgram m-3" th:if="${watchedFilms}">
+                    <h2 class="text-white border-bottom">Películas</h2>
+                    <div class="boxProgram pt-2 row row-cols-1 d-flex">
+                        <div th:each="film : ${watchedFilms}" class="cardProgram text-white ">
+                            <a class="linkProgram" href="#"
+                               th:href="@{/user/v/film/{idFilm}/description(idFilm=${film.id})}">
+                                <figure class="imgProgram figure m-0 w-100">
+                                    <img class="figure-img img-fluid"
+                                         th:src="@{/media/img/{filmName}/{imgFilm}(filmName=${film.name}, imgFilm=${film.img})}"
+                                         th:alt="${film.name}">
+                                    <div class="textProgramHover">
+                                        <h3 th:text="${film.name}"></h3>
+                                        <p th:text="${film.description}"></p>
+                                    </div>
+                                </figure>
+                            </a>
+                            <h3 class="titleProgram text-center" th:text="${film.name}"></h3>
+                        </div>
+                    </div>
+                </div>
 
-            <h1 class="text-white">Recomendaciones</h1>
-
-            <div class="containerProgram m-3">
-                <h2 class="text-white border-bottom">Películas</h2>
-                <div class="boxProgram pt-2 row row-cols-1 d-flex">
-                    <!--<p th:text="${serie.name}" />-->
-                    <div th:each="film : ${recommendedFilms}" class="cardProgram text-white " >
-                        <a class="linkProgram" href="#" th:href="@{/user/v/film/{idFilm}/description(idFilm=${film.id})}">
-                            <figure class="imgProgram figure m-0 w-100">
-                                <img class="figure-img img-fluid"
-                                     th:src="@{/media/img/{filmName}/{imgFilm}(filmName=${film.name}, imgFilm=${film.img})}"
-                                     th:alt="${film.name}">
-                                <div class="textProgramHover">
-                                    <h3 th:text="${film.name}"></h3>
-                                    <p th:text="${film.description}"></p>
-                                </div>
-                            </figure>
-                        </a>
-                        <h3 class="titleProgram text-center" th:text="${film.name}"></h3>
+                <div class="containerProgram m-3" th:if="${watchedSeries}">
+                    <h2 class="text-white border-bottom">Series</h2>
+                    <div class="boxProgram pt-2 row row-cols-1 d-flex">
+                        <!--<p th:text="${serie.name}" />-->
+                        <div th:each="serie : ${watchedSeries}" class="cardProgram text-white ">
+                            <a class="linkProgram" href="#" th:href="@{/user/v/serie/{idSerie}/description (idSerie=${serie.id})}">
+                                <figure class="imgProgram figure m-0 w-100">
+                                    <img class="figure-img img-fluid"
+                                         th:src="@{/media/img/{serieName}/{imgSerie}(serieName=${serie.name}, imgSerie=${serie.img})}"
+                                         th:alt="${serie.name}">
+                                    <div class="textProgramHover">
+                                        <h3 th:text="${serie.name}"></h3>
+                                        <p th:text="${serie.description}"></p>
+                                    </div>
+                                </figure>
+                            </a>
+                            <h3 class="titleProgram text-center" th:text="${serie.name}"></h3>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="containerProgram m-3">
-                <h2 class="text-white border-bottom">Series</h2>
-                <div class="boxProgram pt-2 row row-cols-1 d-flex">
-                    <!--<p th:text="${serie.name}" />-->
-                    <div th:each="serie : ${recommendedSeries}" class="cardProgram text-white ">
-                        <a class="linkProgram" href="#" th:href="@{/user/v/serie/{idSerie}/description (idSerie=${serie.id})}">
-                            <figure class="imgProgram figure m-0 w-100">
-                                <img class="figure-img img-fluid"
-                                     th:src="@{/media/img/{serieName}/{imgSerie}(serieName=${serie.name}, imgSerie=${serie.img})}"
-                                     th:alt="${serie.name}">
-                                <div class="textProgramHover">
-                                    <h3 th:text="${serie.name}"></h3>
-                                    <p th:text="${serie.description}"></p>
+            <div th:if="${recommendedFilms} or ${recommendedSeries}">
+                <h1 class="text-white">Recomendaciones</h1>
+                    <div class="containerProgram m-3" th:if="${recommendedFilms}">
+                        <div class="containerProgram m-3">
+                            <h2 class="text-white border-bottom">Películas</h2>
+                            <div class="boxProgram pt-2 row row-cols-1 d-flex">
+                                <!--<p th:text="${serie.name}" />-->
+                                <div th:each="film : ${recommendedFilms}" class="cardProgram text-white " >
+                                    <a class="linkProgram" href="#" th:href="@{/user/v/film/{idFilm}/description(idFilm=${film.id})}">
+                                        <figure class="imgProgram figure m-0 w-100">
+                                            <img class="figure-img img-fluid"
+                                                 th:src="@{/media/img/{filmName}/{imgFilm}(filmName=${film.name}, imgFilm=${film.img})}"
+                                                 th:alt="${film.name}">
+                                            <div class="textProgramHover">
+                                                <h3 th:text="${film.name}"></h3>
+                                                <p th:text="${film.description}"></p>
+                                            </div>
+                                        </figure>
+                                    </a>
+                                    <h3 class="titleProgram text-center" th:text="${film.name}"></h3>
                                 </div>
-                            </figure>
-                        </a>
-                        <h3 class="titleProgram text-center" th:text="${serie.name}"></h3>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div class="containerProgram m-3" th:if="${recommendedSeries}">
+                        <div class="containerProgram m-3">
+                            <h2 class="text-white border-bottom">Series</h2>
+                            <div class="boxProgram pt-2 row row-cols-1 d-flex">
+                                <!--<p th:text="${serie.name}" />-->
+                                <div th:each="serie : ${recommendedSeries}" class="cardProgram text-white ">
+                                    <a class="linkProgram" href="#" th:href="@{/user/v/serie/{idSerie}/description (idSerie=${serie.id})}">
+                                        <figure class="imgProgram figure m-0 w-100">
+                                            <img class="figure-img img-fluid"
+                                                 th:src="@{/media/img/{serieName}/{imgSerie}(serieName=${serie.name}, imgSerie=${serie.img})}"
+                                                 th:alt="${serie.name}">
+                                            <div class="textProgramHover">
+                                                <h3 th:text="${serie.name}"></h3>
+                                                <p th:text="${serie.description}"></p>
+                                            </div>
+                                        </figure>
+                                    </a>
+                                    <h3 class="titleProgram text-center" th:text="${serie.name}"></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             </div>
+
+
+
+
 
 
         </main>

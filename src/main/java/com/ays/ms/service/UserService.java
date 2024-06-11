@@ -209,6 +209,99 @@ public class UserService {
         return user.getLikedSeries();
     }
 
+    public List<Film> getWatchedUserFilms() {
+        long userId = authenticationService.getIdLoginUser();
+
+        if (userId == 0) {
+            throw new AuthenticationAYSException("Usuario no logueado");
+        }
+
+        User user = this.getUser(userId);
+        return user.getWatchFilms();
+    }
+
+    public List<Serie> getWatchedUserSeries() {
+        long userId = authenticationService.getIdLoginUser();
+
+        if (userId == 0) {
+            throw new AuthenticationAYSException("Usuario no logueado");
+        }
+
+        User user = this.getUser(userId);
+        return user.getWatchSeries();
+    }
+
+
+    public void setWatchedUserFilms(List<Film> watchedFilms) {
+        long userId = authenticationService.getIdLoginUser();
+
+        if (userId == 0) {
+            throw new AuthenticationAYSException("Usuario no logueado");
+        }
+
+        User user = this.getUser(userId);
+        user.setWatchFilms(watchedFilms);
+        userRepository.save(user);
+    }
+
+    public void setWatchedUserSeries(List<Serie> watchedSeries) {
+        long userId = authenticationService.getIdLoginUser();
+
+        if (userId == 0) {
+            throw new AuthenticationAYSException("Usuario no logueado");
+        }
+
+        User user = this.getUser(userId);
+        user.setWatchSeries(watchedSeries);
+        userRepository.save(user);
+    }
+
+    public List<UserFilmWatching> getWatchingUserFilms() {
+        long userId = authenticationService.getIdLoginUser();
+
+        if (userId == 0) {
+            throw new AuthenticationAYSException("Usuario no logueado");
+        }
+
+        User user = this.getUser(userId);
+        return user.getCurrentFilms();
+    }
+
+    public List<UserChapterWatching> getWatchingUserChapters() {
+        long userId = authenticationService.getIdLoginUser();
+
+        if (userId == 0) {
+            throw new AuthenticationAYSException("Usuario no logueado");
+        }
+
+        User user = this.getUser(userId);
+        return user.getCurrentChapters();
+    }
+
+    public void setWatchingUserFilms(List<UserFilmWatching> watchingFilms) {
+        long userId = authenticationService.getIdLoginUser();
+
+        if (userId == 0) {
+            throw new AuthenticationAYSException("Usuario no logueado");
+        }
+
+        User user = this.getUser(userId);
+        user.setCurrentFilms(watchingFilms);
+        userRepository.save(user);
+    }
+
+    public void setWatchingUserChapters(List<UserChapterWatching> watchingChapters) {
+        long userId = authenticationService.getIdLoginUser();
+
+        if (userId == 0) {
+            throw new AuthenticationAYSException("Usuario no logueado");
+        }
+
+        User user = this.getUser(userId);
+        user.setCurrentChapters(watchingChapters);
+        userRepository.save(user);
+    }
+
     public void setLikedUserFilms(List<Film> likedFilms) {
         long userId = authenticationService.getIdLoginUser();
 
@@ -239,7 +332,6 @@ public class UserService {
 
         Long numberSeries = this.serieService.getNumberSeries();
         Long controlNumberRecommendedSeries = 10L;
-
         // Minimo hay 10 series, obtengo el num más pequeño de series para el bucle
         Long numberRecomendedSeries = (numberSeries > controlNumberRecommendedSeries) ?
                 controlNumberRecommendedSeries :

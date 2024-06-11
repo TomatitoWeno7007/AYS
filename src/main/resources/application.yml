@@ -7,15 +7,17 @@ spring:
   jpa:
     show_sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
       dialect: org.hibernate.dialect.MySQL8Dialect
-#    defer-datasource-initialization: true
-#  sql:
-#    init:
-#      mode: always
+    defer-datasource-initialization: true
+  sql:
+    init:
+      #mode: always
   servlet:
     multipart:
       enabled: true
       # tamaño de archivos de video de programas
-      max-file-size: 200MB
-      max-request-size: 200MB
+      max-file-size: 2000MB
+      max-request-size: 2000MB
+ays:
+  max-size: 199MB

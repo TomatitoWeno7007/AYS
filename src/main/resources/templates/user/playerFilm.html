@@ -54,32 +54,63 @@
 
             var video = $('#playerVideo')[0];
             var videoDuration;
+            var filmActualTime = [[${filmActualTime}]];
+            var lastSentTime = -1;
+            var isPutActualTime = false;
 
             // Log video duration when metadata is loaded
             video.addEventListener('loadedmetadata', function() {
                 videoDuration = Math.trunc(video.duration);
-                console.log('Video Duration: ' + video.duration + ' seconds');
             });
 
             // Log current time periodically while the video is playing
             video.addEventListener('timeupdate', function() {
-                console.log('Current Time: ' + Math.trunc(video.currentTime) + ' seconds');
+                if (filmActualTime !== null) {
+                    if (!isPutActualTime) {
+                        video.currentTime = filmActualTime;
+                        isPutActualTime = true;
+                    }
 
-                // Send the current time to the server every 5 seconds
+                }
+                // Guarda cada 5 sec
                 if (Math.floor(video.currentTime) % 5 === 0 &&
-                    video.currentTime > 1) {
+                    video.currentTime > 1 &&
+                    Math.floor(video.currentTime) !== lastSentTime) {
+                    lastSentTime = Math.floor(video.currentTime);
+                    console.log('Current Time: ' + Math.floor(video.currentTime) + ' seconds');
                     var percentage = (video.currentTime / videoDuration) * 100;
                     console.log(Math.trunc(percentage) + "%");
+
+
+                    var idFilm = /*[[${film.id}]]*/;
+                    var currentTime = Math.trunc(video.currentTime);
+                    var url = "/v/film/" + idFilm + "/" + currentTime;
+                    console.log('AJAX URL:', url); // Depura la URL generada
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/user/v/film/" + idFilm + "/" + currentTime,
+                        success: function(response) {
+
+                        },
+                        error: function(xhr, status, error) {
+
+                        }
+                    });
+                }
+                if (Math.floor(video.currentTime) == videoDuration) {
+                    console.log('Peli Finalizada:', url); // Depura la URL generada
+
+                    var idFilm = /*[[${film.id}]]*/;
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/user/v/film/" + idFilm + "/watchedFilm",
+                        success: function(response) {},
+                        error: function(xhr, status, error) {}
+                    });
                 }
             });
-
-            // Log current time periodically while the video is playing
-            video.addEventListener('ratechange', function() {
-                console.log('NOPE');
-            });
-
-
-
 
         });
 

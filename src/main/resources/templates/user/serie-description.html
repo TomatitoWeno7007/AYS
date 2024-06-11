@@ -90,12 +90,17 @@
                                     <div th:each="watchingChapter : ${listWatchingChapters}" th:if="${watchingChapter.id.chapter.id == chapter.id}">
                                         <div class="progress progressEpisode position-absolute"
                                              role="progressbar"
-                                             th:attr="data-actual-time='${watchingChapter.actualTime}', data-duration='${chapter.duration}'"
                                              aria-label="Tiempo Visto" aria-valuenow="10" aria-valuemin="0"
                                              aria-valuemax="100">
                                             <div th:id="${'actualPorcent' + chapter.id}"
                                                  class="progress-bar bg-info"
                                                  th:text="${watchingChapter.actualTime}"></div>
+                                            <input type="hidden"
+                                                   th:id="inputActualTime+${chapter.id}"
+                                                   th:value="${watchingChapter.actualTime}">
+                                            <input type="hidden"
+                                                   th:id="inputDuration+${chapter.id}"
+                                                   th:value="${chapter.duration}">
                                             <div class="progressLimit" th:text="${chapter.duration}"></div>
                                         </div>
                                     </div>
@@ -107,30 +112,42 @@
                             </div>
                             <script type="text/javascript">
                                 function secondsToHms(d) {
-                                    console.log("NO PASA");
                                     d = Number(d);
                                     var h = Math.floor(d / 3600);
                                     var m = Math.floor(d % 3600 / 60);
                                     var s = Math.floor(d % 3600 % 60);
 
-                                    var hDisplay = h > 0 ? h + ":" : "";
-                                    var mDisplay = m > 0 ? m + ":" : "";
+                                    var hDisplay = h + ":";
+                                    var mDisplay = m + ":";
                                     var sDisplay = s;
                                     return hDisplay + mDisplay + sDisplay;
                                 }
 
-                                $(document).ready(function () {
-                                    $('[id^="actualPorcent"]').each(function() {
-                                        var $this = $(this);
-                                        console.log($this);
-                                        var actualTime = $this.data('data-actual-time');
-                                        var duration = $this.data('data-duration');
+                                function hmsToSeconds(hms) {
+                                    var timeArray = hms.split(":");
+                                    var hours = parseInt(timeArray[0], 10);
+                                    var minutes = parseInt(timeArray[1], 10);
+                                    var seconds = parseInt(timeArray[2], 10);
+                                    return (hours * 3600) + (minutes * 60) + seconds;
+                                }
 
-                                        console.log(actualTime+ "," + duration + "Y ahora qye");
-                                        $(this).text(actualTime);
-                                        if (duration > 0) {
-                                            var percentage = (actualTime / duration) * 100;
-                                            $this.css('width', percentage + '%');
+                                $(document).ready(function () {
+                                    $("#actualPorcent" +[(${chapter.id})]).each(function() {
+                                        var $this = $(this);
+                                        var actualTime = $("#inputActualTime" +[(${chapter.id})]).val();
+                                        var duration = $("#inputDuration" +[(${chapter.id})]).val();;
+
+                                        console.log(actualTime+ "," + duration + "Tiepmo y Duracion ");
+                                        var timeFormett = secondsToHms(actualTime);
+                                        console.log(timeFormett);
+
+                                        var durationInSecs = hmsToSeconds(duration);
+
+                                        $(this).text(timeFormett);
+                                        if (duration !== "0") {
+                                            console.log(actualTime+"/"+durationInSecs);
+                                            var percentage = (actualTime / durationInSecs) * 100;
+                                            $(this).css('width', percentage + '%');
                                             console.log("Barra de id " + [(${chapter.id})] + ":" + percentage);
                                         }
                                     });

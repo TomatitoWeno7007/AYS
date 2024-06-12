@@ -101,7 +101,7 @@
                                             <input type="hidden"
                                                    th:id="inputDuration+${chapter.id}"
                                                    th:value="${chapter.duration}">
-                                            <div class="progressLimit" th:text="${chapter.duration}"></div>
+                                            <div th:id="barTotalTime+${chapter.id}" class="progressLimit" th:text="${chapter.duration}"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -117,9 +117,11 @@
                                     var m = Math.floor(d % 3600 / 60);
                                     var s = Math.floor(d % 3600 % 60);
 
-                                    var hDisplay = h + ":";
-                                    var mDisplay = m + ":";
-                                    var sDisplay = s;
+                                    var hDisplay = h < 9 ? "0" + h + ":"
+                                                         : h + ":";
+                                    var mDisplay = m < 9 ? "0" + m + ":"
+                                                         : m + ":";
+                                    var sDisplay = s < 9 ? "0" + s : s;
                                     return hDisplay + mDisplay + sDisplay;
                                 }
 
@@ -149,6 +151,10 @@
                                             var percentage = (actualTime / durationInSecs) * 100;
                                             $(this).css('width', percentage + '%');
                                             console.log("Barra de id " + [(${chapter.id})] + ":" + percentage);
+
+                                            if (percentage == 100) {
+                                                $("#barTotalTime" +[(${chapter.id})]).text("");
+                                            }
                                         }
                                     });
                                 });

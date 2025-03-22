@@ -7,6 +7,7 @@ import com.ays.ms.controller.dto.request.SerieRequest;
 import com.ays.ms.model.*;
 import com.ays.ms.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,6 +34,10 @@ public class SerieController {
     private SeasonService seasonService;
     @Autowired
     private ChapterService chapterService;
+    @Value("${ays.max-size}")
+    private String maxRequestSize;
+
+    private int fileMaxSize;
 
     @PostMapping
     public void save() {}
@@ -206,11 +211,15 @@ public class SerieController {
                              @PathVariable("id") long id,
                              @PathVariable("idSeason") long idSeason) throws IOException {
 
+        fileMaxSize = Integer.parseInt(maxRequestSize.substring(0, maxRequestSize.length()-2));
+        double bytes = fileMaxSize * 1024 * 1024;
+
         if (newChapter.getUrl().isEmpty()) {
             result.rejectValue("url", "error.url", "El video es obligatorio");
-        }
-        else if (!isVideoFile(newChapter.getUrl().getOriginalFilename())) {
+        } else if (!isVideoFile(newChapter.getUrl().getOriginalFilename())) {
             result.rejectValue("url", "error.url", "Tipo de video no valido");
+        } else if (newChapter.getUrl().getSize() > bytes) {
+            result.rejectValue("url", "error.url", "Ha superado el límite de tamaño del archivo");
         }
         if (!newChapter.getImg().isEmpty() &&
                 !isImageFile(newChapter.getImg().getOriginalFilename())) {

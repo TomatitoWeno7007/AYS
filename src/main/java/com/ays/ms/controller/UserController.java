@@ -418,6 +418,8 @@ public class UserController {
         model.addAttribute("chapterActualTime", chapterWatching == null ? null : chapterWatching.getActualTime());
         model.addAttribute("isNext", isNext);
         model.addAttribute("isBefore", isBefore);
+        List<UserChapterWatching> listWatchingChapters = userService.getWatchingUserChapters();
+        model.addAttribute("listWatchingChapters", listWatchingChapters);
 
 
         return "user/playerSerie";

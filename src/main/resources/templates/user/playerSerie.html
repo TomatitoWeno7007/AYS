@@ -76,17 +76,79 @@
                                          th:alt="${chapter.name}">
                                 </figure>
                                 <!-- Controlar con javascript/jquery -->
-                                <div class="progress progressEpisode position-absolute" role="progressbar"
-                                     aria-label="Tiempo Visto" aria-valuenow="10" aria-valuemin="0"
-                                     aria-valuemax="100">
-                                    <div class="progress-bar bg-info" style="width: 10%">1:36</div>
-                                    <div class="progressLimit" th:text="${chapter.duration}"></div>
+                                <div th:if="${listWatchingChapters != null}">
+                                    <div th:each="watchingChapter : ${listWatchingChapters}" th:if="${watchingChapter.id.chapter.id == chapter.id}">
+                                        <div class="progress progressEpisode position-absolute"
+                                             role="progressbar"
+                                             aria-label="Tiempo Visto" aria-valuenow="10" aria-valuemin="0"
+                                             aria-valuemax="100">
+                                            <div th:id="${'actualPorcent' + chapter.id}"
+                                                 class="progress-bar bg-info"
+                                                 th:text="${watchingChapter.actualTime}"></div>
+                                            <input type="hidden"
+                                                   th:id="inputActualTime+${chapter.id}"
+                                                   th:value="${watchingChapter.actualTime}">
+                                            <input type="hidden"
+                                                   th:id="inputDuration+${chapter.id}"
+                                                   th:value="${chapter.duration}">
+                                            <div th:id="barTotalTime+${chapter.id}" class="progressLimit" th:text="${chapter.duration}"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="textLinkEpisode">
                                 <h3 th:text="${'T' + seasonChoose.number + ':E' + chapter.number + ' - ' + chapter.name}"></h3>
                                 <p th:text="${chapter.synopsis}"></p>
                             </div>
+                            <script type="text/javascript">
+                                function secondsToHms(d) {
+                                    d = Number(d);
+                                    var h = Math.floor(d / 3600);
+                                    var m = Math.floor(d % 3600 / 60);
+                                    var s = Math.floor(d % 3600 % 60);
+
+                                    var hDisplay = h < 9 ? "0" + h + ":"
+                                                         : h + ":";
+                                    var mDisplay = m < 9 ? "0" + m + ":"
+                                                         : m + ":";
+                                    var sDisplay = s < 9 ? "0" + s : s;
+                                    return hDisplay + mDisplay + sDisplay;
+                                }
+
+                                function hmsToSeconds(hms) {
+                                    var timeArray = hms.split(":");
+                                    var hours = parseInt(timeArray[0], 10);
+                                    var minutes = parseInt(timeArray[1], 10);
+                                    var seconds = parseInt(timeArray[2], 10);
+                                    return (hours * 3600) + (minutes * 60) + seconds;
+                                }
+
+                                $(document).ready(function () {
+                                    $("#actualPorcent" +[(${chapter.id})]).each(function() {
+                                        var $this = $(this);
+                                        var actualTime = $("#inputActualTime" +[(${chapter.id})]).val();
+                                        var duration = $("#inputDuration" +[(${chapter.id})]).val();;
+
+                                        console.log(actualTime+ "," + duration + "Tiepmo y Duracion ");
+                                        var timeFormett = secondsToHms(actualTime);
+                                        console.log(timeFormett);
+
+                                        var durationInSecs = hmsToSeconds(duration);
+
+                                        $(this).text(timeFormett);
+                                        if (duration !== "0") {
+                                            console.log(actualTime+"/"+durationInSecs);
+                                            var percentage = (actualTime / durationInSecs) * 100;
+                                            $(this).css('width', percentage + '%');
+                                            console.log("Barra de id " + [(${chapter.id})] + ":" + percentage);
+
+                                            if (percentage == 100) {
+                                                $("#barTotalTime" +[(${chapter.id})]).text("");
+                                            }
+                                        }
+                                    });
+                                });
+                            </script>
                         </a>
                     </div>
                 </div>

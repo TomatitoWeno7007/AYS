@@ -105,7 +105,7 @@
                 <h3 class="border-bottom">Tarjeta de crédito</h3>
                 <div class="mb-3 row align-items-center">
                     <label for="inputNumCard" class="col-sm-2 col-form-label">Número de la tarjeta</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10" th:if="${userInfo.card.cardNumber != null}">
 <!--                        <input type="text" readonly th:value="${#strings.repeat('*', userInfo.card.cardNumber.length() - 3)} + ${userInfo.card.cardNumber.substring(userInfo.card.cardNumber.length() - 3)}"-->
 <!--                               class="form-control-plaintext text-white" id="inputNumCard">-->
 

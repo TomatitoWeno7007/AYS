@@ -56,6 +56,7 @@ public class FilmController {
                       Model model) throws IOException {
 
         fileMaxSize = Integer.parseInt(maxRequestSize.substring(0, maxRequestSize.length()-2));
+        double bytes = fileMaxSize * 1024 * 1024;
 
         if (newFilm.getUrl().isEmpty() ||
             newFilm.getImg().isEmpty() || newFilm.getUrl().getBytes().length > fileMaxSize) {
@@ -63,7 +64,7 @@ public class FilmController {
                 result.rejectValue("url", "error.url", "El video es obligatorio");
             if (newFilm.getImg().isEmpty())
                 result.rejectValue("img", "error.img", "La img es obligatoria");
-            if (newFilm.getUrl().getBytes().length > fileMaxSize)
+            if (newFilm.getUrl().getSize() > bytes)
                 result.rejectValue("url", "error.url", "Ha superado el límite de tamaño del archivo");
         } else {
             if (!isImageFile(newFilm.getImg().getOriginalFilename())) {
